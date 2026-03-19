@@ -927,10 +927,10 @@ footer{
   <div id="hero-fixed">
 
     <!-- 4 collage photos — pop in while hero shrinks -->
-    <div class="c-photo" id="cp-a"><div class="img-ph g1">📸</div></div>
-    <div class="c-photo" id="cp-b"><div class="img-ph g4">📸</div></div>
-    <div class="c-photo" id="cp-c"><div class="img-ph g3">📸</div></div>
-    <div class="c-photo" id="cp-d"><div class="img-ph g5">📸</div></div>
+    <div class="c-photo" id="cp-a"><img data-photo="col-a" alt="" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
+    <div class="c-photo" id="cp-b"><img data-photo="col-b" alt="" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
+    <div class="c-photo" id="cp-c"><img data-photo="col-c" alt="" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
+    <div class="c-photo" id="cp-d"><img data-photo="col-d" alt="" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
 
     <!-- Main hero photo — starts big, morphs to collage centre -->
     <div class="hero-photo" id="hero-photo">
@@ -944,7 +944,7 @@ footer{
         </ul>
       </div>
       <div class="hero-photo-bg">
-        <img src="hero.PNG" alt="Alexia &amp; Eliezer">
+        <img data-photo="hero" alt="Alexia &amp; Eliezer">
         <div class="hero-photo-hint" id="hero-photo-hint" style="display:none">sua foto aqui<br><span style="font-size:12px;opacity:.5;">foto principal dos noivos</span></div>
       </div>
       <div class="hero-overlay" id="hero-overlay">
@@ -1502,6 +1502,23 @@ function copiarPix(chave, card, label){
     prompt('Copie a chave Pix:', chave);
   });
 }
+
+// ── CARREGADOR DE FOTOS — suporta png, jpeg, jpg automaticamente ──
+function loadImg(el, baseName){
+  const exts = ['png','PNG','jpeg','jpg','JPG','JPEG'];
+  let i = 0;
+  function tryNext(){
+    if(i >= exts.length){ el.style.display='none'; return; }
+    el.src = baseName + '.' + exts[i++];
+    el.onerror = tryNext;
+  }
+  tryNext();
+}
+document.addEventListener('DOMContentLoaded', function(){
+  document.querySelectorAll('img[data-photo]').forEach(function(img){
+    loadImg(img, img.getAttribute('data-photo'));
+  });
+});
 
 </script>
 </body>
