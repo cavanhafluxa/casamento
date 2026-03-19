@@ -93,7 +93,7 @@ body{
    pinned until animation completes.
 ══════════════════════════════════════ */
 #hero-scroll-space{
-  height:110vh;
+  height:220vh;
   position:relative;
 }
 
@@ -117,8 +117,8 @@ body{
   will-change:transform,width,height,border-radius;
   /* JS animates via inline style */
   /* Desktop start: 88vw × 16/9 */
-  width:min(88vw,900px);
-  aspect-ratio:16/9;
+  width:88vw;
+  height:80vh;
 }
 .hero-photo-bg{
   width:100%;height:100%;
@@ -738,6 +738,8 @@ footer{
   transition:transform .3s ease,box-shadow .3s ease,border-color .3s ease;
 }
 .gift-card:hover{transform:translateY(-4px);box-shadow:0 20px 56px rgba(47,47,47,.1);border-color:var(--olive-light)}
+.gift-clickable{cursor:pointer;}
+.gift-copied .gift-tag{background:var(--olive-dark)!important;color:white!important}
 .gift-card-accent{position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--olive-pale),var(--olive-light));border-radius:20px 20px 0 0}
 .gift-icon{font-size:40px;margin-bottom:20px}
 .gift-name{font-family:'Playfair Display',serif;font-size:26px;font-style:italic;font-weight:400;color:var(--black);margin-bottom:8px}
@@ -987,83 +989,9 @@ footer{
 <!-- ══ VENUE ══ -->
 <section id="venue" class="fade-up">
   <p class="venue-label">o lugar</p>
-  <h2 class="venue-name-title">Green Space</h2>
+  <h2 class="venue-name-title">Green Space — Blumenau</h2>
   <div class="venue-painting-wrap">
-    <svg viewBox="0 0 1000 520" xmlns="http://www.w3.org/2000/svg">
-      <defs>
-        <filter id="paint" x="-5%" y="-5%" width="110%" height="110%">
-          <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="4" result="n"/>
-          <feDisplacementMap in="SourceGraphic" in2="n" scale="3.5" xChannelSelector="R" yChannelSelector="G"/>
-        </filter>
-        <linearGradient id="skyG" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stop-color="#6BAFD4"/><stop offset="100%" stop-color="#C8E8F4"/>
-        </linearGradient>
-        <linearGradient id="grassG" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stop-color="#5a9e60"/><stop offset="100%" stop-color="#3a7a40"/>
-        </linearGradient>
-      </defs>
-      <rect width="1000" height="520" fill="url(#skyG)"/>
-      <g opacity=".85" filter="url(#paint)">
-        <ellipse cx="170" cy="75" rx="85" ry="36" fill="white"/>
-        <ellipse cx="210" cy="60" rx="65" ry="28" fill="white"/>
-        <ellipse cx="790" cy="90" rx="105" ry="42" fill="white"/>
-        <ellipse cx="840" cy="74" rx="75" ry="32" fill="white"/>
-        <ellipse cx="490" cy="52" rx="70" ry="28" fill="white" opacity=".7"/>
-      </g>
-      <rect y="390" width="1000" height="130" fill="url(#grassG)"/>
-      <ellipse cx="500" cy="392" rx="500" ry="16" fill="#6AB855" opacity=".35"/>
-      <!-- Trees L -->
-      <rect x="52" y="218" width="20" height="180" fill="#5C4A2E" filter="url(#paint)"/>
-      <ellipse cx="62" cy="185" rx="72" ry="88" fill="#3a7a50" filter="url(#paint)"/>
-      <ellipse cx="62" cy="165" rx="56" ry="70" fill="#4a9a60" filter="url(#paint)"/>
-      <ellipse cx="62" cy="148" rx="42" ry="54" fill="#5CAA68" filter="url(#paint)"/>
-      <rect x="132" y="255" width="16" height="145" fill="#5C4A2E" filter="url(#paint)"/>
-      <ellipse cx="140" cy="225" rx="55" ry="66" fill="#3a7a50" filter="url(#paint)"/>
-      <ellipse cx="140" cy="208" rx="42" ry="52" fill="#4a9a60" filter="url(#paint)"/>
-      <!-- Trees R -->
-      <rect x="928" y="218" width="20" height="180" fill="#5C4A2E" filter="url(#paint)"/>
-      <ellipse cx="938" cy="185" rx="72" ry="88" fill="#3a7a50" filter="url(#paint)"/>
-      <ellipse cx="938" cy="165" rx="56" ry="70" fill="#4a9a60" filter="url(#paint)"/>
-      <ellipse cx="938" cy="148" rx="42" ry="54" fill="#5CAA68" filter="url(#paint)"/>
-      <rect x="852" y="255" width="16" height="145" fill="#5C4A2E" filter="url(#paint)"/>
-      <ellipse cx="860" cy="225" rx="55" ry="66" fill="#3a7a50" filter="url(#paint)"/>
-      <ellipse cx="860" cy="208" rx="42" ry="52" fill="#4a9a60" filter="url(#paint)"/>
-      <!-- Building -->
-      <rect x="295" y="195" width="410" height="205" fill="#c8b89a" filter="url(#paint)"/>
-      <polygon points="278,198 500,115 722,198" fill="#8a7a6a" filter="url(#paint)"/>
-      <polygon points="295,198 500,128 705,198" fill="#9a8a7a" opacity=".45" filter="url(#paint)"/>
-      <rect x="348" y="195" width="12" height="172" fill="#d8ceb8" filter="url(#paint)"/>
-      <rect x="410" y="195" width="12" height="172" fill="#d8ceb8" filter="url(#paint)"/>
-      <rect x="578" y="195" width="12" height="172" fill="#d8ceb8" filter="url(#paint)"/>
-      <rect x="640" y="195" width="12" height="172" fill="#d8ceb8" filter="url(#paint)"/>
-      <rect x="318" y="228" width="58" height="80" rx="29" fill="#7abcd4" opacity=".7" filter="url(#paint)"/>
-      <rect x="410" y="228" width="50" height="80" rx="25" fill="#7abcd4" opacity=".7" filter="url(#paint)"/>
-      <rect x="540" y="228" width="50" height="80" rx="25" fill="#7abcd4" opacity=".7" filter="url(#paint)"/>
-      <rect x="624" y="228" width="58" height="80" rx="29" fill="#7abcd4" opacity=".7" filter="url(#paint)"/>
-      <rect x="322" y="233" width="22" height="20" rx="4" fill="#FAD97A" opacity=".4" filter="url(#paint)"/>
-      <rect x="414" y="233" width="18" height="20" rx="4" fill="#FAD97A" opacity=".4" filter="url(#paint)"/>
-      <rect x="544" y="233" width="18" height="20" rx="4" fill="#FAD97A" opacity=".4" filter="url(#paint)"/>
-      <rect x="628" y="233" width="22" height="20" rx="4" fill="#FAD97A" opacity=".4" filter="url(#paint)"/>
-      <rect x="450" y="300" width="100" height="100" rx="50" fill="#4a3820" filter="url(#paint)"/>
-      <rect x="462" y="310" width="76" height="88" rx="38" fill="#7abcd4" opacity=".4" filter="url(#paint)"/>
-      <rect x="370" y="390" width="260" height="11" rx="3" fill="#b0a090" filter="url(#paint)"/>
-      <rect x="390" y="381" width="220" height="10" rx="3" fill="#c0b0a0" filter="url(#paint)"/>
-      <rect x="410" y="372" width="180" height="10" rx="3" fill="#d0c0b0" filter="url(#paint)"/>
-      <path d="M278 194 Q350 210 430 194 Q510 210 500 194 Q570 210 640 194 Q700 210 722 194" stroke="#FAD97A" stroke-width="1.8" fill="none" opacity=".8" filter="url(#paint)"/>
-      <circle cx="350" cy="208" r="4" fill="#FAD97A" opacity=".9"/>
-      <circle cx="430" cy="196" r="4" fill="#FAD97A" opacity=".9"/>
-      <circle cx="500" cy="196" r="4" fill="#FAD97A" opacity=".9"/>
-      <circle cx="570" cy="208" r="4" fill="#FAD97A" opacity=".9"/>
-      <circle cx="648" cy="196" r="4" fill="#FAD97A" opacity=".9"/>
-      <circle cx="200" cy="382" r="9" fill="#e8a0c0" filter="url(#paint)"/>
-      <circle cx="222" cy="376" r="7" fill="#d4a0d4" filter="url(#paint)"/>
-      <circle cx="242" cy="383" r="8" fill="#c0d4a0" filter="url(#paint)"/>
-      <circle cx="800" cy="382" r="9" fill="#e8a0c0" filter="url(#paint)"/>
-      <circle cx="822" cy="376" r="7" fill="#d4a0d4" filter="url(#paint)"/>
-      <circle cx="842" cy="383" r="8" fill="#c0d4a0" filter="url(#paint)"/>
-      <ellipse cx="415" cy="378" rx="36" ry="24" fill="#4a9a60" opacity=".8" filter="url(#paint)"/>
-      <ellipse cx="585" cy="378" rx="36" ry="24" fill="#4a9a60" opacity=".8" filter="url(#paint)"/>
-    </svg>
+    <img src="venue-painting.jpg" alt="Green Space — Blumenau" style="width:100%;height:auto;display:block;border-radius:16px;">
   </div>
 </section>
 
@@ -1133,28 +1061,28 @@ footer{
     <p class="gifts-sub">Sua presença já é o maior presente. Mas se quiser nos presentear, separamos algumas ideias com muito amor.</p>
     <div class="gifts-grid">
 
-      <div class="gift-card">
+      <div class="gift-card gift-clickable" onclick="window.open('https://www.havan.com.br/lista-de-casamento','_blank')" title="Ver lista na Havan">
         <div class="gift-card-accent"></div>
         <div class="gift-icon">🏠</div>
         <p class="gift-name">Nossa casa</p>
         <p class="gift-desc">Itens para o nosso primeiro lar juntos — desde a cozinha até os cantinhos que vamos criar com carinho.</p>
-        <span class="gift-tag">Lista física</span>
+        <span class="gift-tag">Ver lista na Havan →</span>
       </div>
 
-      <div class="gift-card">
+      <div class="gift-card gift-clickable" onclick="copiarPix('CHAVE_PIX_AQUI', this, 'R$ 100 — Lua de mel 💚')" title="Copiar chave Pix — valor sugerido R$ 100">
         <div class="gift-card-accent"></div>
         <div class="gift-icon">✈️</div>
         <p class="gift-name">Lua de mel</p>
         <p class="gift-desc">Contribua para a viagem dos nossos sonhos. Cada centavo vai virar uma memória que vamos guardar para sempre.</p>
-        <span class="gift-tag">Transferência</span>
+        <span class="gift-tag" id="tag-luamel">Copiar Pix · R$ 100 sugerido</span>
       </div>
 
-      <div class="gift-card gift-pix">
+      <div class="gift-card gift-pix gift-clickable" onclick="copiarPix('CHAVE_PIX_AQUI', this, null)" title="Copiar chave Pix">
         <div class="gift-card-accent"></div>
         <div class="gift-icon">💚</div>
         <p class="gift-name">Pix</p>
         <p class="gift-desc">Prefere dar um valor simbólico? Qualquer gesto vindo do coração é muito bem-vindo.</p>
-        <span class="gift-tag">Chave: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="f7969b928f9e96b7929a969e9bd994989a">[email&#160;protected]</a></span>
+        <span class="gift-tag" id="tag-pix">Copiar chave Pix</span>
       </div>
 
     </div>
@@ -1230,7 +1158,7 @@ footer{
     <div class="footer-img-bg"></div>
     <div class="footer-overlay">
       <div class="footer-quote">"hoje, amanhã, e em todos os dias que vierem — só quero estar com você."</div>
-      <div class="footer-byline">21 de Novembro de 2026 · Green Space · Curitiba</div>
+      <div class="footer-byline">21 de Novembro de 2026 · Green Space · Blumenau</div>
     </div>
   </div>
 </section>
@@ -1238,7 +1166,7 @@ footer{
 <footer>
   <p class="footer-logo">Alexia & Eliezer</p>
   <div class="footer-sep"></div>
-  <p class="footer-date-line">21 · 11 · 2026 · Green Space · Curitiba</p>
+  <p class="footer-date-line">21 · 11 · 2026 · Green Space · Blumenau</p>
 </footer>
 
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
@@ -1287,8 +1215,7 @@ function getTargetSize(){
   return { w, h: w / (16/9) };
 }
 function getStartSize(){
-  const w = Math.min(window.innerWidth * 0.88, 900);
-  return { w, h: w / (16/9) };
+  return { w: window.innerWidth * 0.88, h: window.innerHeight * 0.80 };
 }
 
 function lerp(a,b,t){ return a+(b-a)*t; }
@@ -1445,8 +1372,9 @@ const faqFadeObs = new IntersectionObserver(entries=>{
 
 // ── FAQ DATA ──
 const faqData=[
+  {q:'Qual é o endereço?',         a:'R. Ewaldo Bauer, 1075 — Vila Itoupava, Blumenau/SC · CEP: 89075-625 · <a href="https://maps.google.com/?q=R.+Ewaldo+Bauer,+1075+Blumenau+SC" target="_blank" style="color:var(--olive-mid)">Ver no mapa →</a>'},
   {q:'Qual é o dress code?',         a:'Traje social elegante. Verde oliva e tons terrosos são muito bem-vindos! Evite branco puro.'},
-  {q:'O casamento é ao ar livre?',   a:'A cerimônia e parte da festa acontecem nos jardins do Green Space. Use calçados confortáveis para o gramado.'},
+  {q:'O casamento é ao ar livre?',   a:'A cerimônia e parte da festa acontecem no Green Space em Blumenau. Use calçados confortáveis para o gramado.'},
   {q:'Até quando confirmar presença?',a:'Por favor confirme até 21 de setembro de 2026, para finalizarmos os números com o local.'},
   {q:'Posso levar acompanhante?',    a:'Indique no formulário quantas pessoas virão com você. Dúvidas, é só nos chamar!'},
   {q:'Que horas devo chegar?',       a:'A cerimônia começa às 18h. Pedimos que chegue com 30 minutos de antecedência.'},
@@ -1509,6 +1437,10 @@ rsvpNo.addEventListener('click', () => {
   rsvpNo.classList.add('active');
   rsvpYes.classList.remove('active');
   guestsField.style.display = 'none';
+  document.getElementById('rsvp-submit').textContent = 'Comunicar noivos';
+});
+rsvpYes.addEventListener('click', () => {
+  document.getElementById('rsvp-submit').textContent = 'Confirmar presença';
 });
 
 document.getElementById('stepper-minus').addEventListener('click', () => {
@@ -1546,6 +1478,23 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{
     }
   });
 });
+
+// ── PRESENTES — ações dos cards ──
+function copiarPix(chave, card, label){
+  navigator.clipboard.writeText(chave).then(function(){
+    card.classList.add('gift-copied');
+    const tag = card.querySelector('.gift-tag');
+    const original = tag.textContent;
+    tag.textContent = '✓ Chave copiada!';
+    setTimeout(function(){
+      tag.textContent = original;
+      card.classList.remove('gift-copied');
+    }, 2500);
+  }).catch(function(){
+    // fallback para browsers sem clipboard API
+    prompt('Copie a chave Pix:', chave);
+  });
+}
 
 </script>
 </body>
