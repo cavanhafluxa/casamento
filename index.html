@@ -317,7 +317,7 @@ body{
    fixed hero collage (z-index > 10)
 ══════════════════════════════════════ */
 #love-story, #date-section, #venue, #quote,
-#gallery, #nostalgia, #gifts, #rsvp, #faq, #footer-photo, footer {
+#nostalgia, #gifts, #rsvp, #faq, #footer-photo, footer {
   position: relative;
   z-index: 20;
   background: var(--cream);
@@ -529,9 +529,9 @@ body{
 /* ══════════════════════════════════════
    INSTAGRAM GRID
 ══════════════════════════════════════ */
-#gallery{padding:88px 32px}
 
-.gallery-header{text-align:center;margin-bottom:36px}
+
+
 .gallery-eyebrow{
   font-size:10px;letter-spacing:.22em;text-transform:uppercase;
   color:var(--olive-light);margin-bottom:8px;
@@ -548,40 +548,29 @@ body{
   gap:3px;border-radius:18px;overflow:hidden;
 }
 
-.ig-item{
-  aspect-ratio:1;position:relative;overflow:hidden;
-  opacity:0;transform:scale(.94);
-  transition:opacity .5s ease,transform .5s ease;
-}
-.ig-item.visible{opacity:1;transform:scale(1)}
-.ig-bg{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:28px;transition:transform .4s ease}
-.ig-item:hover .ig-bg, .ig-item:active .ig-bg{transform:scale(1.07)}
+
+
+
+.ig-item:hover .ig-bg, .ig-item:active 
 .ig-overlay{
   position:absolute;inset:0;
   background:rgba(61,74,46,.42);
   display:flex;align-items:center;justify-content:center;
   opacity:0;transition:opacity .25s ease;
 }
-.ig-item:hover .ig-overlay,.ig-item:active .ig-overlay{opacity:1}
-.ig-heart{color:white;font-size:20px}
 
-.lightbox{
-  position:fixed;inset:0;z-index:1000;
-  background:rgba(47,47,47,.85);
-  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
-  display:flex;align-items:center;justify-content:center;
-  opacity:0;pointer-events:none;
-  transition:opacity .35s ease;
-}
-.lightbox.open{opacity:1;pointer-events:all}
+
+
+
+
 .lightbox-img-wrap{
   width:min(85vmin,520px);height:min(85vmin,520px);
   border-radius:18px;overflow:hidden;
   transform:scale(.72);
   transition:transform .42s cubic-bezier(.34,1.56,.64,1);
 }
-.lightbox.open .lightbox-img-wrap{transform:scale(1)}
-.lightbox-ph{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:68px}
+.lightbox.open 
+
 .lightbox-close{
   position:fixed;
   top:calc(var(--safe-top) + 20px);
@@ -593,7 +582,7 @@ body{
   display:flex;align-items:center;justify-content:center;
   transition:background .2s;
 }
-.lightbox-close:hover,.lightbox-close:active{background:rgba(255,255,255,.25)}
+
 
 /* ══════════════════════════════════════
    FAQ
@@ -851,9 +840,9 @@ footer{
   .quote-text{font-size:clamp(32px,8.5vw,56px);max-width:100%;line-height:1.35}
 
   /* Gallery */
-  #gallery{padding:64px 16px}
-  .gallery-title{font-size:clamp(36px,10vw,56px)}
-  .instagram-grid{gap:2px;border-radius:14px}
+  
+  
+  
 
   /* Love story */
   .love-story-sticky{padding-top:12vh}
@@ -915,7 +904,6 @@ footer{
   <span class="nav-logo">A & E</span>
   <ul class="nav-links">
     <li><a href="#love-story">Nossa história</a></li>
-    <li><a href="#gallery">Feed</a></li>
     <li><a href="#gifts">Presentes</a></li>
     <li><a href="#faq">FAQ</a></li>
     <li><a href="#rsvp" class="nav-rsvp">Confirmar</a></li>
@@ -938,7 +926,6 @@ footer{
         <span class="hero-logo-w">A & E</span>
         <ul class="hero-links-w">
           <li><a href="#love-story">Nossa história</a></li>
-          <li><a href="#gallery">Feed</a></li>
           <li><a href="#faq">FAQ</a></li>
           <li><a href="#rsvp" class="hero-rsvp-w">Confirmar</a></li>
         </ul>
@@ -1006,30 +993,6 @@ footer{
 <section id="quote" class="fade-up">
   <p class="quote-text">"você é a minha pessoa favorita<br>para fazer qualquer coisa,<br>pelo resto da minha vida."</p>
 </section>
-
-<!-- ══ GALLERY ══ -->
-<section id="gallery" class="fade-up">
-  <div class="gallery-header">
-    <p class="gallery-eyebrow">nosso feed</p>
-    <h2 class="gallery-title">dia a dia</h2>
-  </div>
-  <div class="instagram-grid" id="ig-grid">
-    <div class="ig-item"><div class="ig-bg g1">📸</div><div class="ig-overlay"><span class="ig-heart">♡</span></div></div>
-    <div class="ig-item"><div class="ig-bg g2">📸</div><div class="ig-overlay"><span class="ig-heart">♡</span></div></div>
-    <div class="ig-item"><div class="ig-bg g3">📸</div><div class="ig-overlay"><span class="ig-heart">♡</span></div></div>
-    <div class="ig-item"><div class="ig-bg g4">📸</div><div class="ig-overlay"><span class="ig-heart">♡</span></div></div>
-    <div class="ig-item"><div class="ig-bg g5">📸</div><div class="ig-overlay"><span class="ig-heart">♡</span></div></div>
-    <div class="ig-item"><div class="ig-bg g1">📸</div><div class="ig-overlay"><span class="ig-heart">♡</span></div></div>
-    <div class="ig-item"><div class="ig-bg g2">📸</div><div class="ig-overlay"><span class="ig-heart">♡</span></div></div>
-    <div class="ig-item"><div class="ig-bg g3">📸</div><div class="ig-overlay"><span class="ig-heart">♡</span></div></div>
-    <div class="ig-item"><div class="ig-bg g4">📸</div><div class="ig-overlay"><span class="ig-heart">♡</span></div></div>
-  </div>
-</section>
-
-<div class="lightbox" id="lightbox">
-  <button class="lightbox-close" id="lightbox-close">×</button>
-  <div class="lightbox-img-wrap"><div class="lightbox-ph g2" id="lightbox-content">📸</div></div>
-</div>
 
 <!-- ══ ANTES DE NOS ENCONTRAR ══ -->
 <section id="nostalgia" class="fade-up">
@@ -1381,21 +1344,7 @@ const fadeObs = new IntersectionObserver(entries=>{
 },{threshold:0.08});
 document.querySelectorAll('.fade-up').forEach(el=>fadeObs.observe(el));
 
-// IG stagger
-const igObs = new IntersectionObserver(entries=>{
-  entries.forEach(e=>{
-    if(e.isIntersecting){
-      document.querySelectorAll('.ig-item').forEach((item,i)=>{
-        setTimeout(()=>item.classList.add('visible'),i*60);
-      });
-    }
-  });
-},{threshold:0.08});
-igObs.observe(document.getElementById('ig-grid'));
 
-// FAQ stagger
-const faqFadeObs = new IntersectionObserver(entries=>{
-  entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('visible'); });
 },{threshold:0.06});
 
 // ── FAQ DATA ──
@@ -1430,13 +1379,7 @@ faqData.forEach((item,i)=>{
   faqFadeObs.observe(div);
 });
 
-// ── LIGHTBOX ──
-const igEmojis=['🌿','✈️','🌄','💚','🌱','🍃','💍','🤍','✨'];
-document.querySelectorAll('.ig-item').forEach((item,i)=>{
-  item.addEventListener('click',()=>{
-    document.getElementById('lightbox-content').textContent=igEmojis[i];
-    document.getElementById('lightbox').classList.add('open');
-  });
+
 });
 document.getElementById('lightbox-close').addEventListener('click',()=>
   document.getElementById('lightbox').classList.remove('open'));
