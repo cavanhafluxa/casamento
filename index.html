@@ -1301,6 +1301,18 @@ const polaroidsStage= document.getElementById('polaroids-stage');
 const STEPS = 0.7;
 scrollSpace.style.height = window.innerHeight * (polaroids.length * STEPS + 1) + 'px';
 
+// ── CARREGADOR DE FOTOS — suporta png, jpeg, jpg automaticamente ──
+function loadImg(el, baseName){
+  const exts = ['png','PNG','jpeg','jpg','JPG','JPEG'];
+  let i = 0;
+  function tryNext(){
+    if(i >= exts.length){ el.style.display='none'; return; }
+    el.src = baseName + '.' + exts[i++];
+    el.onerror = tryNext;
+  }
+  tryNext();
+}
+
 const polEls = polaroids.map((p,i)=>{
   const el = document.createElement('div');
   el.className='polaroid';
@@ -1311,14 +1323,23 @@ const polEls = polaroids.map((p,i)=>{
     const mTilts=['rotate(-5deg) translate(-95px,18px)','rotate(3deg) translate(50px,-18px)','rotate(-2deg) translate(-50px,42px)','rotate(5deg) translate(90px,30px)','rotate(-1deg) translate(5px,-35px)'];
     el.style.setProperty('--tilt',mTilts[i]);
   }
+  const polName = 'pol-' + (i+1);
   el.innerHTML=`
     <div class="polaroid-stage-label">${p.stage}</div>
-    <div class="polaroid-img-placeholder ${['g1','g2','g3','g4','g5'][i]}" style="font-size:${window.innerWidth<=600?'36px':'46px'}">${p.emoji}</div>
+    <div class="polaroid-img-placeholder ${['g1','g2','g3','g4','g5'][i]}" style="position:relative;overflow:hidden;">
+      <img data-photo="${polName}" alt="${p.caption}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;">
+    </div>
     <div class="polaroid-caption">${p.caption}</div>
   `;
+  // Load photo with extension fallback
+  loadImg(el.querySelector('img[data-photo]'), polName);
   el.addEventListener('click',()=>{
-    document.getElementById('modal-img').textContent=p.emoji;
-    document.getElementById('modal-img').style.fontSize='64px';
+    const modalImg = document.getElementById('modal-img');
+    modalImg.innerHTML = '';
+    const mImg = document.createElement('img');
+    mImg.style.cssText = 'width:100%;height:100%;object-fit:cover;border-radius:3px;';
+    loadImg(mImg, 'pol-'+(i+1));
+    modalImg.appendChild(mImg);
     document.getElementById('modal-caption').textContent=p.caption;
     document.getElementById('polaroid-modal').classList.add('open');
   });
@@ -1503,17 +1524,6 @@ function copiarPix(chave, card, label){
   });
 }
 
-// ── CARREGADOR DE FOTOS — suporta png, jpeg, jpg automaticamente ──
-function loadImg(el, baseName){
-  const exts = ['png','PNG','jpeg','jpg','JPG','JPEG'];
-  let i = 0;
-  function tryNext(){
-    if(i >= exts.length){ el.style.display='none'; return; }
-    el.src = baseName + '.' + exts[i++];
-    el.onerror = tryNext;
-  }
-  tryNext();
-}
 document.addEventListener('DOMContentLoaded', function(){
   document.querySelectorAll('img[data-photo]').forEach(function(img){
     loadImg(img, img.getAttribute('data-photo'));
