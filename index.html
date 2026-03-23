@@ -529,9 +529,9 @@ body{
 /* ══════════════════════════════════════
    INSTAGRAM GRID
 ══════════════════════════════════════ */
+#gallery{padding:88px 32px}
 
-
-
+.gallery-header{text-align:center;margin-bottom:36px}
 .gallery-eyebrow{
   font-size:10px;letter-spacing:.22em;text-transform:uppercase;
   color:var(--olive-light);margin-bottom:8px;
@@ -548,21 +548,22 @@ body{
   gap:3px;border-radius:18px;overflow:hidden;
 }
 
-
-
-
-.ig-item:hover .ig-bg, .ig-item:active 
+.ig-item{
+  aspect-ratio:1;position:relative;overflow:hidden;
+  opacity:0;transform:scale(.94);
+  transition:opacity .5s ease,transform .5s ease;
+}
+.ig-item.visible{opacity:1;transform:scale(1)}
+.ig-bg{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:28px;transition:transform .4s ease}
+.ig-item:hover .ig-bg, .ig-item:active .ig-bg{transform:scale(1.07)}
 .ig-overlay{
   position:absolute;inset:0;
   background:rgba(61,74,46,.42);
   display:flex;align-items:center;justify-content:center;
   opacity:0;transition:opacity .25s ease;
 }
-
-
-
-
-
+.ig-item:hover .ig-overlay,.ig-item:active .ig-overlay{opacity:1}
+.ig-heart{color:white;font-size:20px}
 
 
 /* ══════════════════════════════════════
@@ -821,9 +822,9 @@ footer{
   .quote-text{font-size:clamp(32px,8.5vw,56px);max-width:100%;line-height:1.35}
 
   /* Gallery */
-  
-  
-  
+  #gallery{padding:64px 16px}
+  .gallery-title{font-size:clamp(36px,10vw,56px)}
+  .instagram-grid{gap:2px;border-radius:14px}
 
   /* Love story */
   .love-story-sticky{padding-top:12vh}
@@ -907,7 +908,7 @@ footer{
         <span class="hero-logo-w">A & E</span>
         <ul class="hero-links-w">
           <li><a href="#love-story">Nossa história</a></li>
-          <li><a href="#faq">FAQ</a></li>
+                <li><a href="#faq">FAQ</a></li>
           <li><a href="#rsvp" class="hero-rsvp-w">Confirmar</a></li>
         </ul>
       </div>
@@ -966,7 +967,7 @@ footer{
   <p class="venue-label">o lugar</p>
   <h2 class="venue-name-title">Green Space</h2>
   <div class="venue-painting-wrap">
-    <img data-photo="venue-painting" alt="Green Space" style="width:100%;height:auto;display:block;border-radius:16px;">
+    <img src="venue-painting.jpg" alt="Green Space" style="width:100%;height:auto;display:block;border-radius:16px;">
   </div>
 </section>
 
@@ -975,10 +976,12 @@ footer{
   <p class="quote-text">"você é a minha pessoa favorita<br>para fazer qualquer coisa,<br>pelo resto da minha vida."</p>
 </section>
 
+
+
 <!-- ══ ANTES DE NOS ENCONTRAR ══ -->
 <section id="nostalgia" class="fade-up">
   <div class="nostalgia-inner">
-    <p class="nostalgia-eyebrow"></p>
+    <p class="nostalgia-eyebrow">as origens</p>
     <h2 class="nostalgia-title">Antes de nos encontrar</h2>
     <p class="nostalgia-sub">dois começos que levaram ao mesmo lugar</p>
     <div class="nostalgia-sides">
@@ -1245,18 +1248,6 @@ const polaroidsStage= document.getElementById('polaroids-stage');
 const STEPS = 0.7;
 scrollSpace.style.height = window.innerHeight * (polaroids.length * STEPS + 1) + 'px';
 
-// ── CARREGADOR DE FOTOS — suporta png, jpeg, jpg automaticamente ──
-function loadImg(el, baseName){
-  const exts = ['png','PNG','jpeg','jpg','JPG','JPEG'];
-  let i = 0;
-  function tryNext(){
-    if(i >= exts.length){ el.style.display='none'; return; }
-    el.src = baseName + '.' + exts[i++];
-    el.onerror = tryNext;
-  }
-  tryNext();
-}
-
 const polEls = polaroids.map((p,i)=>{
   const el = document.createElement('div');
   el.className='polaroid';
@@ -1267,23 +1258,14 @@ const polEls = polaroids.map((p,i)=>{
     const mTilts=['rotate(-5deg) translate(-95px,18px)','rotate(3deg) translate(50px,-18px)','rotate(-2deg) translate(-50px,42px)','rotate(5deg) translate(90px,30px)','rotate(-1deg) translate(5px,-35px)'];
     el.style.setProperty('--tilt',mTilts[i]);
   }
-  const polName = 'pol-' + (i+1);
   el.innerHTML=`
     <div class="polaroid-stage-label">${p.stage}</div>
-    <div class="polaroid-img-placeholder ${['g1','g2','g3','g4','g5'][i]}" style="position:relative;overflow:hidden;">
-      <img data-photo="${polName}" alt="${p.caption}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;">
-    </div>
+    <div class="polaroid-img-placeholder ${['g1','g2','g3','g4','g5'][i]}" style="font-size:${window.innerWidth<=600?'36px':'46px'}">${p.emoji}</div>
     <div class="polaroid-caption">${p.caption}</div>
   `;
-  // Load photo with extension fallback
-  loadImg(el.querySelector('img[data-photo]'), polName);
   el.addEventListener('click',()=>{
-    const modalImg = document.getElementById('modal-img');
-    modalImg.innerHTML = '';
-    const mImg = document.createElement('img');
-    mImg.style.cssText = 'width:100%;height:100%;object-fit:cover;border-radius:3px;';
-    loadImg(mImg, 'pol-'+(i+1));
-    modalImg.appendChild(mImg);
+    document.getElementById('modal-img').textContent=p.emoji;
+    document.getElementById('modal-img').style.fontSize='64px';
     document.getElementById('modal-caption').textContent=p.caption;
     document.getElementById('polaroid-modal').classList.add('open');
   });
@@ -1326,6 +1308,10 @@ const fadeObs = new IntersectionObserver(entries=>{
 document.querySelectorAll('.fade-up').forEach(el=>fadeObs.observe(el));
 
 
+
+// FAQ stagger
+const faqFadeObs = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('visible'); });
 },{threshold:0.06});
 
 // ── FAQ DATA ──
@@ -1361,7 +1347,6 @@ faqData.forEach((item,i)=>{
 });
 
 
-});
 
 // ── MAIN SCROLL ──
 window.addEventListener('scroll',updatePolaroids,{passive:true});
@@ -1442,6 +1427,17 @@ function copiarPix(chave, card, label){
   });
 }
 
+// ── CARREGADOR DE FOTOS — suporta png, jpeg, jpg automaticamente ──
+function loadImg(el, baseName){
+  const exts = ['png','PNG','jpeg','jpg','JPG','JPEG'];
+  let i = 0;
+  function tryNext(){
+    if(i >= exts.length){ el.style.display='none'; return; }
+    el.src = baseName + '.' + exts[i++];
+    el.onerror = tryNext;
+  }
+  tryNext();
+}
 document.addEventListener('DOMContentLoaded', function(){
   document.querySelectorAll('img[data-photo]').forEach(function(img){
     loadImg(img, img.getAttribute('data-photo'));
