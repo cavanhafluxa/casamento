@@ -1,0 +1,1453 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<title>Alexia & Eliezer — 21.11.2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --cream:#F5F2ED;
+  --white:#FAFAF8;
+  --black:#2f2f2f;
+  --olive-dark:#3D4A2E;
+  --olive-mid:#5C6E42;
+  --olive-light:#8A9E6A;
+  --olive-pale:#DDE6CF;
+  --muted:#7a7a72;
+  --hint:#b5b5aa;
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bot: env(safe-area-inset-bottom, 0px);
+}
+
+html{scroll-behavior:smooth}
+
+body{
+  background:var(--cream);
+  color:var(--black);
+  font-family:'DM Sans',sans-serif;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+  -webkit-tap-highlight-color:transparent;
+}
+
+
+
+/* ── FADE UP ── */
+.fade-up{
+  opacity:0;transform:translateY(24px);
+  transition:opacity .85s cubic-bezier(.25,.46,.45,.94),transform .85s cubic-bezier(.25,.46,.45,.94);
+}
+.fade-up.visible{opacity:1;transform:translateY(0)}
+
+/* ══════════════════════════════════════
+   NAV PILL
+══════════════════════════════════════ */
+#main-nav{
+  position:fixed;top:calc(var(--safe-top) + 14px);left:50%;
+  transform:translateX(-50%) translateY(-90px);
+  z-index:300;
+  background:rgba(245,242,237,.92);
+  backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
+  border:.5px solid rgba(47,47,47,.12);
+  border-radius:999px;
+  padding:9px 10px 9px 20px;
+  display:flex;align-items:center;gap:20px;
+  box-shadow:0 2px 28px rgba(47,47,47,.09);
+  white-space:nowrap;opacity:0;
+  transition:transform .55s cubic-bezier(.34,1.56,.64,1),opacity .45s ease;
+}
+#main-nav.visible{transform:translateX(-50%) translateY(0);opacity:1}
+
+.nav-logo{
+  font-family:'Cormorant Garamond',serif;
+  font-size:16px;font-weight:300;font-style:italic;
+  color:var(--black);letter-spacing:.06em;
+}
+.nav-links{display:flex;align-items:center;gap:18px;list-style:none}
+.nav-links a{
+  font-size:11.5px;letter-spacing:.05em;
+  color:var(--muted);text-decoration:none;
+  transition:color .2s;
+}
+.nav-links a:hover{color:var(--black)}
+.nav-rsvp{
+  background:var(--black)!important;color:var(--white)!important;
+  padding:8px 18px;border-radius:999px;
+  font-size:11px!important;font-weight:500;
+}
+/* mobile nav — hide text links, show only RSVP */
+@media(max-width:520px){
+  .nav-links li:not(:last-child){display:none}
+  #main-nav{gap:14px;padding:8px 8px 8px 16px}
+}
+
+/* ══════════════════════════════════════
+   HERO INTRO
+   300vh scroll space; #hero-fixed stays
+   pinned until animation completes.
+══════════════════════════════════════ */
+#hero-scroll-space{
+  height:220vh;
+  position:relative;
+}
+
+/* Hero sticks to top while scroll-space is in view,
+   then gets pushed up naturally by content below — no line, no fade */
+#hero-fixed{
+  position:sticky;
+  top:0;
+  height:100vh;
+  display:flex;align-items:center;justify-content:center;
+  background:var(--cream);
+  z-index:10;
+}
+
+/* ── HERO MAIN PHOTO ── */
+.hero-photo{
+  position:absolute;
+  border-radius:24px;
+  overflow:hidden;
+  box-shadow:0 32px 100px rgba(47,47,47,.22);
+  will-change:transform,width,height,border-radius;
+  /* JS animates via inline style */
+  /* Desktop start: 88vw × 16/9 */
+  width:88vw;
+  height:80vh;
+}
+.hero-photo-bg{
+  width:100%;height:100%;
+  background:linear-gradient(155deg,var(--olive-pale) 0%,var(--olive-mid) 45%,var(--olive-dark) 100%);
+  display:flex;align-items:center;justify-content:center;
+  position:relative;overflow:hidden;
+}
+.hero-photo-bg img{
+  position:absolute;inset:0;
+  width:100%;height:100%;
+  object-fit:cover;object-position:center 75%;
+  display:block;
+}
+.hero-photo-bg::before{
+  content:'';position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse at 22% 58%,rgba(255,255,255,.13) 0%,transparent 55%),
+    radial-gradient(ellipse at 80% 25%,rgba(47,47,47,.22) 0%,transparent 50%);
+}
+.hero-photo-hint{
+  font-family:'Cormorant Garamond',serif;
+  font-size:14px;font-style:italic;
+  color:rgba(255,255,255,.38);letter-spacing:.12em;
+  text-align:center;line-height:2;z-index:1;
+}
+/* nav inside photo */
+.hero-nav-inside{
+  position:absolute;top:0;left:0;right:0;
+  padding:20px 24px;
+  display:flex;align-items:center;justify-content:space-between;
+  z-index:10;
+  transition:opacity .45s ease;
+}
+.hero-logo-w{
+  font-family:'Cormorant Garamond',serif;
+  font-size:17px;font-weight:300;font-style:italic;
+  color:rgba(255,255,255,.9);letter-spacing:.15em;
+}
+.hero-links-w{display:flex;gap:20px;list-style:none;align-items:center}
+.hero-links-w a{
+  font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+  color:rgba(255,255,255,.78);text-decoration:none;transition:color .2s;
+}
+.hero-links-w a:hover{color:white}
+.hero-rsvp-w{
+  background:rgba(255,255,255,.15)!important;
+  backdrop-filter:blur(12px);
+  border:1px solid rgba(255,255,255,.3)!important;
+  color:white!important;
+  padding:7px 16px;border-radius:999px;font-size:11px!important;
+}
+.hero-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(to bottom,rgba(47,47,47,.06) 0%,transparent 38%,rgba(47,47,47,.54) 100%);
+  display:flex;align-items:flex-end;justify-content:center;
+  padding-bottom:40px;
+  transition:opacity .45s ease;
+}
+.hero-names{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(36px,7vw,88px);
+  font-weight:300;font-style:italic;
+  color:white;letter-spacing:-.01em;line-height:1;
+  text-shadow:0 4px 28px rgba(0,0,0,.24);
+  opacity:0;transform:translateY(24px);
+  animation:fadeUp 1.1s .4s cubic-bezier(.25,.46,.45,.94) forwards;
+}
+@media(max-width:480px){
+  .hero-nav-inside{padding:16px 18px}
+  .hero-links-w li:not(:last-child){display:none}
+}
+
+/* ── SCROLL HINT ── */
+.scroll-hint{
+  position:absolute;bottom:calc(var(--safe-bot) + 28px);
+  left:50%;transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;gap:8px;
+  opacity:0;animation:fadeIn 1s 1.9s forwards;
+  color:var(--hint);font-size:10px;
+  letter-spacing:.18em;text-transform:uppercase;
+  pointer-events:none;transition:opacity .4s ease;
+}
+.scroll-line{width:1px;height:32px;background:var(--olive-light);animation:scrollPulse 2s 2.2s infinite}
+
+/* ══════════════════════════════════════
+   COLLAGE PHOTOS
+   Reference: T&K — large centre dominates,
+   side photos at varied heights overlap it,
+   subtle rotations, deep shadows.
+══════════════════════════════════════ */
+.c-photo{
+  position:absolute;
+  overflow:hidden;
+  box-shadow:0 20px 56px rgba(47,47,47,.18), 0 4px 14px rgba(47,47,47,.1);
+  opacity:0;
+  transform:scale(.72) translateY(16px);
+  transition:opacity .55s cubic-bezier(.25,.46,.45,.94),
+             transform .6s cubic-bezier(.34,1.35,.64,1),
+             box-shadow .3s ease;
+  will-change:transform,opacity;
+}
+.c-photo.popped{opacity:1;transform:scale(1) translateY(0) rotate(var(--rot,0deg))}
+.c-photo:hover{
+  transform:scale(1.04) translateY(-4px) rotate(var(--rot,0deg))!important;
+  box-shadow:0 32px 80px rgba(47,47,47,.25),0 6px 18px rgba(47,47,47,.12);
+  z-index:20;
+}
+
+/* ── DESKTOP: large central hero + 4 side photos ──
+   The hero photo starts full-width then shrinks to
+   the central slot (cp-centre). The 4 side photos
+   appear around it at different heights & rotations. */
+
+/* Central slot: the hero photo morphs to this size/position.
+   We DON'T need a separate div — the .hero-photo IS the centre. */
+
+/* Left column: two photos stacked, slightly overlapping centre */
+#cp-a{
+  width:clamp(155px,14vw,195px);
+  height:clamp(200px,22vh,270px);
+  left:calc(50% - clamp(390px,36vw,480px));
+  top:calc(50% - clamp(190px,19vh,230px));
+  border-radius:18px;
+  --rot:-3.5deg;
+  transition-delay:.05s;
+  z-index:3;
+}
+#cp-b{
+  width:clamp(140px,13vw,175px);
+  height:clamp(155px,17vh,200px);
+  left:calc(50% - clamp(360px,34vw,455px));
+  top:calc(50% + clamp(40px,5vh,65px));
+  border-radius:16px;
+  --rot:2.5deg;
+  transition-delay:.12s;
+  z-index:2;
+}
+
+/* Right column: two photos, taller top one */
+#cp-c{
+  width:clamp(150px,13.5vw,185px);
+  height:clamp(180px,20vh,240px);
+  right:calc(50% - clamp(390px,36vw,480px));
+  top:calc(50% - clamp(175px,18vh,220px));
+  border-radius:18px;
+  --rot:3deg;
+  transition-delay:.18s;
+  z-index:3;
+}
+#cp-d{
+  width:clamp(145px,13vw,180px);
+  height:clamp(145px,16vh,185px);
+  right:calc(50% - clamp(355px,33vw,440px));
+  top:calc(50% + clamp(50px,6vh,80px));
+  border-radius:16px;
+  --rot:-2deg;
+  transition-delay:.25s;
+  z-index:2;
+}
+
+.img-ph{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:26px}
+.g1{background:linear-gradient(135deg,#c8d8b0,#8a9e6a)}
+.g2{background:linear-gradient(135deg,#8a9e6a,#5c6e42)}
+.g3{background:linear-gradient(160deg,#dde6cf,#a8c080)}
+.g4{background:linear-gradient(160deg,#5c6e42,#3d4a2e)}
+.g5{background:linear-gradient(135deg,#b0c890,#7a9050)}
+
+/* ── MOBILE: hero centre + 2 left + 2 right in single column strips ── */
+@media(max-width:600px){
+  /* Left photos */
+  #cp-a{
+    width:calc(42vw - 18px);height:clamp(100px,24vw,145px);
+    left:10px;top:calc(50% - clamp(155px,38vw,190px));
+    border-radius:13px;--rot:-2deg;
+  }
+  #cp-b{
+    width:calc(42vw - 18px);height:clamp(90px,22vw,130px);
+    left:10px;top:calc(50% + clamp(22px,6vw,40px));
+    border-radius:12px;--rot:1.5deg;
+  }
+  /* Right photos */
+  #cp-c{
+    width:calc(42vw - 18px);height:clamp(95px,23vw,135px);
+    right:10px;top:calc(50% - clamp(145px,36vw,180px));
+    border-radius:13px;--rot:2.5deg;
+  }
+  #cp-d{
+    width:calc(42vw - 18px);height:clamp(90px,22vw,125px);
+    right:10px;top:calc(50% + clamp(28px,7vw,50px));
+    border-radius:12px;--rot:-1.5deg;
+  }
+}
+
+/* ══════════════════════════════════════
+   All content sections scroll OVER the
+   fixed hero collage (z-index > 10)
+══════════════════════════════════════ */
+#love-story, #date-section, #venue, #quote,
+#nostalgia, #gifts, #rsvp, #faq, #footer-photo, footer {
+  position: relative;
+  z-index: 20;
+  background: var(--cream);
+}
+#quote, #faq, #gifts { background: var(--white); }
+
+/* ══════════════════════════════════════
+   LOVE STORY — sticky polaroids
+══════════════════════════════════════ */
+#love-story{position:relative}
+
+.love-story-sticky{
+  position:sticky;top:0;
+  height:100vh;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:flex-start;
+  padding-top:14vh;
+  overflow:hidden;
+  background:var(--cream);
+}
+
+.love-story-title{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(60px,9vw,120px);
+  font-weight:700;color:var(--black);
+  letter-spacing:-.025em;line-height:1;
+  margin-bottom:16px;
+  opacity:0;transform:translateY(24px);
+  transition:opacity .8s ease,transform .8s ease;
+  text-align:center;z-index:1;pointer-events:none;
+}
+.love-story-title.visible{opacity:1;transform:translateY(0)}
+.love-story-title em{font-style:italic;color:var(--olive-mid)}
+
+.polaroids-stage{
+  position:absolute;inset:0;
+  display:flex;align-items:center;justify-content:center;
+  pointer-events:none;
+}
+
+.polaroid{
+  position:absolute;
+  background:var(--white);
+  padding:16px 16px 56px;
+  box-shadow:0 18px 56px rgba(47,47,47,.17),0 4px 12px rgba(47,47,47,.09);
+  border-radius:4px;
+  transform:translateY(110px) scale(.82);
+  opacity:0;
+  transition:opacity .6s ease,transform .62s cubic-bezier(.34,1.56,.64,1),box-shadow .3s ease;
+  pointer-events:auto;
+}
+.polaroid.shown{opacity:1;transform:var(--tilt) scale(1)}
+.polaroid:hover{
+  transform:var(--tilt) scale(1.06) translateY(-10px)!important;
+  box-shadow:0 36px 72px rgba(47,47,47,.26),0 8px 20px rgba(47,47,47,.13);
+  z-index:50;
+}
+
+/* Mobile: smaller polaroids */
+@media(max-width:600px){
+  .polaroid{width:160px;padding:9px 9px 36px}
+}
+
+.polaroid-stage-label{
+  font-family:'DM Sans',sans-serif;
+  font-size:9px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--hint);margin-bottom:5px;text-align:center;
+}
+.polaroid-img-placeholder{
+  width:100%;aspect-ratio:1;border-radius:2px;
+  display:flex;align-items:center;justify-content:center;font-size:46px;
+}
+.polaroid-caption{
+  margin-top:10px;
+  font-family:'Cormorant Garamond',serif;
+  font-size:12px;color:var(--muted);
+  text-align:center;font-style:italic;line-height:1.4;
+}
+
+/* Polaroid modal */
+.polaroid-modal{
+  position:fixed;inset:0;
+  background:rgba(47,47,47,.82);
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  z-index:1000;
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;pointer-events:none;
+  transition:opacity .4s ease;
+}
+.polaroid-modal.open{opacity:1;pointer-events:auto}
+.polaroid-modal-inner{
+  background:var(--white);
+  padding:18px 18px 52px;
+  max-width:400px;width:90%;
+  border-radius:6px;
+  box-shadow:0 56px 120px rgba(0,0,0,.42);
+  transform:scale(.82) rotate(-2deg);
+  transition:transform .44s cubic-bezier(.34,1.56,.64,1);
+  position:relative;
+}
+.polaroid-modal.open .polaroid-modal-inner{transform:scale(1) rotate(0deg)}
+.polaroid-modal-img{width:100%;aspect-ratio:1;border-radius:3px;display:flex;align-items:center;justify-content:center}
+.polaroid-modal-caption{
+  margin-top:16px;
+  font-family:'Cormorant Garamond',serif;
+  font-size:14px;font-style:italic;
+  color:var(--muted);text-align:center;line-height:1.5;
+}
+.modal-close{
+  position:absolute;top:12px;right:12px;
+  width:30px;height:30px;
+  background:rgba(47,47,47,.08);border:none;border-radius:50%;
+  font-size:17px;color:var(--muted);
+  display:flex;align-items:center;justify-content:center;
+  transition:background .2s;
+}
+.modal-close:hover{background:rgba(47,47,47,.15)}
+
+/* ══════════════════════════════════════
+   DATE / COUNTDOWN
+══════════════════════════════════════ */
+#date-section{
+  padding:100px 32px;
+  text-align:center;
+  background:var(--cream);
+}
+.date-sub{
+  font-family:'Cormorant Garamond',serif;
+  font-size:22px;font-style:italic;
+  color:var(--muted);margin-bottom:16px;
+}
+.date-main{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(56px,12vw,130px);
+  font-weight:700;color:var(--black);
+  line-height:.95;letter-spacing:-.025em;
+}
+.date-main em{font-style:italic;color:var(--olive-mid)}
+
+.countdown{
+  display:flex;align-items:flex-start;justify-content:center;gap:4px;
+  margin-top:52px;flex-wrap:wrap;
+}
+.countdown-unit{text-align:center;min-width:64px}
+.countdown-num{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(42px,6vw,64px);font-weight:400;
+  color:var(--black);line-height:1;
+}
+.countdown-label{
+  font-size:9px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--hint);margin-top:4px;
+}
+.countdown-sep{
+  font-family:'Playfair Display',serif;
+  font-size:44px;color:var(--olive-light);
+  line-height:1;padding-top:4px;
+}
+
+/* ══════════════════════════════════════
+   VENUE PAINTING
+══════════════════════════════════════ */
+#venue{padding:88px 32px 72px}
+.venue-label{
+  font-size:10px;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--olive-light);text-align:center;margin-bottom:8px;
+}
+.venue-name-title{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(36px,6vw,72px);
+  font-style:italic;font-weight:400;
+  color:var(--black);text-align:center;margin-bottom:36px;
+}
+.venue-painting-wrap{
+  max-width:1100px;margin:0 auto;
+  filter:drop-shadow(0 20px 56px rgba(47,47,47,.17));
+}
+.venue-painting-wrap svg{width:100%;height:auto;display:block}
+
+/* ══════════════════════════════════════
+   SHIMMER QUOTE
+══════════════════════════════════════ */
+#quote{
+  padding:80px 5vw;
+  display:flex;align-items:center;justify-content:center;
+  background:var(--white);
+}
+.quote-text{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(36px,6.5vw,96px);
+  font-style:italic;font-weight:300;
+  text-align:center;line-height:1.3;max-width:95vw;
+  background:linear-gradient(
+    90deg,
+    var(--black) 0%,var(--black) 25%,
+    var(--olive-light) 42%,#d4e8b0 50%,var(--olive-light) 58%,
+    var(--black) 75%,var(--black) 100%
+  );
+  background-size:200% auto;
+  -webkit-background-clip:text;background-clip:text;
+  -webkit-text-fill-color:transparent;
+  animation:shimmerText 4s linear infinite;
+}
+@keyframes shimmerText{
+  0%{background-position:200% center}
+  100%{background-position:-200% center}
+}
+
+/* ══════════════════════════════════════
+   INSTAGRAM GRID
+══════════════════════════════════════ */
+
+
+
+.gallery-eyebrow{
+  font-size:10px;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--olive-light);margin-bottom:8px;
+}
+.gallery-title{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(40px,7vw,80px);
+  font-weight:700;color:var(--black);letter-spacing:-.02em;
+}
+
+.instagram-grid{
+  max-width:960px;margin:0 auto;
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:3px;border-radius:18px;overflow:hidden;
+}
+
+
+
+
+.ig-item:hover .ig-bg, .ig-item:active 
+.ig-overlay{
+  position:absolute;inset:0;
+  background:rgba(61,74,46,.42);
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;transition:opacity .25s ease;
+}
+
+
+
+
+
+
+
+/* ══════════════════════════════════════
+   FAQ
+══════════════════════════════════════ */
+#faq{padding:88px 32px;background:var(--white)}
+.faq-layout{
+  max-width:1200px;margin:0 auto;
+  display:grid;grid-template-columns:280px 1fr;
+  gap:88px;align-items:start;
+}
+@media(max-width:680px){
+  .faq-layout{grid-template-columns:1fr;gap:32px}
+}
+.faq-heading{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(40px,5vw,56px);font-weight:700;
+  color:var(--black);line-height:1.1;
+}
+.faq-sub{font-size:13px;color:var(--muted);margin-top:14px;line-height:1.7}
+.faq-sub a{color:var(--olive-mid);text-decoration:none}
+
+.faq-item{
+  border-top:.5px solid rgba(47,47,47,.1);
+  opacity:0;transform:translateY(12px);
+  transition:opacity .5s ease,transform .5s ease;
+}
+.faq-item:last-child{border-bottom:.5px solid rgba(47,47,47,.1)}
+.faq-item.visible{opacity:1;transform:translateY(0)}
+
+.faq-question{
+  width:100%;background:none;border:none;
+  padding:20px 0;
+  display:flex;align-items:center;justify-content:space-between;gap:14px;
+  font-family:'DM Sans',sans-serif;font-size:16px;
+  color:var(--black);text-align:left;
+  -webkit-appearance:none;
+}
+
+.faq-icon{font-size:18px;color:var(--hint);flex-shrink:0;transition:transform .3s,color .3s}
+.faq-item.open .faq-icon{transform:rotate(45deg);color:var(--olive-mid)}
+.faq-answer{
+  font-size:15px;color:var(--muted);line-height:1.75;
+  max-height:0;overflow:hidden;
+  transition:max-height .4s cubic-bezier(.25,.46,.45,.94),padding .4s ease,opacity .3s ease;
+  opacity:0;
+}
+.faq-item.open .faq-answer{max-height:220px;padding-bottom:18px;opacity:1}
+
+/* ══════════════════════════════════════
+   FOOTER PHOTO + FOOTER
+══════════════════════════════════════ */
+#footer-photo{
+  padding:0 32px 72px;
+  display:flex;align-items:center;justify-content:center;
+}
+.footer-img-wrap{
+  position:relative;
+  width:80vw;max-width:80vw;
+  border-radius:24px;overflow:hidden;
+  aspect-ratio:16/7;
+  box-shadow:0 28px 88px rgba(47,47,47,.2);
+}
+@media(max-width:600px){
+  .footer-img-wrap{aspect-ratio:4/3;border-radius:18px}
+}
+.footer-img-bg{
+  width:100%;height:100%;
+  background:linear-gradient(135deg,var(--olive-dark) 0%,#2a3820 50%,var(--black) 100%);
+}
+.footer-overlay{
+  position:absolute;inset:0;
+  background:rgba(47,47,47,.26);
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  padding:0 32px;text-align:center;
+}
+.footer-quote{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(20px,3.2vw,38px);
+  font-style:italic;font-weight:300;
+  color:white;line-height:1.55;
+  text-shadow:0 2px 18px rgba(0,0,0,.2);
+  max-width:700px;
+}
+.footer-byline{
+  font-size:10px;letter-spacing:.15em;text-transform:uppercase;
+  color:rgba(255,255,255,.4);margin-top:16px;
+}
+
+footer{
+  background:var(--black);
+  padding:56px 32px calc(56px + var(--safe-bot));
+  text-align:center;
+}
+.footer-logo{
+  font-family:'Cormorant Garamond',serif;
+  font-size:34px;font-style:italic;font-weight:300;
+  color:var(--white);letter-spacing:.05em;
+}
+.footer-date-line{
+  font-size:10px;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--olive-light);margin-top:8px;
+}
+.footer-sep{width:1px;height:32px;background:rgba(255,255,255,.1);margin:16px auto}
+
+/* ══════════════════════════════════════
+   ANTES DE NOS ENCONTRAR
+══════════════════════════════════════ */
+#nostalgia{padding:100px 32px;background:var(--cream)}
+.nostalgia-inner{max-width:1200px;margin:0 auto}
+.nostalgia-eyebrow{font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--olive-light);margin-bottom:8px}
+.nostalgia-title{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(44px,7vw,80px);font-weight:700;
+  color:var(--black);letter-spacing:-.02em;margin-bottom:8px;
+}
+.nostalgia-sub{font-family:'Cormorant Garamond',serif;font-size:20px;font-style:italic;color:var(--muted);margin-bottom:56px}
+.nostalgia-sides{display:grid;grid-template-columns:1fr 1fr;gap:48px}
+@media(max-width:600px){.nostalgia-sides{grid-template-columns:1fr;gap:36px}}
+.nostalgia-side-name{
+  font-family:'Cormorant Garamond',serif;
+  font-size:26px;font-style:italic;color:var(--olive-mid);
+  margin-bottom:18px;text-align:center;
+}
+.nostalgia-photos{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.nos-photo{
+  aspect-ratio:1;background:var(--olive-pale);border-radius:12px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:11px;color:var(--hint);letter-spacing:.06em;overflow:hidden;
+}
+.nos-photo:nth-child(1){border-radius:18px 12px 12px 12px}
+.nos-photo:nth-child(4){border-radius:12px 12px 12px 18px}
+
+/* ══════════════════════════════════════
+   LISTA DE PRESENTES
+══════════════════════════════════════ */
+#gifts{padding:100px 32px;background:var(--white)}
+.gifts-inner{max-width:1200px;margin:0 auto}
+.gifts-eyebrow{font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--olive-light);margin-bottom:8px}
+.gifts-title{font-family:'Playfair Display',serif;font-size:clamp(44px,7vw,80px);font-weight:700;color:var(--black);letter-spacing:-.02em;margin-bottom:6px}
+.gifts-sub{font-size:16px;color:var(--muted);margin-bottom:48px;line-height:1.6}
+.gifts-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+@media(max-width:680px){.gifts-grid{grid-template-columns:1fr;gap:12px}}
+.gift-card{
+  background:var(--cream);border:.5px solid rgba(47,47,47,.1);
+  border-radius:22px;padding:40px 30px 34px;
+  position:relative;overflow:hidden;
+  transition:transform .3s ease,box-shadow .3s ease,border-color .3s ease;
+}
+.gift-card:hover{transform:translateY(-4px);box-shadow:0 20px 56px rgba(47,47,47,.1);border-color:var(--olive-light)}
+.gift-clickable{cursor:pointer;}
+.gift-copied .gift-tag{background:var(--olive-dark)!important;color:white!important}
+.gift-card-accent{position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--olive-pale),var(--olive-light));border-radius:20px 20px 0 0}
+.gift-icon{font-size:40px;margin-bottom:20px}
+.gift-name{font-family:'Playfair Display',serif;font-size:26px;font-style:italic;font-weight:400;color:var(--black);margin-bottom:8px}
+.gift-desc{font-size:15px;color:var(--muted);line-height:1.65;margin-bottom:24px}
+.gift-tag{display:inline-block;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--olive-mid);background:var(--olive-pale);padding:4px 12px;border-radius:999px}
+.gift-pix{background:var(--olive-dark);border-color:var(--olive-dark)}
+.gift-pix:hover{border-color:var(--olive-mid)}
+.gift-pix .gift-name,.gift-pix .gift-desc{color:rgba(255,255,255,.9)}
+.gift-pix .gift-tag{background:rgba(255,255,255,.15);color:rgba(255,255,255,.8)}
+.gift-pix .gift-card-accent{background:linear-gradient(90deg,var(--olive-mid),var(--olive-light))}
+
+/* ══════════════════════════════════════
+   RSVP
+══════════════════════════════════════ */
+#rsvp{padding:100px 32px;background:var(--cream)}
+.rsvp-inner{max-width:680px;margin:0 auto}
+.rsvp-eyebrow{font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--olive-light);margin-bottom:8px}
+.rsvp-title{font-family:'Playfair Display',serif;font-size:clamp(44px,7vw,80px);font-weight:700;color:var(--black);letter-spacing:-.02em;margin-bottom:6px}
+.rsvp-deadline{font-size:16px;color:var(--muted);margin-bottom:48px}
+.rsvp-form{display:flex;flex-direction:column;gap:14px}
+.rsvp-field{display:flex;flex-direction:column;gap:6px}
+.rsvp-label{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.rsvp-input{
+  width:100%;padding:14px 18px;
+  border:.5px solid rgba(47,47,47,.18);border-radius:14px;
+  font-family:'DM Sans',sans-serif;font-size:16px;
+  background:var(--white);color:var(--black);outline:none;
+  transition:border-color .25s,box-shadow .25s;-webkit-appearance:none;
+}
+.rsvp-input:focus{border-color:var(--olive-mid);box-shadow:0 0 0 3px rgba(92,110,66,.1)}
+.rsvp-input::placeholder{color:var(--hint)}
+.rsvp-toggle{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.rsvp-opt{
+  padding:16px;border-radius:14px;
+  border:.5px solid rgba(47,47,47,.18);background:var(--white);
+  font-family:'DM Sans',sans-serif;font-size:16px;color:var(--muted);
+  text-align:center;transition:all .25s ease;-webkit-appearance:none;
+}
+.rsvp-opt.active{background:var(--olive-dark);color:var(--white);border-color:var(--olive-dark);box-shadow:0 4px 16px rgba(61,74,46,.2)}
+.rsvp-stepper{
+  display:flex;align-items:center;
+  border:.5px solid rgba(47,47,47,.18);border-radius:14px;overflow:hidden;background:var(--white);
+}
+.stepper-btn{
+  width:48px;height:48px;background:none;border:none;
+  font-size:20px;color:var(--muted);
+  display:flex;align-items:center;justify-content:center;
+  transition:background .2s,color .2s;flex-shrink:0;
+}
+.stepper-btn:hover,.stepper-btn:active{background:var(--olive-pale);color:var(--olive-dark)}
+.stepper-val{flex:1;text-align:center;font-family:'Playfair Display',serif;font-size:20px;color:var(--black)}
+.stepper-sep{width:.5px;height:28px;background:rgba(47,47,47,.1);flex-shrink:0}
+.rsvp-submit{
+  padding:20px;background:var(--black);color:var(--white);
+  border:none;border-radius:14px;
+  font-family:'DM Sans',sans-serif;font-size:16px;font-weight:500;letter-spacing:.05em;
+  transition:background .25s,transform .2s;-webkit-appearance:none;margin-top:4px;
+}
+.rsvp-submit:hover{background:var(--olive-dark);transform:translateY(-1px)}
+.rsvp-submit:active{transform:translateY(0)}
+.rsvp-success{display:none;text-align:center;padding:48px 24px}
+.rsvp-success.show{display:block}
+.rsvp-success-icon{font-size:48px;margin-bottom:20px}
+.rsvp-success-title{font-family:'Playfair Display',serif;font-size:28px;font-style:italic;color:var(--olive-dark);margin-bottom:10px}
+.rsvp-success-text{font-size:14px;color:var(--muted);line-height:1.7}
+
+/* ── KEYFRAMES ── */
+@keyframes fadeUp{to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{to{opacity:1}}
+@keyframes scrollPulse{
+  0%,100%{opacity:.3;transform:scaleY(1)}
+  50%{opacity:1;transform:scaleY(1.1)}
+}
+
+/* ══════════════════════════════════════
+   MOBILE IMPECÁVEL
+══════════════════════════════════════ */
+@media(max-width:600px){
+
+  /* Nav */
+  #main-nav{padding:10px 10px 10px 18px;gap:12px}
+  .nav-logo{font-size:15px}
+
+  /* Hero names */
+  .hero-names{font-size:clamp(38px,11vw,58px)}
+  .hero-overlay{padding-bottom:28px}
+
+  /* Date */
+  #date-section{padding:64px 20px}
+  .date-sub{font-size:16px}
+  .date-main{font-size:clamp(48px,14vw,80px)}
+  .countdown{margin-top:32px;gap:2px}
+  .countdown-unit{min-width:52px}
+  .countdown-num{font-size:clamp(32px,9vw,44px)}
+  .countdown-sep{font-size:28px}
+
+  /* Venue */
+  #venue{padding:56px 16px 44px}
+  .venue-name-title{font-size:clamp(28px,8vw,48px);margin-bottom:24px}
+
+  /* Quote */
+  #quote{padding:64px 24px}
+  .quote-text{font-size:clamp(32px,8.5vw,56px);max-width:100%;line-height:1.35}
+
+  /* Gallery */
+  
+  
+  
+
+  /* Love story */
+  .love-story-sticky{padding-top:12vh}
+  .love-story-title{font-size:clamp(44px,12vw,72px);margin-bottom:12px}
+  .polaroid{width:150px;padding:8px 8px 32px}
+  .polaroid-caption{font-size:11px}
+
+  /* Nostalgia */
+  #nostalgia{padding:64px 16px}
+  .nostalgia-title{font-size:clamp(36px,9vw,56px)}
+  .nostalgia-sub{font-size:15px;margin-bottom:32px}
+  .nostalgia-side-name{font-size:22px}
+  .nostalgia-photos{gap:6px}
+
+  /* Gifts */
+  #gifts{padding:64px 16px}
+  .gifts-title{font-size:clamp(36px,9vw,56px)}
+  .gifts-sub{font-size:14px;margin-bottom:32px}
+  .gifts-grid{grid-template-columns:1fr;gap:12px}
+  .gift-card{padding:28px 20px 24px;border-radius:18px}
+  .gift-icon{font-size:32px;margin-bottom:12px}
+  .gift-name{font-size:20px}
+  .gift-desc{font-size:13px;margin-bottom:16px}
+
+  /* RSVP */
+  #rsvp{padding:64px 16px}
+  .rsvp-inner{max-width:100%}
+  .rsvp-title{font-size:clamp(40px,11vw,64px)}
+  .rsvp-deadline{font-size:14px;margin-bottom:32px}
+  .rsvp-input{padding:14px 16px;font-size:16px}
+  .rsvp-opt{padding:14px;font-size:15px}
+  .stepper-btn{width:44px;height:44px;font-size:18px}
+  .stepper-val{font-size:18px}
+  .rsvp-submit{padding:17px;font-size:16px}
+
+  /* FAQ */
+  #faq{padding:64px 16px}
+  .faq-layout{grid-template-columns:1fr;gap:24px}
+  .faq-heading{font-size:clamp(36px,9vw,52px)}
+  .faq-question{font-size:15px;padding:16px 0}
+  .faq-answer{font-size:14px}
+
+  /* Footer photo */
+  #footer-photo{padding:0 16px 48px}
+  .footer-img-wrap{width:100%;max-width:100%;aspect-ratio:3/2;border-radius:18px}
+  .footer-quote{font-size:clamp(17px,4.5vw,26px)}
+
+  /* Footer */
+  footer{padding:40px 16px calc(40px + var(--safe-bot))}
+  .footer-logo{font-size:26px}
+}
+
+</style>
+</head>
+<body>
+
+<!-- NAV PILL -->
+<nav id="main-nav">
+  <span class="nav-logo">A & E</span>
+  <ul class="nav-links">
+    <li><a href="#love-story">Nossa história</a></li>
+    <li><a href="#gifts">Presentes</a></li>
+    <li><a href="#faq">FAQ</a></li>
+    <li><a href="#rsvp" class="nav-rsvp">Confirmar</a></li>
+  </ul>
+</nav>
+
+<!-- ══ HERO SCROLL SPACE ══ -->
+<div id="hero-scroll-space">
+  <div id="hero-fixed">
+
+    <!-- 4 collage photos — pop in while hero shrinks -->
+    <div class="c-photo" id="cp-a"><img data-photo="col-a" alt="" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
+    <div class="c-photo" id="cp-b"><img data-photo="col-b" alt="" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
+    <div class="c-photo" id="cp-c"><img data-photo="col-c" alt="" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
+    <div class="c-photo" id="cp-d"><img data-photo="col-d" alt="" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
+
+    <!-- Main hero photo — starts big, morphs to collage centre -->
+    <div class="hero-photo" id="hero-photo">
+      <div class="hero-nav-inside" id="hero-nav-inside">
+        <span class="hero-logo-w">A & E</span>
+        <ul class="hero-links-w">
+          <li><a href="#love-story">Nossa história</a></li>
+          <li><a href="#faq">FAQ</a></li>
+          <li><a href="#rsvp" class="hero-rsvp-w">Confirmar</a></li>
+        </ul>
+      </div>
+      <div class="hero-photo-bg">
+        <img data-photo="hero" alt="Alexia &amp; Eliezer">
+        <div class="hero-photo-hint" id="hero-photo-hint" style="display:none">sua foto aqui<br><span style="font-size:12px;opacity:.5;">foto principal dos noivos</span></div>
+      </div>
+      <div class="hero-overlay" id="hero-overlay">
+        <div class="hero-names">Alexia & Eliezer</div>
+      </div>
+    </div>
+
+    <div class="scroll-hint" id="scroll-hint">
+      <span>scroll</span>
+      <div class="scroll-line"></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══ LOVE STORY ══ -->
+<div id="love-story">
+  <div class="love-story-sticky" id="love-sticky">
+    <div class="love-story-title" id="love-title">nossa <em>história</em></div>
+    <div class="polaroids-stage" id="polaroids-stage"></div>
+  </div>
+  <div id="love-scroll-space"></div>
+</div>
+
+<!-- Polaroid modal -->
+<div class="polaroid-modal" id="polaroid-modal">
+  <div class="polaroid-modal-inner">
+    <button class="modal-close" id="modal-close">×</button>
+    <div class="polaroid-modal-img g2" id="modal-img" style="font-size:60px">📸</div>
+    <div class="polaroid-modal-caption" id="modal-caption"></div>
+  </div>
+</div>
+
+<!-- ══ DATE ══ -->
+<section id="date-section" class="fade-up">
+  <div class="date-sub">e por favor nos acompanhe em...</div>
+  <div class="date-main">novembro <em>21,</em> 2026</div>
+  <div class="countdown">
+    <div class="countdown-unit"><div class="countdown-num" id="cd-days">---</div><div class="countdown-label">dias</div></div>
+    <div class="countdown-sep">:</div>
+    <div class="countdown-unit"><div class="countdown-num" id="cd-hours">--</div><div class="countdown-label">horas</div></div>
+    <div class="countdown-sep">:</div>
+    <div class="countdown-unit"><div class="countdown-num" id="cd-mins">--</div><div class="countdown-label">minutos</div></div>
+    <div class="countdown-sep">:</div>
+    <div class="countdown-unit"><div class="countdown-num" id="cd-secs">--</div><div class="countdown-label">segundos</div></div>
+  </div>
+</section>
+
+<!-- ══ VENUE ══ -->
+<section id="venue" class="fade-up">
+  <p class="venue-label">o lugar</p>
+  <h2 class="venue-name-title">Green Space</h2>
+  <div class="venue-painting-wrap">
+    <img data-photo="venue-painting" alt="Green Space" style="width:100%;height:auto;display:block;border-radius:16px;">
+  </div>
+</section>
+
+<!-- ══ QUOTE ══ -->
+<section id="quote" class="fade-up">
+  <p class="quote-text">"você é a minha pessoa favorita<br>para fazer qualquer coisa,<br>pelo resto da minha vida."</p>
+</section>
+
+<!-- ══ ANTES DE NOS ENCONTRAR ══ -->
+<section id="nostalgia" class="fade-up">
+  <div class="nostalgia-inner">
+    <p class="nostalgia-eyebrow"></p>
+    <h2 class="nostalgia-title">Antes de nos encontrar</h2>
+    <p class="nostalgia-sub">dois começos que levaram ao mesmo lugar</p>
+    <div class="nostalgia-sides">
+      <div>
+        <p class="nostalgia-side-name">Alexia</p>
+        <div class="nostalgia-photos">
+          <div class="nos-photo">foto</div>
+          <div class="nos-photo">foto</div>
+          <div class="nos-photo">foto</div>
+          <div class="nos-photo">foto</div>
+        </div>
+      </div>
+      <div>
+        <p class="nostalgia-side-name">Eliezer</p>
+        <div class="nostalgia-photos">
+          <div class="nos-photo">foto</div>
+          <div class="nos-photo">foto</div>
+          <div class="nos-photo">foto</div>
+          <div class="nos-photo">foto</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ LISTA DE PRESENTES ══ -->
+<section id="gifts" class="fade-up">
+  <div class="gifts-inner">
+    <p class="gifts-eyebrow">celebre conosco</p>
+    <h2 class="gifts-title">Lista de presentes</h2>
+    <p class="gifts-sub">Sua presença já é o maior presente. Mas se quiser nos presentear, separamos algumas ideias com muito amor.</p>
+    <div class="gifts-grid">
+
+      <div class="gift-card gift-clickable" onclick="window.open('https://www.havan.com.br/lista-de-casamento','_blank')" title="Ver lista na Havan">
+        <div class="gift-card-accent"></div>
+        <div class="gift-icon">🏠</div>
+        <p class="gift-name">Nossa casa</p>
+        <p class="gift-desc">Itens para o nosso primeiro lar juntos — desde a cozinha até os cantinhos que vamos criar com carinho.</p>
+        <span class="gift-tag">Ver lista na Havan →</span>
+      </div>
+
+      <div class="gift-card gift-clickable" onclick="copiarPix('CHAVE_PIX_AQUI', this, 'R$ 100 — Lua de mel 💚')" title="Copiar chave Pix — valor sugerido R$ 100">
+        <div class="gift-card-accent"></div>
+        <div class="gift-icon">✈️</div>
+        <p class="gift-name">Lua de mel</p>
+        <p class="gift-desc">Contribua para a viagem dos nossos sonhos. Cada centavo vai virar uma memória que vamos guardar para sempre.</p>
+        <span class="gift-tag" id="tag-luamel">Copiar Pix · R$ 100 sugerido</span>
+      </div>
+
+      <div class="gift-card gift-pix gift-clickable" onclick="copiarPix('CHAVE_PIX_AQUI', this, null)" title="Copiar chave Pix">
+        <div class="gift-card-accent"></div>
+        <div class="gift-icon">💚</div>
+        <p class="gift-name">Pix</p>
+        <p class="gift-desc">Prefere dar um valor simbólico? Qualquer gesto vindo do coração é muito bem-vindo.</p>
+        <span class="gift-tag" id="tag-pix">Copiar chave Pix</span>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══ RSVP ══ -->
+<section id="rsvp" class="fade-up">
+  <div class="rsvp-inner">
+    <p class="rsvp-eyebrow">confirmação de presença</p>
+    <h2 class="rsvp-title">Você vai<br>estar lá?</h2>
+    <p class="rsvp-deadline">Confirme até <strong>21 de setembro de 2026</strong></p>
+
+    <div class="rsvp-form" id="rsvp-form">
+      <div class="rsvp-field">
+        <label class="rsvp-label">Nome completo</label>
+        <input class="rsvp-input" id="rsvp-name" type="text" placeholder="Seu nome"/>
+      </div>
+
+      <div class="rsvp-field">
+        <label class="rsvp-label">Email</label>
+        <input class="rsvp-input" id="rsvp-email" type="email" placeholder="seu@email.com"/>
+      </div>
+
+      <div class="rsvp-field">
+        <label class="rsvp-label">Você vai comparecer?</label>
+        <div class="rsvp-toggle">
+          <button class="rsvp-opt active" id="rsvp-yes" type="button">Sim, estarei lá! 🎉</button>
+          <button class="rsvp-opt" id="rsvp-no" type="button">Não conseguirei ir</button>
+        </div>
+      </div>
+
+      <div class="rsvp-field" id="rsvp-guests-field">
+        <label class="rsvp-label">Quantas pessoas virão?</label>
+        <div class="rsvp-stepper">
+          <button class="stepper-btn" id="stepper-minus" type="button">−</button>
+          <div class="stepper-sep"></div>
+          <div class="stepper-val" id="stepper-val">1</div>
+          <div class="stepper-sep"></div>
+          <button class="stepper-btn" id="stepper-plus" type="button">+</button>
+        </div>
+      </div>
+        <div class="rsvp-field">
+        <label class="rsvp-label">Deixe uma mensagem (opcional)</label>
+        <textarea class="rsvp-input" id="rsvp-msg" rows="3" placeholder="Algo que queira nos dizer..." style="resize:none;line-height:1.6"></textarea>
+      </div>
+
+      <button class="rsvp-submit" id="rsvp-submit" type="button">Confirmar presença</button>
+    </div>
+
+    <div class="rsvp-success" id="rsvp-success">
+      <div class="rsvp-success-icon">🤍</div>
+      <p class="rsvp-success-title">Recebemos sua confirmação!</p>
+      <p class="rsvp-success-text">Mal podemos esperar para celebrar com você.<br>Até 21 de novembro de 2026 💚</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══ FAQ ══ -->
+<section id="faq" class="fade-up">
+  <div class="faq-layout">
+    <div>
+      <div class="faq-heading">Perguntas<br>e<br>respostas</div>
+      <div class="faq-sub">Não encontrou a resposta?<br><a href="#">Fale com Alexia ou Eliezer</a></div>
+    </div>
+    <div id="faq-list"></div>
+  </div>
+</section>
+
+<!-- ══ FOOTER PHOTO ══ -->
+<section id="footer-photo" class="fade-up">
+  <div class="footer-img-wrap">
+    <div class="footer-img-bg"></div>
+    <div class="footer-overlay">
+      <div class="footer-quote">"hoje, amanhã, e em todos os dias que vierem — só quero estar com você."</div>
+      <div class="footer-byline">21 de Novembro de 2026 · Green Space · Blumenau</div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p class="footer-logo">Alexia & Eliezer</p>
+  <div class="footer-sep"></div>
+  <p class="footer-date-line">21 · 11 · 2026 · Green Space · Blumenau</p>
+</footer>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+// ── CURSOR (desktop only) ──
+const cursor = document.getElementById('cursor');
+if(cursor){
+  document.addEventListener('mousemove',e=>{
+    cursor.style.left=e.clientX+'px';
+    cursor.style.top=e.clientY+'px';
+  });
+  document.querySelectorAll('a,button,.polaroid,.ig-item,.c-photo,.faq-question').forEach(el=>{
+    el.addEventListener('mouseenter',()=>cursor.classList.add('hovered'));
+    el.addEventListener('mouseleave',()=>cursor.classList.remove('hovered'));
+  });
+}
+
+// ══ HERO SCROLL ANIMATION ══
+// Strategy:
+//   - scroll-space is only 110vh (just enough to shrink the photo)
+//   - scroll progress 0→1 drives ONLY the shrink
+//   - when shrink reaches ~95% done → pop collage photos automatically via setTimeout
+//   - #hero-fixed stays fixed forever, z-index:10
+//   - sections below have z-index:20, so they naturally scroll over the collage
+//   - NOTHING fades, NOTHING disappears, NO position switching
+
+const heroFixed     = document.getElementById('hero-fixed');
+const heroPhoto     = document.getElementById('hero-photo');
+const heroOverlay   = document.getElementById('hero-overlay');
+const heroNavInside = document.getElementById('hero-nav-inside');
+const scrollHint    = document.getElementById('scroll-hint');
+const mainNav       = document.getElementById('main-nav');
+const cPhotos       = [
+  document.getElementById('cp-a'),
+  document.getElementById('cp-b'),
+  document.getElementById('cp-c'),
+  document.getElementById('cp-d'),
+];
+
+function getTargetSize(){
+  const vw = window.innerWidth;
+  const vh = window.innerHeight;
+  if(vw <= 600){
+    return { w: vw * 0.50, h: vh * 0.36 };
+  }
+  const w = Math.min(vw * 0.54, 640);
+  return { w, h: w / (16/9) };
+}
+function getStartSize(){
+  return { w: window.innerWidth * 0.88, h: window.innerHeight * 0.80 };
+}
+
+function lerp(a,b,t){ return a+(b-a)*t; }
+function clamp01(x){ return Math.max(0,Math.min(1,x)); }
+function easeInOut(t){ return t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2; }
+
+let collageTriggered = false;
+
+function popCollage(){
+  // Pop each photo with a staggered delay — automatic, no scroll needed
+  cPhotos.forEach((cp, i) => {
+    setTimeout(() => cp.classList.add('popped'), i * 160);
+  });
+  // Show nav pill after last photo appears
+  setTimeout(() => mainNav.classList.add('visible'), cPhotos.length * 160 + 200);
+  collageTriggered = true;
+}
+
+function updateHero(){
+  const spaceEl = document.getElementById('hero-scroll-space');
+  const spaceTop = spaceEl.offsetTop;
+  const spaceH   = spaceEl.offsetHeight;
+  // Progress is how far we've scrolled within the scroll-space (0→1)
+  const scrolled = window.scrollY - spaceTop;
+  const total    = spaceH - window.innerHeight;
+  const p        = clamp01(scrolled / Math.max(total, 1));
+
+  // Shrink photo from full size → target (0% → 100% of progress)
+  const shrinkP = easeInOut(p);
+  const start   = getStartSize();
+  const target  = getTargetSize();
+  const w  = lerp(start.w,  target.w,  shrinkP);
+  const h  = lerp(start.h,  target.h,  shrinkP);
+  const br = lerp(24, 18, shrinkP);
+
+  heroPhoto.style.width        = w + 'px';
+  heroPhoto.style.height       = h + 'px';
+  heroPhoto.style.borderRadius = br + 'px';
+
+  // Fade names out as photo shrinks
+  const nameFade = clamp01(p / 0.55);
+  heroOverlay.style.opacity    = 1 - nameFade;
+  heroNavInside.style.opacity  = 1 - nameFade;
+  scrollHint.style.opacity     = Math.max(0, 1 - nameFade * 3);
+
+  // When shrink is ~95% done, pop collage automatically (once)
+  if(p >= 0.95 && !collageTriggered){
+    popCollage();
+  }
+  // If user scrolls back up, reset
+  if(p < 0.5 && collageTriggered){
+    collageTriggered = false;
+    cPhotos.forEach(cp => cp.classList.remove('popped'));
+    mainNav.classList.remove('visible');
+  }
+}
+
+window.addEventListener('scroll', updateHero, {passive:true});
+window.addEventListener('resize', updateHero, {passive:true});
+updateHero();
+
+// ══ POLAROIDS ══
+const polaroids = [
+  {emoji:'🌿', caption:'o dia em que tudo começou',      stage:'',  tilt:'rotate(-6deg) translate(-180px,30px)'},
+  {emoji:'✈️', caption:'nossa primeira viagem juntos',  stage:'', tilt:'rotate(4deg)  translate(70px,-25px)'},
+  {emoji:'🌄', caption:'viagem que não esqueceremos.', stage:'', tilt:'rotate(-3deg) translate(-65px,52px)'},
+  {emoji:'🎉', caption:'comemorando cada momento',      stage:'',   tilt:'rotate(7deg)  translate(150px,40px)'},
+  {emoji:'💍', caption:'ela disse sim!! (obviamente)',  stage:'',   tilt:'rotate(-2deg) translate(8px,-42px)'},
+];
+
+const loveSection   = document.getElementById('love-story');
+const loveTitle     = document.getElementById('love-title');
+const scrollSpace   = document.getElementById('love-scroll-space');
+const polaroidsStage= document.getElementById('polaroids-stage');
+
+const STEPS = 0.7;
+scrollSpace.style.height = window.innerHeight * (polaroids.length * STEPS + 1) + 'px';
+
+// ── CARREGADOR DE FOTOS — suporta png, jpeg, jpg automaticamente ──
+function loadImg(el, baseName){
+  const exts = ['png','PNG','jpeg','jpg','JPG','JPEG'];
+  let i = 0;
+  function tryNext(){
+    if(i >= exts.length){ el.style.display='none'; return; }
+    el.src = baseName + '.' + exts[i++];
+    el.onerror = tryNext;
+  }
+  tryNext();
+}
+
+const polEls = polaroids.map((p,i)=>{
+  const el = document.createElement('div');
+  el.className='polaroid';
+  el.style.setProperty('--tilt',p.tilt);
+  el.style.zIndex = i+2;
+  // Mobile: tighter tilts
+  if(window.innerWidth<=600){
+    const mTilts=['rotate(-5deg) translate(-95px,18px)','rotate(3deg) translate(50px,-18px)','rotate(-2deg) translate(-50px,42px)','rotate(5deg) translate(90px,30px)','rotate(-1deg) translate(5px,-35px)'];
+    el.style.setProperty('--tilt',mTilts[i]);
+  }
+  const polName = 'pol-' + (i+1);
+  el.innerHTML=`
+    <div class="polaroid-stage-label">${p.stage}</div>
+    <div class="polaroid-img-placeholder ${['g1','g2','g3','g4','g5'][i]}" style="position:relative;overflow:hidden;">
+      <img data-photo="${polName}" alt="${p.caption}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;">
+    </div>
+    <div class="polaroid-caption">${p.caption}</div>
+  `;
+  // Load photo with extension fallback
+  loadImg(el.querySelector('img[data-photo]'), polName);
+  el.addEventListener('click',()=>{
+    const modalImg = document.getElementById('modal-img');
+    modalImg.innerHTML = '';
+    const mImg = document.createElement('img');
+    mImg.style.cssText = 'width:100%;height:100%;object-fit:cover;border-radius:3px;';
+    loadImg(mImg, 'pol-'+(i+1));
+    modalImg.appendChild(mImg);
+    document.getElementById('modal-caption').textContent=p.caption;
+    document.getElementById('polaroid-modal').classList.add('open');
+  });
+  polaroidsStage.appendChild(el);
+  return el;
+});
+
+document.getElementById('modal-close').addEventListener('click',()=>
+  document.getElementById('polaroid-modal').classList.remove('open'));
+document.getElementById('polaroid-modal').addEventListener('click',e=>{
+  if(e.target===document.getElementById('polaroid-modal'))
+    document.getElementById('polaroid-modal').classList.remove('open');
+});
+
+function updatePolaroids(){
+  const sectionTop = loveSection.offsetTop;
+  const scrolled   = window.scrollY - sectionTop;
+  const stepSize   = window.innerHeight * STEPS;
+  polaroids.forEach((_,i)=>{
+    if(scrolled > stepSize * i) polEls[i].classList.add('shown');
+  });
+  if(scrolled > -window.innerHeight * 0.3) loveTitle.classList.add('visible');
+}
+
+// ══ COUNTDOWN ══
+function tick(){
+  const diff = new Date('2026-11-21T18:00:00') - new Date();
+  if(diff<=0) return;
+  document.getElementById('cd-days').textContent  = String(Math.floor(diff/86400000)).padStart(3,'\u00a0');
+  document.getElementById('cd-hours').textContent = String(Math.floor((diff%86400000)/3600000)).padStart(2,'0');
+  document.getElementById('cd-mins').textContent  = String(Math.floor((diff%3600000)/60000)).padStart(2,'0');
+  document.getElementById('cd-secs').textContent  = String(Math.floor((diff%60000)/1000)).padStart(2,'0');
+}
+tick(); setInterval(tick,1000);
+
+// ══ INTERSECTION OBSERVERS ══
+const fadeObs = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('visible'); });
+},{threshold:0.08});
+document.querySelectorAll('.fade-up').forEach(el=>fadeObs.observe(el));
+
+
+},{threshold:0.06});
+
+// ── FAQ DATA ──
+const faqData=[
+  {q:'Qual é o endereço?',         a:'R. Ewaldo Bauer, 1075 — Vila Itoupava, Blumenau/SC · CEP: 89075-625 · <a href="https://maps.google.com/?q=R.+Ewaldo+Bauer,+1075+Blumenau+SC" target="_blank" style="color:var(--olive-mid)">Ver no mapa →</a>'},
+  {q:'Qual é o dress code?',         a:'Traje social elegante. Verde oliva e tons terrosos são muito bem-vindos! Evite branco puro.'},
+  {q:'O casamento é ao ar livre?',   a:'A cerimônia e parte da festa acontecem no Green Space em Blumenau. Use calçados confortáveis para o gramado.'},
+  {q:'Até quando confirmar presença?',a:'Por favor confirme até 21 de setembro de 2026, para finalizarmos os números com o local.'},
+  {q:'Posso levar acompanhante?',    a:'Indique no formulário quantas pessoas virão com você. Dúvidas, é só nos chamar!'},
+  {q:'Que horas devo chegar?',       a:'A cerimônia começa às 18h. Pedimos que chegue com 30 minutos de antecedência.'},
+  {q:'Há estacionamento?',           a:'Sim, o Green Space possui estacionamento próprio e gratuito para os convidados.'},
+  {q:'Tenho outras dúvidas!',        a:'Fique à vontade para nos chamar por mensagem. Respondemos rapidinho! 💚'},
+];
+const faqList=document.getElementById('faq-list');
+faqData.forEach((item,i)=>{
+  const div=document.createElement('div');
+  div.className='faq-item';
+  div.style.transitionDelay=(i*0.05)+'s';
+  div.innerHTML=`
+    <button class="faq-question">
+      <span>${item.q}</span>
+      <span class="faq-icon">+</span>
+    </button>
+    <div class="faq-answer">${item.a}</div>
+  `;
+  div.querySelector('.faq-question').addEventListener('click',()=>{
+    const wasOpen=div.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(f=>f.classList.remove('open'));
+    if(!wasOpen) div.classList.add('open');
+  });
+  faqList.appendChild(div);
+  faqFadeObs.observe(div);
+});
+
+
+});
+
+// ── MAIN SCROLL ──
+window.addEventListener('scroll',updatePolaroids,{passive:true});
+let guestCount = 1;
+let attending = true;
+
+const rsvpYes = document.getElementById('rsvp-yes');
+const rsvpNo  = document.getElementById('rsvp-no');
+const guestsField = document.getElementById('rsvp-guests-field');
+
+rsvpYes.addEventListener('click', () => {
+  attending = true;
+  rsvpYes.classList.add('active');
+  rsvpNo.classList.remove('active');
+  guestsField.style.display = 'flex';
+});
+rsvpNo.addEventListener('click', () => {
+  attending = false;
+  rsvpNo.classList.add('active');
+  rsvpYes.classList.remove('active');
+  guestsField.style.display = 'none';
+  document.getElementById('rsvp-submit').textContent = 'Comunicar noivos';
+});
+rsvpYes.addEventListener('click', () => {
+  document.getElementById('rsvp-submit').textContent = 'Confirmar presença';
+});
+
+document.getElementById('stepper-minus').addEventListener('click', () => {
+  if(guestCount > 1){ guestCount--; document.getElementById('stepper-val').textContent = guestCount; }
+});
+document.getElementById('stepper-plus').addEventListener('click', () => {
+  if(guestCount < 10){ guestCount++; document.getElementById('stepper-val').textContent = guestCount; }
+});
+
+document.getElementById('rsvp-submit').addEventListener('click', () => {
+  const name  = document.getElementById('rsvp-name').value.trim();
+  const email = document.getElementById('rsvp-email').value.trim();
+  if(!name){ document.getElementById('rsvp-name').focus(); return; }
+  if(!email){ document.getElementById('rsvp-email').focus(); return; }
+  // Hide form, show success
+  document.getElementById('rsvp-form').style.display = 'none';
+  document.getElementById('rsvp-success').classList.add('show');
+});
+
+
+
+// ── NAV ANCHOR CLICKS ──
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+  a.addEventListener('click', e=>{
+    const target = document.querySelector(a.getAttribute('href'));
+    if(!target) return;
+    e.preventDefault();
+    const heroSpace = document.getElementById('hero-scroll-space');
+    const heroEnd   = heroSpace ? heroSpace.offsetTop + heroSpace.offsetHeight : 0;
+    if(window.scrollY < heroEnd){
+      window.scrollTo({ top: heroEnd, behavior: 'smooth' });
+      setTimeout(() => target.scrollIntoView({ behavior: 'smooth', block: 'start' }), 600);
+    } else {
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  });
+});
+
+// ── PRESENTES — ações dos cards ──
+function copiarPix(chave, card, label){
+  navigator.clipboard.writeText(chave).then(function(){
+    card.classList.add('gift-copied');
+    const tag = card.querySelector('.gift-tag');
+    const original = tag.textContent;
+    tag.textContent = '✓ Chave copiada!';
+    setTimeout(function(){
+      tag.textContent = original;
+      card.classList.remove('gift-copied');
+    }, 2500);
+  }).catch(function(){
+    // fallback para browsers sem clipboard API
+    prompt('Copie a chave Pix:', chave);
+  });
+}
+
+document.addEventListener('DOMContentLoaded', function(){
+  document.querySelectorAll('img[data-photo]').forEach(function(img){
+    loadImg(img, img.getAttribute('data-photo'));
+  });
+});
+
+</script>
+</body>
+</html>
