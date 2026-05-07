@@ -738,10 +738,6 @@ footer::before{content:'';position:absolute;top:-40%;left:50%;width:120%;height:
         <div class="rsvp-field" id="rsvp-membros-field"></div>
 
         <div class="rsvp-field">
-          <label class="rsvp-label">Email</label>
-          <input class="rsvp-input" id="rsvp-email" type="email" placeholder="seu@email.com"/>
-        </div>
-        <div class="rsvp-field">
           <label class="rsvp-label">Deixe uma mensagem (opcional)</label>
           <textarea class="rsvp-input" id="rsvp-msg" rows="3" placeholder="Algo que queira nos dizer..." style="resize:none;line-height:1.6"></textarea>
         </div>
@@ -886,11 +882,13 @@ const EMOJIS = {eletrodomestico:'🍳',cozinha:'🥘',quarto:'🛏️',banheiro:
 function getEmoji(cat){ return EMOJIS[cat]||EMOJIS.default; }
 
 // ══════════════════════════════════════
-// BOOT — verifica sessão
 // ══════════════════════════════════════
+// HELPER ADMIN
+// ══════════════════════════════════════
+function checkAdmin(login){ return ['eliezer','alexia 0218'].includes((login||'').toLowerCase().trim()); }
 (function(){
   if(SESSION_LOGIN){
-    IS_ADMIN = ['eliezer','alexia 0218'].includes(SESSION_LOGIN.toLowerCase());
+    IS_ADMIN = checkAdmin(SESSION_LOGIN);
     document.getElementById('login-screen').remove();
     iniciarConvite();
   } else {
@@ -923,7 +921,7 @@ async function fazerLogin(){
 
   // Logins admin — credenciais exatas (case-insensitive no nome, exata no código)
   const ADMINS = ['eliezer', 'alexia 0218'];
-  IS_ADMIN = ADMINS.includes(nomeNorm);
+  IS_ADMIN = checkAdmin(nome);
 
   if(nomeNorm === 'eliezer'){
     membros = ['Eliezer'];
@@ -961,8 +959,8 @@ function iniciarConvite(){
   iniciarHeroScroll();
   iniciarPolaroids();
   iniciarCountdown();
-  iniciarObservers();
-  iniciarFAQ();
+  iniciarFAQ();       // cria os .faq-item primeiro
+  iniciarObservers(); // depois observa eles
   iniciarRSVP();
   carregarImagens();
 }
@@ -1004,35 +1002,40 @@ function switchListaTab(id, btn){
 function iniciarRSVP(){
   const field = document.getElementById('rsvp-membros-field');
   if(SESSION_MEMBROS && SESSION_MEMBROS.length > 1){
-    // Família — checkboxes
     field.innerHTML = `
-      <label class="rsvp-label">Quem vai comparecer?</label>
-      <div class="membros-lista">
-        ${SESSION_MEMBROS.map(m => `
-          <label class="membro-item selecionado" id="membro-${m.replace(/\s/g,'_')}">
-            <input type="checkbox" value="${m}" checked onchange="toggleMembro(this)">
-            <div class="membro-check">✓</div>
-            <span class="membro-nome">${m}</span>
-            <span class="membro-badge">confirmado</span>
-          </label>
-        `).join('')}
+      <div>
+        <label class="rsvp-label" style="margin-bottom:14px;display:block;">Quem vai comparecer?
+          <span style="color:var(--hint);font-size:10px;letter-spacing:.04em;text-transform:none;font-weight:400;margin-left:6px;">desmarque quem não puder ir</span>
+        </label>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          ${SESSION_MEMBROS.map(m => `
+            <label class="membro-item selecionado" style="user-select:none;cursor:pointer;">
+              <input type="checkbox" value="${m}" checked onchange="toggleMembro(this)">
+              <div class="membro-check">✓</div>
+              <div style="flex:1;">
+                <div class="membro-nome">${m}</div>
+              </div>
+              <div style="font-size:11px;color:var(--olive-mid);font-weight:500;letter-spacing:.04em;transition:color .2s;" id="badge-${m.replace(/\s/g,'_')}">✓ vai</div>
+            </label>
+          `).join('')}
+        </div>
       </div>
-      <p style="font-size:12px;color:var(--hint);margin-top:8px;">Desmarque quem não puder comparecer</p>
     `;
   } else {
-    // Individual — nome fixo do login (sem campo editável, sem brecha)
     const nomeFixo = SESSION_MEMBROS ? SESSION_MEMBROS[0] : SESSION_LOGIN;
     field.innerHTML = `
-      <label class="rsvp-label">Confirmação de presença</label>
-      <div class="membros-lista">
-        <label class="membro-item selecionado" id="membro-individual">
-          <input type="checkbox" value="${nomeFixo}" checked onchange="toggleMembroIndividual(this)">
+      <div>
+        <label class="rsvp-label" style="margin-bottom:14px;display:block;">Sua confirmação</label>
+        <label class="membro-item selecionado" style="user-select:none;cursor:pointer;">
+          <input type="checkbox" id="cb-individual" value="${nomeFixo}" checked onchange="toggleMembroIndividual(this)">
           <div class="membro-check">✓</div>
-          <span class="membro-nome">${nomeFixo}</span>
-          <span class="membro-badge" id="badge-individual">confirmado</span>
+          <div style="flex:1;">
+            <div class="membro-nome">${nomeFixo}</div>
+            <div style="font-size:12px;color:var(--muted);margin-top:2px;" id="sub-individual">Estarei presente em 21 · 11 · 2026</div>
+          </div>
+          <div style="font-size:11px;color:var(--olive-mid);font-weight:500;letter-spacing:.04em;" id="badge-individual">✓ confirmado</div>
         </label>
       </div>
-      <p style="font-size:12px;color:var(--hint);margin-top:8px;">Desmarque se não puder comparecer</p>
     `;
   }
 }
@@ -1048,35 +1051,39 @@ function toggleMembroIndividual(checkbox){
   const item = checkbox.closest('.membro-item');
   const check = item.querySelector('.membro-check');
   const badge = document.getElementById('badge-individual');
+  const sub   = document.getElementById('sub-individual');
   if(checkbox.checked){
     item.classList.add('selecionado');
-    check.textContent='✓';
-    if(badge) badge.textContent='confirmado';
+    check.textContent = '✓';
+    if(badge){ badge.textContent='✓ confirmado'; badge.style.color='var(--olive-mid)'; }
+    if(sub) sub.textContent = 'Estarei presente em 21 · 11 · 2026';
   } else {
     item.classList.remove('selecionado');
-    check.textContent='';
-    if(badge) badge.textContent='não vai';
+    check.textContent = '';
+    if(badge){ badge.textContent='✗ não vou'; badge.style.color='var(--hint)'; }
+    if(sub) sub.textContent = 'Não poderei comparecer';
   }
 }
 
 function toggleMembro(checkbox){
-  const item = checkbox.closest('.membro-item');
+  const item  = checkbox.closest('.membro-item');
   const check = item.querySelector('.membro-check');
-  const badge = item.querySelector('.membro-badge');
+  const nome  = checkbox.value.replace(/\s/g,'_');
+  const badge = document.getElementById('badge-'+nome);
   if(checkbox.checked){
     item.classList.add('selecionado');
     check.textContent = '✓';
-    badge.textContent = 'confirmado';
+    if(badge){ badge.textContent='✓ vai'; badge.style.color='var(--olive-mid)'; }
   } else {
     item.classList.remove('selecionado');
     check.textContent = '';
-    badge.textContent = 'não vai';
+    if(badge){ badge.textContent='✗ não vai'; badge.style.color='var(--hint)'; }
   }
+}
 }
 
 async function enviarRSVP(){
   const btn  = document.getElementById('rsvp-submit');
-  const email = document.getElementById('rsvp-email').value.trim();
   const msg   = document.getElementById('rsvp-msg').value.trim();
 
   let payload = {};
@@ -1095,7 +1102,7 @@ async function enviarRSVP(){
     }
     payload = {
       nome: SESSION_LOGIN,
-      email: email || null,
+      email: null,
       login_convidado: SESSION_LOGIN,
       comparecendo: true,
       qtd_pessoas: confirmados.length,
@@ -1110,7 +1117,7 @@ async function enviarRSVP(){
     const vai = cb ? cb.checked : true;
     payload = {
       nome: nomeFixo,
-      email: email || null,
+      email: null,
       login_convidado: SESSION_LOGIN,
       comparecendo: vai,
       qtd_pessoas: vai ? 1 : 0,
@@ -1270,7 +1277,7 @@ function fecharProdutoModal(e,force){
 // ADMIN
 // ══════════════════════════════════════
 async function carregarAdmin(){
-  if(!IS_ADMIN) return;
+  if(!checkAdmin(SESSION_LOGIN)) return;
   const el = document.getElementById('admin-content');
   el.innerHTML='<div class="loading-state">Carregando painel...</div>';
   const [{data:presentes},{data:reservas},{data:confirmados},{data:acessos}] = await Promise.all([
@@ -1586,7 +1593,46 @@ function iniciarFAQ(){
 // SAIR
 // ══════════════════════════════════════
 function sairSessao(){
-  if(!confirm('Deseja sair do convite?')) return;
+  // Modal bonito no lugar do confirm() nativo
+  const overlay = document.createElement('div');
+  overlay.id = 'modal-sair';
+  overlay.style.cssText = 'position:fixed;inset:0;background:rgba(47,47,47,.7);backdrop-filter:blur(14px);z-index:20000;display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;transition:opacity .3s;';
+  overlay.innerHTML = `
+    <div style="
+      background:var(--white);border-radius:24px;
+      padding:40px 36px 32px;max-width:360px;width:100%;
+      text-align:center;
+      transform:translateY(16px) scale(.96);transition:transform .4s cubic-bezier(.34,1.56,.64,1);
+      box-shadow:0 40px 80px rgba(0,0,0,.3);
+    " id="modal-sair-box">
+      <div style="font-size:40px;margin-bottom:16px;">👋</div>
+      <h3 style="font-family:'Playfair Display',serif;font-size:26px;font-style:italic;color:var(--black);margin-bottom:10px;">Até logo!</h3>
+      <p style="font-size:14px;color:var(--muted);line-height:1.7;margin-bottom:28px;">Tem certeza que deseja sair?<br>Precisará fazer login novamente.</p>
+      <div style="display:flex;gap:10px;">
+        <button onclick="confirmarSaida()" style="
+          flex:1;padding:14px;border-radius:12px;border:none;cursor:pointer;
+          background:var(--olive-darkest);color:white;font-family:'DM Sans',sans-serif;
+          font-size:13px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;
+          transition:background .2s,transform .2s;
+        " onmouseover="this.style.background='#3D4A2E'" onmouseout="this.style.background='var(--olive-darkest)'">Sair</button>
+        <button onclick="document.getElementById('modal-sair').remove()" style="
+          flex:1;padding:14px;border-radius:12px;border:.5px solid rgba(47,47,47,.15);cursor:pointer;
+          background:transparent;color:var(--muted);font-family:'DM Sans',sans-serif;
+          font-size:13px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;
+          transition:background .2s;
+        " onmouseover="this.style.background='rgba(47,47,47,.06)'" onmouseout="this.style.background='transparent'">Ficar</button>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(overlay);
+  requestAnimationFrame(()=>{
+    overlay.style.opacity='1';
+    document.getElementById('modal-sair-box').style.transform='translateY(0) scale(1)';
+  });
+  overlay.addEventListener('click', e=>{ if(e.target===overlay) overlay.remove(); });
+}
+
+function confirmarSaida(){
   sessionStorage.removeItem('casamento_login');
   sessionStorage.removeItem('casamento_membros');
   location.reload();
