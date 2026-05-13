@@ -775,20 +775,12 @@ footer::before{content:'';position:absolute;top:-40%;left:50%;width:120%;height:
     <p class="footer-logo">Alexia & Eliezer</p>
     <div class="footer-sep"></div>
     <p class="footer-date-line">21 · 11 · 2026 · Green Space · Blumenau</p>
-    <div style="display:flex;align-items:center;justify-content:center;gap:4px;margin-top:28px;">
-      <button id="btn-footer-admin" onclick="abrirPainelAdmin()" style="
-        display:none;background:none;border:none;cursor:pointer;
-        font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:.12em;
-        color:rgba(255,255,255,.15);transition:color .3s;text-transform:uppercase;
-        padding:6px 12px;border-radius:999px;
-      " onmouseover="this.style.color='rgba(255,255,255,.45)'" onmouseout="this.style.color='rgba(255,255,255,.15)'">admin</button>
-      <button onclick="sairSessao()" style="
-        background:none;border:none;cursor:pointer;
-        font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:.12em;
-        color:rgba(255,255,255,.15);transition:color .3s;text-transform:uppercase;
-        padding:6px 12px;border-radius:999px;
-      " onmouseover="this.style.color='rgba(255,255,255,.45)'" onmouseout="this.style.color='rgba(255,255,255,.15)'">sair</button>
-    </div>
+    <button onclick="sairSessao()" style="
+      margin-top:28px;background:none;border:none;cursor:pointer;
+      font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:.12em;
+      color:rgba(255,255,255,.15);transition:color .3s;text-transform:uppercase;
+      padding:6px 12px;border-radius:999px;
+    " onmouseover="this.style.color='rgba(255,255,255,.45)'" onmouseout="this.style.color='rgba(255,255,255,.15)'">sair</button>
   </footer>
 </div><!-- /page-convite -->
 
@@ -812,7 +804,7 @@ footer::before{content:'';position:absolute;top:-40%;left:50%;width:120%;height:
       <button class="lista-tab-btn active" onclick="switchListaTab('havan',this)">🏪 Lista Havan</button>
       <button class="lista-tab-btn" onclick="switchListaTab('tomio',this)">🏠 Nossa Casa (Tomio)</button>
       <button class="lista-tab-btn" id="btn-admin-tab" style="display:none" onclick="switchListaTab('admin',this)">⚙️ Admin</button>
-      <button class="lista-tab-btn" id="btn-cadastrar-tab" style="display:none" onclick="switchListaTab('cadastrar',this)" style="font-size:18px;padding:10px 20px;">➕ Novo Presente</button>
+      <button class="lista-tab-btn" id="btn-cadastrar-tab" style="display:none" onclick="switchListaTab('cadastrar',this)">➕ Cadastrar Presente</button>
     </div>
 
     <!-- HAVAN -->
@@ -967,36 +959,24 @@ function iniciarConvite(){
   iniciarHeroScroll();
   iniciarPolaroids();
   iniciarCountdown();
-  iniciarFAQ();
-  iniciarObservers();
+  iniciarFAQ();       // cria os .faq-item primeiro
+  iniciarObservers(); // depois observa eles
   iniciarRSVP();
   carregarImagens();
-  // Mostrar botão admin no footer se for admin
-  if(IS_ADMIN){
-    const btnFooterAdmin = document.getElementById('btn-footer-admin');
-    if(btnFooterAdmin) btnFooterAdmin.style.display = 'block';
-  }
 }
 
 // ══════════════════════════════════════
 // NAVEGAÇÃO PÁGINAS
 // ══════════════════════════════════════
 function irParaLista(){
-  // Re-checa admin ao abrir lista (garante que está atualizado)
-  IS_ADMIN = checkAdmin(SESSION_LOGIN);
   document.getElementById('page-convite').style.display = 'none';
   const lista = document.getElementById('page-lista');
   lista.classList.add('ativo');
   window.scrollTo(0,0);
-  document.getElementById('lista-nav-user').textContent = IS_ADMIN ? `👑 ${SESSION_LOGIN}` : `Olá, ${SESSION_LOGIN} 💚`;
-  const btnAdmin = document.getElementById('btn-admin-tab');
-  const btnCad   = document.getElementById('btn-cadastrar-tab');
+  document.getElementById('lista-nav-user').textContent = `Olá, ${SESSION_LOGIN} 💚`;
   if(IS_ADMIN){
-    btnAdmin.style.display = 'block';
-    btnCad.style.display   = 'block';
-  } else {
-    btnAdmin.style.display = 'none';
-    btnCad.style.display   = 'none';
+    document.getElementById('btn-admin-tab').style.display = 'block';
+    document.getElementById('btn-cadastrar-tab').style.display = 'block';
   }
 }
 
@@ -1132,7 +1112,7 @@ async function enviarRSVP(){
   } else {
     // Individual — nome vem do login, sem campo livre
     const nomeFixo = SESSION_MEMBROS ? SESSION_MEMBROS[0] : SESSION_LOGIN;
-    const cb = document.getElementById('cb-individual');
+    const cb = document.querySelector('#membro-individual input[type=checkbox]');
     const vai = cb ? cb.checked : true;
     payload = {
       nome: nomeFixo,
@@ -1187,7 +1167,6 @@ function renderizarPresentes(){
   grid.innerHTML = lista.map((p,i) => `
     <div class="presente-card" onclick="abrirProduto(${p.id})" style="animation:fadeUp .4s ${i*.05}s both;">
       <span class="card-badge ${p.status==='reservado'?'badge-reservado':'badge-disponivel'}">${p.status==='reservado'?'✓ Reservado':'Disponível'}</span>
-      ${IS_ADMIN ? `<button onclick="event.stopPropagation();editarPresenteInline(${p.id})" style="position:absolute;top:10px;left:10px;background:var(--olive-dark);color:white;border:none;border-radius:999px;padding:4px 10px;font-size:10px;cursor:pointer;font-family:'DM Sans',sans-serif;letter-spacing:.04em;z-index:5;">✏️ editar</button>` : ''}
       <div class="card-img-area">${p.imagem_url?`<img src="${p.imagem_url}" alt="${p.nome}">`:`<span>${getEmoji(p.categoria)}</span>`}</div>
       <div class="card-body">
         <div class="card-cat">${p.categoria||'presente'}</div>
@@ -1200,15 +1179,6 @@ function renderizarPresentes(){
       </div>
     </div>
   `).join('');
-}
-
-async function editarPresenteInline(id){
-  // Vai para aba cadastrar com o item carregado
-  irParaLista();
-  switchListaTab('cadastrar', document.getElementById('btn-cadastrar-tab'));
-  const {data} = await sb.from('casamento_listapresentes').select('*').eq('id',id).single();
-  if(data) renderCadastrarForm(data);
-  window.scrollTo(0,0);
 }
 
 function filtrarPresentes(cat,btn){
@@ -1241,14 +1211,7 @@ async function abrirProduto(id){
         <div class="pm-info-card"><div class="pm-info-label">🗺️ Endereço</div><div class="pm-info-val">${p.endereco_loja||'—'}</div></div>
       </div>
       ${p.comparacao_havan?`<div class="pm-comparacao"><strong>💡 Comparando com a Havan:</strong><br>${p.comparacao_havan}</div>`:''}
-      ${reservado&&!minhaReserva? (IS_ADMIN ?
-        `<div style="background:rgba(184,162,107,.15);border-radius:14px;padding:14px 18px;margin-bottom:16px;font-size:14px;color:#8a6d2e;border:.5px solid rgba(184,162,107,.3);">
-          ✓ Reservado por: <strong>${reservas[0].nome_convidado}</strong>
-          ${reservas[0].mensagem?`<br><span style="font-size:12px;opacity:.7;">"${reservas[0].mensagem}"</span>`:''}
-          <br><span style="font-size:11px;opacity:.6;">${new Date(reservas[0].criado_em).toLocaleDateString('pt-BR')}</span>
-         </div>` :
-        `<div style="background:rgba(184,162,107,.15);border-radius:14px;padding:14px 18px;margin-bottom:16px;font-size:14px;color:#8a6d2e;border:.5px solid rgba(184,162,107,.3);">✓ Este presente já foi reservado por alguém especial 💛</div>`)
-      :''}
+      ${reservado&&!minhaReserva?`<div style="background:rgba(184,162,107,.15);border-radius:14px;padding:14px 18px;margin-bottom:16px;font-size:14px;color:#8a6d2e;border:.5px solid rgba(184,162,107,.3);">✓ Este presente já foi reservado por alguém especial 💛</div>`:''}
       <div id="pm-reserva-area">
         ${!reservado ? `
           <div class="pm-reserva-form">
@@ -1482,8 +1445,9 @@ function iniciarParticles(){
 // ══════════════════════════════════════
 // HERO SCROLL
 // ══════════════════════════════════════
-let heroPhoto, heroOverlay, heroNavInside, scrollHint, mainNav, cPhotos;
-let collageTriggered = false;
+const heroPhoto=document.getElementById('hero-photo'),heroOverlay=document.getElementById('hero-overlay'),heroNavInside=document.getElementById('hero-nav-inside'),scrollHint=document.getElementById('scroll-hint'),mainNav=document.getElementById('main-nav');
+const cPhotos=[document.getElementById('cp-a'),document.getElementById('cp-b'),document.getElementById('cp-c'),document.getElementById('cp-d')];
+let collageTriggered=false;
 
 function getTargetSize(){const vw=window.innerWidth,vh=window.innerHeight;if(vw<=600)return{w:vw*.5,h:vh*.36};const w=Math.min(vw*.54,640);return{w,h:w/(16/9)};}
 function getStartSize(){return{w:window.innerWidth*.88,h:window.innerHeight*.80};}
@@ -1491,15 +1455,9 @@ function lerp(a,b,t){return a+(b-a)*t;}
 function clamp01(x){return Math.max(0,Math.min(1,x));}
 function easeInOut(t){return t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2;}
 
-function popCollage(){
-  if(!cPhotos) return;
-  cPhotos.forEach((cp,i)=>{setTimeout(()=>cp&&cp.classList.add('popped'),i*180);});
-  setTimeout(()=>mainNav&&mainNav.classList.add('visible'),cPhotos.length*180+250);
-  collageTriggered=true;
-}
+function popCollage(){cPhotos.forEach((cp,i)=>{setTimeout(()=>cp.classList.add('popped'),i*180);});setTimeout(()=>mainNav.classList.add('visible'),cPhotos.length*180+250);collageTriggered=true;}
 
 function updateHero(){
-  if(!heroPhoto||!heroOverlay||!heroNavInside) return;
   const spaceEl=document.getElementById('hero-scroll-space');if(!spaceEl)return;
   const spaceTop=spaceEl.offsetTop,spaceH=spaceEl.offsetHeight,scrolled=window.scrollY-spaceTop,total=spaceH-window.innerHeight;
   const p=clamp01(scrolled/Math.max(total,1)),shrinkP=easeInOut(p);
@@ -1508,30 +1466,13 @@ function updateHero(){
   heroPhoto.style.height=lerp(start.h,target.h,shrinkP)+'px';
   heroPhoto.style.borderRadius=lerp(24,18,shrinkP)+'px';
   const nameFade=clamp01(p/0.55);
-  heroOverlay.style.opacity=1-nameFade;
-  heroNavInside.style.opacity=1-nameFade;
-  if(scrollHint) scrollHint.style.opacity=Math.max(0,1-nameFade*3);
+  heroOverlay.style.opacity=1-nameFade;heroNavInside.style.opacity=1-nameFade;
+  scrollHint.style.opacity=Math.max(0,1-nameFade*3);
   if(p>=0.95&&!collageTriggered)popCollage();
-  if(p<0.5&&collageTriggered){
-    collageTriggered=false;
-    cPhotos&&cPhotos.forEach(cp=>cp&&cp.classList.remove('popped'));
-    mainNav&&mainNav.classList.remove('visible');
-  }
+  if(p<0.5&&collageTriggered){collageTriggered=false;cPhotos.forEach(cp=>cp.classList.remove('popped'));mainNav.classList.remove('visible');}
 }
 
 function iniciarHeroScroll(){
-  // Inicializa referências DOM aqui, após o DOM existir
-  heroPhoto     = document.getElementById('hero-photo');
-  heroOverlay   = document.getElementById('hero-overlay');
-  heroNavInside = document.getElementById('hero-nav-inside');
-  scrollHint    = document.getElementById('scroll-hint');
-  mainNav       = document.getElementById('main-nav');
-  cPhotos = [
-    document.getElementById('cp-a'),
-    document.getElementById('cp-b'),
-    document.getElementById('cp-c'),
-    document.getElementById('cp-d'),
-  ];
   window.addEventListener('scroll',updateHero,{passive:true});
   window.addEventListener('resize',updateHero,{passive:true});
   updateHero();
@@ -1547,9 +1488,8 @@ const polaroidsData=[
   {emoji:'🎉',caption:'comemorando cada momento',stage:'CAP. IV',tilt:'rotate(7deg) translate(150px,40px)'},
   {emoji:'💍',caption:'ela disse sim!! (obviamente)',stage:'CAP. V',tilt:'rotate(-2deg) translate(8px,-42px)'},
 ];
-// Declaradas dentro de iniciarPolaroids para não acessar DOM antes de existir
-let loveSection, loveTitle, scrollSpace, polaroidsStage;
-const STEPS=0.7; let polEls=[];
+const loveSection=document.getElementById('love-story'),loveTitle=document.getElementById('love-title'),scrollSpace=document.getElementById('love-scroll-space'),polaroidsStage=document.getElementById('polaroids-stage');
+const STEPS=0.7;let polEls=[];
 
 function loadImg(el,baseName){
   const exts=['png','PNG','jpeg','jpg','JPG','JPEG'];let i=0;
@@ -1558,11 +1498,6 @@ function loadImg(el,baseName){
 }
 
 function iniciarPolaroids(){
-  // Inicializa referências DOM aqui
-  loveSection    = document.getElementById('love-story');
-  loveTitle      = document.getElementById('love-title');
-  scrollSpace    = document.getElementById('love-scroll-space');
-  polaroidsStage = document.getElementById('polaroids-stage');
   scrollSpace.style.height=window.innerHeight*(polaroidsData.length*STEPS+1)+'px';
   polEls=polaroidsData.map((p,i)=>{
     const el=document.createElement('div');el.className='polaroid';
@@ -1864,39 +1799,14 @@ function handleDrop(event){
   if(file && file.type.startsWith('image/')) processarImagem(file);
 }
 
-async function processarImagem(file){
+function processarImagem(file){
   if(file.size > 5*1024*1024){ alert('Imagem muito grande! Máximo 5MB.'); return; }
-  
-  // Mostra preview local imediato
   const reader = new FileReader();
-  reader.onload = async (e) => {
-    const base64 = e.target.result;
-    document.getElementById('upload-preview').innerHTML = `<div style="text-align:center"><img src="${base64}" style="max-height:120px;border-radius:8px;margin-bottom:8px;"><br><span style="font-size:12px;color:var(--hint);">Fazendo upload...</span></div>`;
-    document.getElementById('prev-img').innerHTML = `<img src="${base64}" style="width:100%;height:100%;object-fit:cover;display:block;">`;
-    
-    // Upload para Supabase Storage
-    try {
-      const ext = file.name.split('.').pop().toLowerCase() || 'jpg';
-      const fileName = `presente_${Date.now()}.${ext}`;
-      const { data, error } = await sb.storage
-        .from('casamento-presentes')
-        .upload(fileName, file, { cacheControl: '3600', upsert: false, contentType: file.type });
-      
-      if(!error && data){
-        const { data: urlData } = sb.storage.from('casamento-presentes').getPublicUrl(data.path);
-        uploadedImageBase64 = urlData.publicUrl;
-        document.getElementById('cad-img-url').value = urlData.publicUrl;
-        document.getElementById('upload-preview').innerHTML = `<img src="${urlData.publicUrl}" style="max-height:120px;border-radius:8px;margin-bottom:8px;"><br><span style="font-size:12px;color:var(--olive-mid);">✓ Upload concluído</span>`;
-      } else {
-        // Fallback: usar base64 direto (funciona mas é pesado)
-        uploadedImageBase64 = base64;
-        document.getElementById('upload-preview').innerHTML = `<img src="${base64}" style="max-height:120px;border-radius:8px;margin-bottom:8px;"><br><span style="font-size:12px;color:var(--muted)">Clique para trocar</span>`;
-        console.warn('Storage upload falhou, usando base64:', error);
-      }
-    } catch(err) {
-      uploadedImageBase64 = base64;
-      document.getElementById('upload-preview').innerHTML = `<img src="${base64}" style="max-height:120px;border-radius:8px;margin-bottom:8px;"><br><span style="font-size:12px;color:var(--muted)">Clique para trocar</span>`;
-    }
+  reader.onload = (e) => {
+    uploadedImageBase64 = e.target.result;
+    document.getElementById('upload-preview').innerHTML = `<img src="${uploadedImageBase64}" style="max-height:120px;border-radius:8px;margin-bottom:8px;"><br><span style="font-size:12px;color:var(--muted)">Clique para trocar</span>`;
+    document.getElementById('prev-img').innerHTML = `<img src="${uploadedImageBase64}" style="width:100%;height:100%;object-fit:cover;display:block;">`;
+    document.getElementById('cad-img-url').value = '';
   };
   reader.readAsDataURL(file);
 }
@@ -1953,168 +1863,6 @@ async function excluirPresente(id){
   if(!confirm('Excluir este presente? Esta ação não pode ser desfeita.')) return;
   const {error} = await sb.from('casamento_listapresentes').update({ativo:false}).eq('id',id);
   if(!error){ todosPresentes=[]; renderCadastrarForm(); }
-}
-
-// ══════════════════════════════════════
-// PAINEL ADMIN — modal do footer
-// ══════════════════════════════════════
-async function abrirPainelAdmin(){
-  // Cria overlay
-  const ov = document.createElement('div');
-  ov.id = 'painel-admin-overlay';
-  ov.style.cssText = 'position:fixed;inset:0;background:rgba(42,53,32,.85);backdrop-filter:blur(18px);z-index:20000;display:flex;flex-direction:column;overflow:hidden;opacity:0;transition:opacity .35s;';
-  ov.innerHTML = `
-    <div style="display:flex;align-items:center;justify-content:space-between;padding:18px 28px;border-bottom:.5px solid rgba(255,255,255,.1);flex-shrink:0;">
-      <div>
-        <div style="font-family:'Playfair Display',serif;font-size:22px;font-style:italic;color:white;">⚙️ Painel Admin</div>
-        <div style="font-size:11px;color:rgba(255,255,255,.4);margin-top:2px;letter-spacing:.06em;">Apenas Alexia & Eliezer</div>
-      </div>
-      <button onclick="document.getElementById('painel-admin-overlay').remove()" style="background:rgba(255,255,255,.1);border:none;border-radius:50%;width:36px;height:36px;color:white;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s;" onmouseover="this.style.background='rgba(255,255,255,.2)'" onmouseout="this.style.background='rgba(255,255,255,.1)'">×</button>
-    </div>
-    <div style="overflow-y:auto;flex:1;padding:28px;" id="painel-admin-body">
-      <div style="text-align:center;padding:40px;color:rgba(255,255,255,.4);font-family:'Cormorant Garamond',serif;font-size:20px;font-style:italic;">Carregando dados...</div>
-    </div>
-  `;
-  document.body.appendChild(ov);
-  requestAnimationFrame(()=>{ ov.style.opacity='1'; });
-  ov.addEventListener('keydown', e=>{ if(e.key==='Escape') ov.remove(); });
-
-  // Busca dados
-  const [
-    {data:presentes}, {data:reservas}, {data:confirmados}, {data:acessos}
-  ] = await Promise.all([
-    sb.from('casamento_listapresentes').select('*').order('id'),
-    sb.from('casamento_reservas').select('*').order('criado_em',{ascending:false}),
-    sb.from('casamento_listaconfirmados').select('*').order('criado_em',{ascending:false}),
-    sb.from('casamento_acessos').select('*').order('criado_em',{ascending:false})
-  ]);
-
-  const totalPresentes  = presentes?.length || 0;
-  const totalReservados = presentes?.filter(p=>p.status==='reservado').length || 0;
-  const confirmSim      = confirmados?.filter(c=>c.comparecendo) || [];
-  const confirmNao      = confirmados?.filter(c=>!c.comparecendo) || [];
-  const totalPessoas    = confirmSim.reduce((a,c)=>a+(c.qtd_pessoas||1),0);
-  const totalAcessos    = acessos?.length || 0;
-  const taxaConf        = confirmados?.length ? Math.round(confirmSim.length/confirmados.length*100) : 0;
-  const taxaRes         = totalPresentes ? Math.round(totalReservados/totalPresentes*100) : 0;
-
-  // Havan vs Tomio: acessos que foram para lista (heurística: quem entrou)
-  // Constrói HTML
-  const body = document.getElementById('painel-admin-body');
-  body.innerHTML = `
-    <!-- STATS GRID -->
-    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;margin-bottom:28px;">
-      ${[
-        ['👥', totalAcessos, 'Acessos totais'],
-        ['✅', confirmSim.length, 'Confirmações sim'],
-        ['❌', confirmNao.length, 'Não vão'],
-        ['👤', totalPessoas, 'Pessoas confirmadas'],
-        ['🎁', totalPresentes, 'Presentes na lista'],
-        ['💚', totalReservados, 'Reservados'],
-        ['📦', totalPresentes - totalReservados, 'Disponíveis'],
-        ['📊', taxaConf+'%', 'Taxa de confirmação'],
-        ['🎯', taxaRes+'%', 'Lista reservada'],
-      ].map(([icon,val,label])=>`
-        <div style="background:rgba(255,255,255,.08);border-radius:16px;padding:18px;border:.5px solid rgba(255,255,255,.1);">
-          <div style="font-size:22px;margin-bottom:6px;">${icon}</div>
-          <div style="font-family:'Playfair Display',serif;font-size:28px;color:white;line-height:1;">${val}</div>
-          <div style="font-size:11px;color:rgba(255,255,255,.45);margin-top:4px;">${label}</div>
-        </div>
-      `).join('')}
-    </div>
-
-    <!-- BARRAS DE PROGRESSO -->
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:28px;">
-      <div style="background:rgba(255,255,255,.06);border-radius:16px;padding:20px;border:.5px solid rgba(255,255,255,.1);">
-        <div style="font-size:12px;color:rgba(255,255,255,.5);margin-bottom:10px;letter-spacing:.06em;">CONFIRMAÇÕES</div>
-        <div style="background:rgba(255,255,255,.1);border-radius:999px;height:8px;overflow:hidden;">
-          <div style="height:100%;width:${taxaConf}%;background:linear-gradient(90deg,#8A9E6A,#5C6E42);border-radius:999px;transition:width 1s ease;"></div>
-        </div>
-        <div style="display:flex;justify-content:space-between;margin-top:8px;">
-          <span style="font-size:12px;color:#8A9E6A;">✓ ${confirmSim.length} vão</span>
-          <span style="font-size:12px;color:rgba(255,255,255,.35);">✗ ${confirmNao.length} não vão</span>
-        </div>
-      </div>
-      <div style="background:rgba(255,255,255,.06);border-radius:16px;padding:20px;border:.5px solid rgba(255,255,255,.1);">
-        <div style="font-size:12px;color:rgba(255,255,255,.5);margin-bottom:10px;letter-spacing:.06em;">LISTA DE PRESENTES</div>
-        <div style="background:rgba(255,255,255,.1);border-radius:999px;height:8px;overflow:hidden;">
-          <div style="height:100%;width:${taxaRes}%;background:linear-gradient(90deg,#B8A26B,#8a6d2e);border-radius:999px;transition:width 1s ease;"></div>
-        </div>
-        <div style="display:flex;justify-content:space-between;margin-top:8px;">
-          <span style="font-size:12px;color:#B8A26B;">💚 ${totalReservados} reservados</span>
-          <span style="font-size:12px;color:rgba(255,255,255,.35);">📦 ${totalPresentes-totalReservados} restam</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- CONFIRMADOS -->
-    <div style="background:rgba(255,255,255,.05);border-radius:16px;overflow:hidden;margin-bottom:20px;border:.5px solid rgba(255,255,255,.08);">
-      <div style="padding:16px 20px;border-bottom:.5px solid rgba(255,255,255,.08);font-size:13px;font-weight:600;color:white;letter-spacing:.04em;">💌 CONFIRMAÇÕES DE PRESENÇA</div>
-      <div style="overflow-x:auto;">
-        <table style="width:100%;border-collapse:collapse;">
-          <thead><tr>
-            ${['Login','Vão','Não vão','Mensagem','Data'].map(h=>`<th style="padding:10px 16px;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.35);text-align:left;border-bottom:.5px solid rgba(255,255,255,.06);white-space:nowrap;">${h}</th>`).join('')}
-          </tr></thead>
-          <tbody>
-            ${(confirmados||[]).length === 0 ? `<tr><td colspan="5" style="text-align:center;padding:20px;color:rgba(255,255,255,.25);font-style:italic;">Nenhuma confirmação ainda</td></tr>` :
-            (confirmados||[]).map(c=>`<tr style="border-bottom:.5px solid rgba(255,255,255,.04);">
-              <td style="padding:12px 16px;color:white;font-size:13px;"><strong>${c.nome||c.login_convidado}</strong></td>
-              <td style="padding:12px 16px;font-size:12px;color:#8A9E6A;">${c.membros_confirmados?.length ? c.membros_confirmados.join(', ') : (c.comparecendo?'✅':'—')}</td>
-              <td style="padding:12px 16px;font-size:12px;color:rgba(255,255,255,.35);">${c.membros_nao_vao?.length ? c.membros_nao_vao.join(', ') : '—'}</td>
-              <td style="padding:12px 16px;font-size:12px;color:rgba(255,255,255,.4);max-width:180px;">${c.mensagem||'—'}</td>
-              <td style="padding:12px 16px;font-size:11px;color:rgba(255,255,255,.25);white-space:nowrap;">${new Date(c.criado_em).toLocaleDateString('pt-BR')}</td>
-            </tr>`).join('')}
-          </tbody>
-        </table>
-      </div>
-    </div>
-
-    <!-- RESERVAS -->
-    <div style="background:rgba(255,255,255,.05);border-radius:16px;overflow:hidden;margin-bottom:20px;border:.5px solid rgba(255,255,255,.08);">
-      <div style="padding:16px 20px;border-bottom:.5px solid rgba(255,255,255,.08);font-size:13px;font-weight:600;color:white;letter-spacing:.04em;">🎁 RESERVAS DE PRESENTES</div>
-      <div style="overflow-x:auto;">
-        <table style="width:100%;border-collapse:collapse;">
-          <thead><tr>
-            ${['Presente','Preço','Reservado por','Mensagem','Status','Data'].map(h=>`<th style="padding:10px 16px;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.35);text-align:left;border-bottom:.5px solid rgba(255,255,255,.06);white-space:nowrap;">${h}</th>`).join('')}
-          </tr></thead>
-          <tbody>
-            ${(reservas||[]).length === 0 ? `<tr><td colspan="6" style="text-align:center;padding:20px;color:rgba(255,255,255,.25);font-style:italic;">Nenhuma reserva ainda</td></tr>` :
-            (reservas||[]).map(r=>{ const p=presentes?.find(x=>x.id===r.presente_id); return`<tr style="border-bottom:.5px solid rgba(255,255,255,.04);">
-              <td style="padding:12px 16px;color:white;font-size:13px;"><strong>${p?.nome||'—'}</strong></td>
-              <td style="padding:12px 16px;font-size:12px;color:#B8A26B;">R$ ${p?parseFloat(p.preco).toFixed(2).replace('.',','):'—'}</td>
-              <td style="padding:12px 16px;font-size:13px;color:rgba(255,255,255,.8);">${r.nome_convidado}</td>
-              <td style="padding:12px 16px;font-size:12px;color:rgba(255,255,255,.4);max-width:160px;">${r.mensagem||'—'}</td>
-              <td style="padding:12px 16px;"><span style="padding:3px 9px;border-radius:999px;font-size:10px;font-weight:600;background:${r.status==='ativa'?'rgba(138,158,106,.25)':'rgba(255,255,255,.08)'};color:${r.status==='ativa'?'#8A9E6A':'rgba(255,255,255,.3)'};">${r.status}</span></td>
-              <td style="padding:12px 16px;font-size:11px;color:rgba(255,255,255,.25);white-space:nowrap;">${new Date(r.criado_em).toLocaleDateString('pt-BR')}</td>
-            </tr>`}).join('')}
-          </tbody>
-        </table>
-      </div>
-    </div>
-
-    <!-- ACESSOS -->
-    <div style="background:rgba(255,255,255,.05);border-radius:16px;overflow:hidden;border:.5px solid rgba(255,255,255,.08);">
-      <div style="padding:16px 20px;border-bottom:.5px solid rgba(255,255,255,.08);font-size:13px;font-weight:600;color:white;letter-spacing:.04em;">🔑 ÚLTIMOS ACESSOS</div>
-      <div style="overflow-x:auto;">
-        <table style="width:100%;border-collapse:collapse;">
-          <thead><tr>
-            ${['Login','Data / Hora'].map(h=>`<th style="padding:10px 16px;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.35);text-align:left;border-bottom:.5px solid rgba(255,255,255,.06);">${h}</th>`).join('')}
-          </tr></thead>
-          <tbody>
-            ${(acessos||[]).slice(0,20).map(a=>`<tr style="border-bottom:.5px solid rgba(255,255,255,.04);">
-              <td style="padding:11px 16px;color:rgba(255,255,255,.75);font-size:13px;">${a.login_usado}</td>
-              <td style="padding:11px 16px;font-size:11px;color:rgba(255,255,255,.3);">${new Date(a.criado_em).toLocaleString('pt-BR')}</td>
-            </tr>`).join('') || `<tr><td colspan="2" style="text-align:center;padding:20px;color:rgba(255,255,255,.25);font-style:italic;">Nenhum acesso ainda</td></tr>`}
-          </tbody>
-        </table>
-      </div>
-    </div>
-  `;
-}
-
-function fecharPainelAdmin(){
-  const el = document.getElementById('painel-admin-overlay');
-  if(el) el.remove();
 }
 
 function carregarImagens(){
