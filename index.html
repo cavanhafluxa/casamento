@@ -1241,21 +1241,22 @@ async function carregarAdmin(){
     { data: reservas },
     { data: confirmados },
     { data: acessos },
-    { data: havan_clicks }
+    havan_result
   ] = await Promise.all([
     sb.from('casamento_listapresentes').select('*').order('id'),
     sb.from('casamento_reservas').select('*').order('criado_em', { ascending: false }),
     sb.from('casamento_listaconfirmados').select('*').order('criado_em', { ascending: false }),
     sb.from('casamento_acessos').select('*').order('criado_em', { ascending: false }).limit(50),
     sb.from('casamento_havan_clicks').select('*').order('criado_em', { ascending: false })
-      .catch(() => ({ data: [] })) // tabela pode não existir ainda
   ]);
+
+  const havan_clicks = havan_result?.data || [];
 
   const presLista      = presentes || [];
   const resLista       = reservas || [];
   const confLista      = confirmados || [];
   const acessosLista   = acessos || [];
-  const havanLista     = havan_clicks || [];
+  const havanLista     = (havan_clicks || []).filter(Boolean);
 
   // Calcular estatísticas
   const reservados     = presLista.filter(p => p.status === 'reservado').length;
