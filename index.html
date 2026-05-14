@@ -68,7 +68,7 @@ body::before{content:'';position:fixed;inset:-50%;background-image:url("data:ima
 /* ══════════════════════════════════════ FLOATING LEAVES ══════════════════════════════════════ */
 .floating-leaves{position:fixed;inset:0;pointer-events:none;z-index:1;overflow:hidden;}
 .float-leaf{position:absolute;font-size:24px;opacity:0;color:var(--olive-light);animation:leafFall linear infinite;filter:blur(.3px);user-select:none;}
-@keyframes leafFall{0%{transform:translateY(-10vh) translateX(0) rotate(0deg);opacity:0;}10%{opacity:.35}50%{transform:translateY(50vh) translateX(40px) rotate(180deg);opacity:.5;}90%{opacity:.3}100%{transform:translateY(110vh) translateX(-30px) rotate(360deg);opacity:0;}}
+@keyframes leafFall{0%,100%{transform:translateY(-10vh) translateX(0) rotate(0deg);opacity:0;}10%{opacity:.35}50%{transform:translateY(50vh) translateX(40px) rotate(180deg);opacity:.5;}90%{opacity:.3}100%{transform:translateY(110vh) translateX(-30px) rotate(360deg);opacity:0;}}
 .fade-up{opacity:0;transform:translateY(28px);transition:opacity 1s cubic-bezier(.25,.46,.45,.94),transform 1s cubic-bezier(.25,.46,.45,.94);}
 .fade-up.visible{opacity:1;transform:translateY(0)}
 
@@ -306,40 +306,19 @@ body::before{content:'';position:fixed;inset:-50%;background-image:url("data:ima
 .rsvp-input{width:100%;padding:16px 20px;border:.5px solid rgba(47,47,47,.18);border-radius:14px;font-family:'DM Sans',sans-serif;font-size:16px;background:var(--white);color:var(--black);outline:none;transition:border-color .3s,box-shadow .3s,transform .2s;-webkit-appearance:none;}
 .rsvp-input:focus{border-color:var(--olive-mid);box-shadow:0 0 0 4px rgba(92,110,66,.12);transform:translateY(-1px);}
 .rsvp-input::placeholder{color:var(--hint)}
-
-/* Membros checkboxes */
 .membros-lista{display:flex;flex-direction:column;gap:10px;padding:6px 0;}
-.membro-item{
-  display:flex;align-items:center;gap:14px;
-  padding:14px 18px;border-radius:14px;
-  border:.5px solid rgba(47,47,47,.12);background:var(--white);
-  cursor:pointer;transition:all .25s;position:relative;overflow:hidden;
-}
+.membro-item{display:flex;align-items:center;gap:14px;padding:14px 18px;border-radius:14px;border:.5px solid rgba(47,47,47,.12);background:var(--white);cursor:pointer;transition:all .25s;position:relative;overflow:hidden;}
 .membro-item:hover{border-color:var(--olive-light);background:var(--olive-paler);}
 .membro-item.selecionado{border-color:var(--olive-mid);background:rgba(221,230,207,.35);}
 .membro-item input[type=checkbox]{display:none;}
-.membro-check{
-  width:22px;height:22px;border-radius:6px;border:.5px solid rgba(47,47,47,.2);
-  background:white;display:flex;align-items:center;justify-content:center;
-  flex-shrink:0;transition:all .25s;font-size:13px;
-}
+.membro-check{width:22px;height:22px;border-radius:6px;border:.5px solid rgba(47,47,47,.2);background:white;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .25s;font-size:13px;}
 .membro-item.selecionado .membro-check{background:var(--olive-mid);border-color:var(--olive-mid);color:white;}
 .membro-nome{font-size:15px;color:var(--black);font-weight:500;flex:1;}
-.membro-badge{font-size:10px;color:var(--muted);letter-spacing:.06em;}
-
-.rsvp-toggle{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.rsvp-opt{padding:18px;border-radius:14px;border:.5px solid rgba(47,47,47,.18);background:var(--white);font-family:'DM Sans',sans-serif;font-size:16px;color:var(--muted);text-align:center;transition:all .3s cubic-bezier(.25,.46,.45,.94);-webkit-appearance:none;cursor:pointer;position:relative;overflow:hidden;}
-.rsvp-opt::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,var(--olive-mid),var(--olive-dark));opacity:0;transition:opacity .3s ease;}
-.rsvp-opt span{position:relative;z-index:1}
-.rsvp-opt.active{color:var(--white);border-color:var(--olive-dark);box-shadow:0 8px 24px rgba(61,74,46,.22);transform:translateY(-1px);}
-.rsvp-opt.active::before{opacity:1}
-
 .rsvp-submit{padding:22px;background:var(--olive-darkest);color:var(--cream);border:none;border-radius:14px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;letter-spacing:.14em;transition:background .3s,transform .25s,box-shadow .3s;-webkit-appearance:none;margin-top:6px;cursor:pointer;text-transform:uppercase;position:relative;overflow:hidden;box-shadow:0 8px 24px rgba(42,53,32,.2);}
 .rsvp-submit::before{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.15),transparent);transform:translateX(-100%);transition:transform .7s ease;}
 .rsvp-submit:hover{background:var(--olive-dark);transform:translateY(-2px);box-shadow:0 12px 32px rgba(42,53,32,.28);}
 .rsvp-submit:hover::before{transform:translateX(100%)}
 .rsvp-submit:disabled{opacity:.6;cursor:not-allowed;transform:none;}
-
 .rsvp-success{display:none;text-align:center;padding:56px 24px;animation:successFade .8s ease}
 .rsvp-success.show{display:block}
 @keyframes successFade{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
@@ -396,8 +375,8 @@ footer::before{content:'';position:absolute;top:-40%;left:50%;width:120%;height:
 .lista-banner-title{font-family:'Playfair Display',serif;font-size:clamp(36px,6vw,72px);font-weight:400;font-style:italic;color:white;line-height:1.1;position:relative;}
 .lista-banner-sub{font-family:'Cormorant Garamond',serif;font-size:18px;font-style:italic;color:rgba(255,255,255,.55);margin-top:10px;position:relative;}
 .lista-content{max-width:1200px;margin:0 auto;padding:0 32px;}
-.lista-tab-bar{display:flex;gap:0;border-bottom:.5px solid rgba(47,47,47,.12);margin-top:40px;}
-.lista-tab-btn{padding:14px 28px;font-size:13px;letter-spacing:.04em;color:var(--muted);background:none;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;border-bottom:2px solid transparent;transition:all .25s;margin-bottom:-1px;}
+.lista-tab-bar{display:flex;gap:0;border-bottom:.5px solid rgba(47,47,47,.12);margin-top:40px;overflow-x:auto;}
+.lista-tab-btn{padding:14px 28px;font-size:13px;letter-spacing:.04em;color:var(--muted);background:none;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;border-bottom:2px solid transparent;transition:all .25s;margin-bottom:-1px;white-space:nowrap;}
 .lista-tab-btn.active{color:var(--olive-dark);border-bottom-color:var(--olive-dark);font-weight:600;}
 .lista-tab-btn:hover:not(.active){color:var(--black);}
 .lista-tab-panel{display:none;padding:40px 0 80px;}
@@ -470,24 +449,43 @@ footer::before{content:'';position:absolute;top:-40%;left:50%;width:120%;height:
 .pm-btn-cancel{background:rgba(220,80,60,.1);color:#c04030;}
 .pm-btn-cancel:hover{background:rgba(220,80,60,.2);}
 
-/* ADMIN */
+/* ══════════════════════════════════════ ADMIN ══════════════════════════════════════ */
 .admin-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:14px;margin-bottom:36px;}
-.admin-stat{background:var(--white);border-radius:16px;padding:20px;border:.5px solid rgba(47,47,47,.08);}
+.admin-stat{background:var(--white);border-radius:16px;padding:20px;border:.5px solid rgba(47,47,47,.08);transition:transform .2s,box-shadow .2s;}
+.admin-stat:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(47,47,47,.08);}
 .admin-stat-val{font-family:'Playfair Display',serif;font-size:36px;font-weight:400;color:var(--black);}
 .admin-stat-label{font-size:12px;color:var(--muted);margin-top:4px;}
+.admin-stat-sub{font-size:11px;color:var(--hint);margin-top:2px;}
 .admin-table-wrap{background:var(--white);border-radius:20px;overflow:hidden;border:.5px solid rgba(47,47,47,.08);margin-bottom:28px;}
-.admin-table-title{padding:18px 24px;border-bottom:.5px solid rgba(47,47,47,.08);font-family:'Playfair Display',serif;font-size:20px;font-style:italic;color:var(--black);}
+.admin-table-title{padding:18px 24px 14px;border-bottom:.5px solid rgba(47,47,47,.08);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;}
+.admin-table-title-text{font-family:'Playfair Display',serif;font-size:20px;font-style:italic;color:var(--black);}
+.admin-table-title-badge{font-size:11px;color:var(--olive-mid);background:var(--olive-pale);padding:4px 10px;border-radius:999px;font-weight:500;}
 .admin-table{width:100%;border-collapse:collapse;}
 .admin-table th{padding:11px 14px;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--hint);text-align:left;border-bottom:.5px solid rgba(47,47,47,.08);font-weight:500;}
-.admin-table td{padding:13px 14px;font-size:13px;color:var(--black);border-bottom:.5px solid rgba(47,47,47,.04);}
+.admin-table td{padding:13px 14px;font-size:13px;color:var(--black);border-bottom:.5px solid rgba(47,47,47,.04);vertical-align:middle;}
 .admin-table tr:last-child td{border-bottom:none;}
+.admin-table tbody tr:hover td{background:rgba(221,230,207,.15);}
 .status-pill{display:inline-block;padding:3px 9px;border-radius:999px;font-size:10px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;}
 .status-disponivel,.status-ativa{background:rgba(92,110,66,.12);color:var(--olive-mid);}
 .status-reservado{background:rgba(184,162,107,.2);color:#8a6d2e;}
 .status-cancelada{background:rgba(47,47,47,.08);color:var(--hint);}
-
-/* LOADING */
+.status-falta{background:rgba(220,80,60,.1);color:#c04030;}
 .loading-state{text-align:center;padding:60px 20px;color:var(--hint);font-style:italic;font-family:'Cormorant Garamond',serif;font-size:20px;}
+
+/* Admin sections */
+.admin-section-title{font-family:'Playfair Display',serif;font-size:26px;font-style:italic;color:var(--black);margin:40px 0 16px;padding-bottom:10px;border-bottom:.5px solid rgba(47,47,47,.1);}
+.admin-section-title:first-of-type{margin-top:0;}
+.progress-bar-wrap{background:rgba(47,47,47,.06);border-radius:999px;height:8px;overflow:hidden;margin-top:6px;}
+.progress-bar{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--olive-mid),var(--olive-light));transition:width .8s cubic-bezier(.25,.46,.45,.94);}
+.admin-havan-click-row{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:.5px solid rgba(47,47,47,.04);}
+.admin-havan-click-row:last-child{border-bottom:none;}
+.admin-empty{text-align:center;padding:28px;font-family:'Cormorant Garamond',serif;font-size:17px;font-style:italic;color:var(--hint);}
+
+/* Falta confirmar */
+.falta-list{display:flex;flex-direction:column;gap:8px;}
+.falta-item{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 16px;background:var(--white);border-radius:12px;border:.5px solid rgba(47,47,47,.06);}
+.falta-nome{font-size:14px;color:var(--black);font-weight:500;}
+.falta-badge{font-size:10px;color:#c04030;background:rgba(220,80,60,.08);padding:3px 9px;border-radius:999px;letter-spacing:.04em;}
 
 @keyframes fadeUp{to{opacity:1;transform:translateY(0)}}
 @keyframes fadeIn{to{opacity:1}}
@@ -512,6 +510,7 @@ footer::before{content:'';position:absolute;top:-40%;left:50%;width:120%;height:
   .lista-nav{padding:0 16px}.lista-content{padding:0 16px}
   .havan-card{padding:28px 20px;flex-direction:column}.pm-info-grid{grid-template-columns:1fr}
   .presentes-grid{grid-template-columns:1fr 1fr;gap:12px}
+  .admin-grid{grid-template-columns:1fr 1fr;}
 }
 @media(prefers-reduced-motion:reduce){*{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.15ms !important}}
 </style>
@@ -733,10 +732,7 @@ footer::before{content:'';position:absolute;top:-40%;left:50%;width:120%;height:
       <h2 class="rsvp-title">Você vai<br>estar <em>lá?</em></h2>
       <p class="rsvp-deadline">Confirme até <strong>21 de setembro de 2026</strong></p>
       <div class="rsvp-form" id="rsvp-form">
-
-        <!-- membros ou nome individual — preenchido via JS -->
         <div class="rsvp-field" id="rsvp-membros-field"></div>
-
         <div class="rsvp-field">
           <label class="rsvp-label">Deixe uma mensagem (opcional)</label>
           <textarea class="rsvp-input" id="rsvp-msg" rows="3" placeholder="Algo que queira nos dizer..." style="resize:none;line-height:1.6"></textarea>
@@ -815,7 +811,7 @@ footer::before{content:'';position:absolute;top:-40%;left:50%;width:120%;height:
           <p>Selecionamos itens para o nosso primeiro lar com muito carinho. Você encontra tudo na lista oficial da Havan, com entrega para todo o Brasil!</p>
           <div class="havan-note">💡 A Havan oferece compra online, parcelamento e entrega em casa. Clique para acessar nossa lista completa.</div>
         </div>
-        <a href="https://www.havan.com.br/lista-de-casamento" target="_blank" class="havan-btn">
+        <a id="havan-link-btn" href="https://www.havan.com.br/lista-de-casamento" target="_blank" class="havan-btn" onclick="registrarCliqueHavan()">
           Ver lista na Havan
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </a>
@@ -880,12 +876,11 @@ let presenteSelecionado = null;
 
 const EMOJIS = {eletrodomestico:'🍳',cozinha:'🥘',quarto:'🛏️',banheiro:'🚿',sala:'🛋️',default:'🎁'};
 function getEmoji(cat){ return EMOJIS[cat]||EMOJIS.default; }
+function fmtBRL(v){ return 'R$ '+parseFloat(v).toFixed(2).replace('.',','); }
+function fmtDate(d){ return d ? new Date(d).toLocaleDateString('pt-BR') : '—'; }
+function fmtDateTime(d){ return d ? new Date(d).toLocaleString('pt-BR') : '—'; }
 
-// ══════════════════════════════════════
-// ══════════════════════════════════════
-// HELPER ADMIN
-// ══════════════════════════════════════
-function checkAdmin(login){ return ['eliezer','alexia 0218'].includes((login||'').toLowerCase().trim()); }
+function checkAdmin(login){ return (login||'').toLowerCase().trim() === 'eliezer e alexia 0218'; }
 (function(){
   if(SESSION_LOGIN){
     IS_ADMIN = checkAdmin(SESSION_LOGIN);
@@ -912,32 +907,18 @@ async function fazerLogin(){
   btn.textContent = 'Verificando...'; btn.disabled = true;
   input.style.borderColor = '';
 
-  // POR ENQUANTO aceita todos — futuramente consulta casamento_convidados
-  const permitido = true;
-
-  // Busca membros da família se houver
-  let membros = null;
   const nomeNorm = nome.toLowerCase().trim();
-
-  // Logins admin — credenciais exatas (case-insensitive no nome, exata no código)
-  const ADMINS = ['eliezer', 'alexia 0218'];
   IS_ADMIN = checkAdmin(nome);
 
-  if(nomeNorm === 'eliezer'){
-    membros = ['Eliezer'];
-  } else if(nomeNorm === 'alexia 0218'){
-    membros = ['Alexia'];
-  } else if(nomeNorm === 'felipe e família' || nomeNorm === 'felipe e familia'){
-    membros = ['Felipe','Barbara','Maria','Maite'];
-  }
-  // Futuramente: buscar de casamento_convidados pelo login
+  let membros = null;
+  if(nomeNorm === 'eliezer e alexia 0218'){ membros = ['Eliezer','Alexia']; }
+  else if(nomeNorm === 'felipe e família' || nomeNorm === 'felipe e familia'){ membros = ['Felipe','Barbara','Maria','Maite']; }
 
   sessionStorage.setItem('casamento_login', nome);
   if(membros) sessionStorage.setItem('casamento_membros', JSON.stringify(membros));
   SESSION_LOGIN  = nome;
   SESSION_MEMBROS = membros;
 
-  // Registra acesso
   try { await sb.from('casamento_acessos').insert({ login_usado: nome, nome_digitado: nome }); } catch(e){}
 
   btn.textContent = IS_ADMIN ? 'Bem-vindo de volta! 👑' : `Seja bem-vindo, ${nome}! 💚`;
@@ -951,7 +932,7 @@ async function fazerLogin(){
 }
 
 // ══════════════════════════════════════
-// INICIAR CONVITE (pós login)
+// INICIAR CONVITE
 // ══════════════════════════════════════
 function iniciarConvite(){
   iniciarLeaves();
@@ -959,14 +940,14 @@ function iniciarConvite(){
   iniciarHeroScroll();
   iniciarPolaroids();
   iniciarCountdown();
-  iniciarFAQ();       // cria os .faq-item primeiro
-  iniciarObservers(); // depois observa eles
+  iniciarFAQ();
+  iniciarObservers();
   iniciarRSVP();
   carregarImagens();
 }
 
 // ══════════════════════════════════════
-// NAVEGAÇÃO PÁGINAS
+// NAVEGAÇÃO
 // ══════════════════════════════════════
 function irParaLista(){
   document.getElementById('page-convite').style.display = 'none';
@@ -997,7 +978,19 @@ function switchListaTab(id, btn){
 }
 
 // ══════════════════════════════════════
-// RSVP — formulário adaptativo
+// TRACKING HAVAN
+// ══════════════════════════════════════
+async function registrarCliqueHavan(){
+  try {
+    await sb.from('casamento_havan_clicks').insert({
+      login_convidado: SESSION_LOGIN,
+      nome_convidado: SESSION_LOGIN
+    });
+  } catch(e){ /* silently fail */ }
+}
+
+// ══════════════════════════════════════
+// RSVP
 // ══════════════════════════════════════
 function iniciarRSVP(){
   const field = document.getElementById('rsvp-membros-field');
@@ -1012,9 +1005,7 @@ function iniciarRSVP(){
             <label class="membro-item selecionado" style="user-select:none;cursor:pointer;">
               <input type="checkbox" value="${m}" checked onchange="toggleMembro(this)">
               <div class="membro-check">✓</div>
-              <div style="flex:1;">
-                <div class="membro-nome">${m}</div>
-              </div>
+              <div style="flex:1;"><div class="membro-nome">${m}</div></div>
               <div style="font-size:11px;color:var(--olive-mid);font-weight:500;letter-spacing:.04em;transition:color .2s;" id="badge-${m.replace(/\s/g,'_')}">✓ vai</div>
             </label>
           `).join('')}
@@ -1040,26 +1031,17 @@ function iniciarRSVP(){
   }
 }
 
-let attendingIndividual = true;
-function toggleAttending(val){
-  attendingIndividual = val;
-  document.getElementById('rsvp-yes')?.classList.toggle('active', val);
-  document.getElementById('rsvp-no')?.classList.toggle('active', !val);
-}
-
 function toggleMembroIndividual(checkbox){
   const item = checkbox.closest('.membro-item');
   const check = item.querySelector('.membro-check');
   const badge = document.getElementById('badge-individual');
   const sub   = document.getElementById('sub-individual');
   if(checkbox.checked){
-    item.classList.add('selecionado');
-    check.textContent = '✓';
+    item.classList.add('selecionado'); check.textContent = '✓';
     if(badge){ badge.textContent='✓ confirmado'; badge.style.color='var(--olive-mid)'; }
     if(sub) sub.textContent = 'Estarei presente em 21 · 11 · 2026';
   } else {
-    item.classList.remove('selecionado');
-    check.textContent = '';
+    item.classList.remove('selecionado'); check.textContent = '';
     if(badge){ badge.textContent='✗ não vou'; badge.style.color='var(--hint)'; }
     if(sub) sub.textContent = 'Não poderei comparecer';
   }
@@ -1071,12 +1053,10 @@ function toggleMembro(checkbox){
   const nome  = checkbox.value.replace(/\s/g,'_');
   const badge = document.getElementById('badge-'+nome);
   if(checkbox.checked){
-    item.classList.add('selecionado');
-    check.textContent = '✓';
+    item.classList.add('selecionado'); check.textContent = '✓';
     if(badge){ badge.textContent='✓ vai'; badge.style.color='var(--olive-mid)'; }
   } else {
-    item.classList.remove('selecionado');
-    check.textContent = '';
+    item.classList.remove('selecionado'); check.textContent = '';
     if(badge){ badge.textContent='✗ não vai'; badge.style.color='var(--hint)'; }
   }
 }
@@ -1084,50 +1064,24 @@ function toggleMembro(checkbox){
 async function enviarRSVP(){
   const btn  = document.getElementById('rsvp-submit');
   const msg   = document.getElementById('rsvp-msg').value.trim();
-
   let payload = {};
 
   if(SESSION_MEMBROS && SESSION_MEMBROS.length > 1){
-    // Família
-    const confirmados = [];
-    const naoVao = [];
+    const confirmados = [], naoVao = [];
     SESSION_MEMBROS.forEach(m => {
       const cb = document.querySelector(`input[value="${m}"]`);
-      if(cb && cb.checked) confirmados.push(m);
-      else naoVao.push(m);
+      if(cb && cb.checked) confirmados.push(m); else naoVao.push(m);
     });
-    if(confirmados.length === 0){
-      alert('Selecione pelo menos uma pessoa que vai comparecer, ou use o botão "Não conseguirei ir" se ninguém puder.'); return;
-    }
-    payload = {
-      nome: SESSION_LOGIN,
-      email: null,
-      login_convidado: SESSION_LOGIN,
-      comparecendo: true,
-      qtd_pessoas: confirmados.length,
-      mensagem: msg || null,
-      membros_confirmados: confirmados,
-      membros_nao_vao: naoVao
-    };
+    if(confirmados.length === 0){ alert('Selecione pelo menos uma pessoa.'); return; }
+    payload = { nome: SESSION_LOGIN, email: null, login_convidado: SESSION_LOGIN, comparecendo: true, qtd_pessoas: confirmados.length, mensagem: msg || null, membros_confirmados: confirmados, membros_nao_vao: naoVao };
   } else {
-    // Individual — nome vem do login, sem campo livre
     const nomeFixo = SESSION_MEMBROS ? SESSION_MEMBROS[0] : SESSION_LOGIN;
-    const cb = document.querySelector('#membro-individual input[type=checkbox]');
+    const cb = document.querySelector('#cb-individual');
     const vai = cb ? cb.checked : true;
-    payload = {
-      nome: nomeFixo,
-      email: null,
-      login_convidado: SESSION_LOGIN,
-      comparecendo: vai,
-      qtd_pessoas: vai ? 1 : 0,
-      mensagem: msg || null,
-      membros_confirmados: vai ? [nomeFixo] : [],
-      membros_nao_vao: vai ? [] : [nomeFixo]
-    };
+    payload = { nome: nomeFixo, email: null, login_convidado: SESSION_LOGIN, comparecendo: vai, qtd_pessoas: vai ? 1 : 0, mensagem: msg || null, membros_confirmados: vai ? [nomeFixo] : [], membros_nao_vao: vai ? [] : [nomeFixo] };
   }
 
   btn.textContent = 'Enviando...'; btn.disabled = true;
-
   const { error } = await sb.from('casamento_listaconfirmados').insert(payload);
 
   if(!error){
@@ -1142,14 +1096,13 @@ async function enviarRSVP(){
       document.getElementById('rsvp-success').classList.add('show');
     }, 200);
   } else {
-    btn.textContent = 'Erro — tente novamente';
-    btn.disabled = false;
+    btn.textContent = 'Erro — tente novamente'; btn.disabled = false;
     console.error(error);
   }
 }
 
 // ══════════════════════════════════════
-// PRESENTES — carregar e renderizar
+// PRESENTES
 // ══════════════════════════════════════
 async function carregarPresentes(){
   const grid = document.getElementById('presentes-grid');
@@ -1173,7 +1126,7 @@ function renderizarPresentes(){
         <div class="card-nome">${p.nome}</div>
         <div class="card-desc">${p.descricao||''}</div>
         <div class="card-footer">
-          <div class="card-preco">R$ ${parseFloat(p.preco).toFixed(2).replace('.',',')}</div>
+          <div class="card-preco">${fmtBRL(p.preco)}</div>
           <button class="card-cta ${p.status!=='disponivel'?'reservado':''}">${p.status!=='disponivel'?'Reservado':'Ver detalhes'}</button>
         </div>
       </div>
@@ -1204,7 +1157,7 @@ async function abrirProduto(id){
     <div class="produto-modal-body">
       <div class="pm-cat">${p.categoria||'presente'}</div>
       <div class="pm-nome">${p.nome}</div>
-      <div class="pm-preco">R$ ${parseFloat(p.preco).toFixed(2).replace('.',',')}</div>
+      <div class="pm-preco">${fmtBRL(p.preco)}</div>
       <div class="pm-desc">${p.descricao||''}</div>
       <div class="pm-info-grid">
         <div class="pm-info-card"><div class="pm-info-label">📍 Onde encontrar</div><div class="pm-info-val">${p.onde_encontrar||'—'}</div></div>
@@ -1273,77 +1226,274 @@ function fecharProdutoModal(e,force){
 }
 
 // ══════════════════════════════════════
-// ADMIN
+// ════════════════════════════════════════════════════════════
+// ADMIN — PAINEL COMPLETO
+// ════════════════════════════════════════════════════════════
 // ══════════════════════════════════════
 async function carregarAdmin(){
   if(!checkAdmin(SESSION_LOGIN)) return;
   const el = document.getElementById('admin-content');
-  el.innerHTML='<div class="loading-state">Carregando painel...</div>';
-  const [{data:presentes},{data:reservas},{data:confirmados},{data:acessos}] = await Promise.all([
+  el.innerHTML='<div class="loading-state">Carregando dados...</div>';
+
+  // Busca tudo em paralelo
+  const [
+    { data: presentes },
+    { data: reservas },
+    { data: confirmados },
+    { data: acessos },
+    { data: havan_clicks }
+  ] = await Promise.all([
     sb.from('casamento_listapresentes').select('*').order('id'),
-    sb.from('casamento_reservas').select('*').order('criado_em',{ascending:false}),
-    sb.from('casamento_listaconfirmados').select('*').order('criado_em',{ascending:false}),
-    sb.from('casamento_acessos').select('*').order('criado_em',{ascending:false}).limit(20)
+    sb.from('casamento_reservas').select('*').order('criado_em', { ascending: false }),
+    sb.from('casamento_listaconfirmados').select('*').order('criado_em', { ascending: false }),
+    sb.from('casamento_acessos').select('*').order('criado_em', { ascending: false }).limit(50),
+    sb.from('casamento_havan_clicks').select('*').order('criado_em', { ascending: false })
+      .catch(() => ({ data: [] })) // tabela pode não existir ainda
   ]);
-  const reservados = presentes?.filter(p=>p.status==='reservado').length||0;
-  const confirmSim = confirmados?.filter(c=>c.comparecendo)||[];
-  const totalPessoas = confirmSim.reduce((a,c)=>a+(c.qtd_pessoas||1),0);
+
+  const presLista      = presentes || [];
+  const resLista       = reservas || [];
+  const confLista      = confirmados || [];
+  const acessosLista   = acessos || [];
+  const havanLista     = havan_clicks || [];
+
+  // Calcular estatísticas
+  const reservados     = presLista.filter(p => p.status === 'reservado').length;
+  const disponiveis    = presLista.filter(p => p.status !== 'reservado' && p.ativo).length;
+  const totalValorReservado = resLista
+    .filter(r => r.status === 'ativa')
+    .reduce((acc, r) => {
+      const p = presLista.find(x => x.id === r.presente_id);
+      return acc + (p ? parseFloat(p.preco) : 0);
+    }, 0);
+
+  const confirmSim     = confLista.filter(c => c.comparecendo);
+  const confirmNao     = confLista.filter(c => !c.comparecendo);
+  const totalPessoas   = confirmSim.reduce((a, c) => a + (c.qtd_pessoas || 1), 0);
+
+  // Todos os nomes que confirmaram (de membros_confirmados)
+  const nomesConfirmados = new Set();
+  confLista.forEach(c => {
+    if(c.membros_confirmados?.length) c.membros_confirmados.forEach(n => nomesConfirmados.add(n.toLowerCase().trim()));
+    else if(c.comparecendo && c.nome) nomesConfirmados.add(c.nome.toLowerCase().trim());
+  });
+
+  // Cliques únicos na Havan
+  const havanUnicos = new Set(havanLista.map(h => h.login_convidado)).size;
+
+  // Convidados esperados (hardcoded — você pode adicionar mais conforme for convidando)
+  // Formato: { login, nomes: ['Nome1', 'Nome2'] }
+  const CONVIDADOS_ESPERADOS = [
+    // Adicione aqui os logins que você vai distribuir
+    // Ex: { login: 'familia silva', nomes: ['João Silva', 'Maria Silva'] },
+    // Por enquanto ficará vazio até você popular
+  ];
+
+  // Quem falta confirmar (baseado em logins que acessaram mas não confirmaram)
+  const loginsQueAcessaram = new Set(acessosLista.map(a => a.login_usado.toLowerCase().trim()));
+  const loginsQueConfirmaram = new Set(confLista.map(c => (c.login_convidado||'').toLowerCase().trim()));
+  const adminLogins = new Set(['eliezer e alexia 0218']);
+  const faltamConfirmar = [...loginsQueAcessaram]
+    .filter(l => !loginsQueConfirmaram.has(l) && !adminLogins.has(l));
 
   el.innerHTML = `
-    <div style="margin-bottom:20px;"><h2 style="font-family:'Playfair Display',serif;font-size:32px;font-style:italic;">⚙️ Painel Admin</h2><p style="font-size:13px;color:var(--muted);margin-top:4px;">Apenas Alexia & Eliezer</p></div>
+    <!-- ░░ CABEÇALHO ░░ -->
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:32px;">
+      <div>
+        <h2 style="font-family:'Playfair Display',serif;font-size:36px;font-style:italic;color:var(--black);line-height:1;">Painel Admin</h2>
+        <p style="font-size:13px;color:var(--muted);margin-top:4px;">Visão geral em tempo real · Alexia &amp; Eliezer 💚</p>
+      </div>
+      <button onclick="carregarAdmin()" style="display:flex;align-items:center;gap:6px;padding:9px 18px;border-radius:999px;border:.5px solid rgba(47,47,47,.18);background:none;cursor:pointer;font-size:12px;color:var(--muted);font-family:'DM Sans',sans-serif;transition:all .2s;" onmouseover="this.style.background='rgba(47,47,47,.06)'" onmouseout="this.style.background='none'">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M14 8A6 6 0 1 1 8 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M14 2v4h-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Atualizar
+      </button>
+    </div>
+
+    <!-- ░░ STATS GRID ░░ -->
     <div class="admin-grid">
-      <div class="admin-stat"><div class="admin-stat-val">${presentes?.length||0}</div><div class="admin-stat-label">Presentes na lista</div></div>
-      <div class="admin-stat"><div class="admin-stat-val">${reservados}</div><div class="admin-stat-label">Presentes reservados</div></div>
-      <div class="admin-stat"><div class="admin-stat-val">${(presentes?.length||0)-reservados}</div><div class="admin-stat-label">Disponíveis</div></div>
-      <div class="admin-stat"><div class="admin-stat-val">${confirmSim.length}</div><div class="admin-stat-label">Confirmações "sim"</div></div>
-      <div class="admin-stat"><div class="admin-stat-val">${totalPessoas}</div><div class="admin-stat-label">Pessoas confirmadas</div></div>
-      <div class="admin-stat"><div class="admin-stat-val">${acessos?.length||0}</div><div class="admin-stat-label">Acessos recentes</div></div>
+      <div class="admin-stat">
+        <div class="admin-stat-val">${totalPessoas}</div>
+        <div class="admin-stat-label">Pessoas confirmadas</div>
+        <div class="progress-bar-wrap" style="margin-top:8px;"><div class="progress-bar" style="width:${Math.min(totalPessoas/150*100,100)}%"></div></div>
+        <div class="admin-stat-sub">Meta estimada: 150</div>
+      </div>
+      <div class="admin-stat">
+        <div class="admin-stat-val">${confirmSim.length}</div>
+        <div class="admin-stat-label">Confirmações "sim"</div>
+        <div class="admin-stat-sub">${confirmNao.length} disseram não</div>
+      </div>
+      <div class="admin-stat">
+        <div class="admin-stat-val" style="color:var(--olive-mid);">${reservados}</div>
+        <div class="admin-stat-label">Presentes reservados</div>
+        <div class="progress-bar-wrap" style="margin-top:8px;"><div class="progress-bar" style="width:${presLista.length?Math.round(reservados/presLista.length*100):0}%"></div></div>
+        <div class="admin-stat-sub">${disponiveis} disponíveis de ${presLista.length}</div>
+      </div>
+      <div class="admin-stat">
+        <div class="admin-stat-val" style="color:#8a6d2e;">R$ ${totalValorReservado.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g,'.')}</div>
+        <div class="admin-stat-label">Valor já reservado</div>
+        <div class="admin-stat-sub">Presentes Tomio</div>
+      </div>
+      <div class="admin-stat">
+        <div class="admin-stat-val">${havanLista.length}</div>
+        <div class="admin-stat-label">Cliques na Havan</div>
+        <div class="admin-stat-sub">${havanUnicos} pessoas únicas</div>
+      </div>
+      <div class="admin-stat">
+        <div class="admin-stat-val">${acessosLista.length}</div>
+        <div class="admin-stat-label">Acessos ao site</div>
+        <div class="admin-stat-sub">${new Set(acessosLista.map(a=>a.login_usado)).size} logins únicos</div>
+      </div>
     </div>
 
+    <!-- ░░ PRESENTES TOMIO ░░ -->
+    <p class="admin-section-title">🎁 Presentes — Lista Tomio</p>
     <div class="admin-table-wrap">
-      <div class="admin-table-title">💌 Confirmações de Presença</div>
+      <div class="admin-table-title">
+        <span class="admin-table-title-text">Status dos presentes</span>
+        <span class="admin-table-title-badge">${reservados} de ${presLista.length} reservados</span>
+      </div>
       <div style="overflow-x:auto;">
         <table class="admin-table">
-          <thead><tr><th>Nome / Login</th><th>Confirmados</th><th>Não vão</th><th>Email</th><th>Mensagem</th><th>Data</th></tr></thead>
-          <tbody>${(confirmados||[]).map(c=>`<tr>
-            <td><strong>${c.nome}</strong>${c.login_convidado&&c.login_convidado!==c.nome?`<br><small style="color:var(--hint)">${c.login_convidado}</small>`:''}</td>
-            <td style="color:var(--olive-mid)">${c.membros_confirmados?.length?c.membros_confirmados.join(', '):c.comparecendo?'✅ Sim':'—'}</td>
-            <td style="color:var(--muted);font-size:12px">${c.membros_nao_vao?.length?c.membros_nao_vao.join(', '):'—'}</td>
-            <td style="font-size:12px">${c.email||'—'}</td>
-            <td style="font-size:12px;color:var(--muted);max-width:160px">${c.mensagem||'—'}</td>
-            <td style="font-size:11px;color:var(--hint)">${new Date(c.criado_em).toLocaleDateString('pt-BR')}</td>
-          </tr>`).join('')||'<tr><td colspan="6" style="text-align:center;padding:20px;color:var(--hint)">Nenhuma confirmação ainda</td></tr>'}
+          <thead><tr>
+            <th>Presente</th><th>Categoria</th><th>Preço</th><th>Status</th><th>Reservado por</th><th>Data</th>
+          </tr></thead>
+          <tbody>
+          ${presLista.map(p => {
+            const res = resLista.find(r => r.presente_id === p.id && r.status === 'ativa');
+            return `<tr>
+              <td>
+                <strong style="font-size:14px;">${p.nome}</strong>
+                ${!p.ativo ? '<br><small style="color:var(--hint);font-size:10px;">inativo</small>' : ''}
+              </td>
+              <td style="font-size:12px;color:var(--muted);">${p.categoria || '—'}</td>
+              <td style="font-family:'Playfair Display',serif;font-size:15px;">${fmtBRL(p.preco)}</td>
+              <td><span class="status-pill status-${p.status}">${p.status}</span></td>
+              <td style="font-size:13px;">${res ? `<strong>${res.nome_convidado}</strong>${res.mensagem ? `<br><small style="color:var(--hint);font-size:11px;">"${res.mensagem}"</small>` : ''}` : '<span style="color:var(--hint);">—</span>'}</td>
+              <td style="font-size:11px;color:var(--hint);">${res ? fmtDate(res.criado_em) : '—'}</td>
+            </tr>`;
+          }).join('') || '<tr><td colspan="6" class="admin-empty">Nenhum presente cadastrado ainda</td></tr>'}
           </tbody>
         </table>
       </div>
     </div>
 
+    <!-- ░░ CONFIRMAÇÕES ░░ -->
+    <p class="admin-section-title">💌 Confirmações de Presença</p>
     <div class="admin-table-wrap">
-      <div class="admin-table-title">🎁 Reservas de Presentes</div>
+      <div class="admin-table-title">
+        <span class="admin-table-title-text">Quem confirmou</span>
+        <span class="admin-table-title-badge">${totalPessoas} pessoas · ${confirmSim.length} confirmações</span>
+      </div>
       <div style="overflow-x:auto;">
         <table class="admin-table">
-          <thead><tr><th>Presente</th><th>Reservado por</th><th>Mensagem</th><th>Status</th><th>Data</th></tr></thead>
-          <tbody>${(reservas||[]).map(r=>{const p=presentes?.find(x=>x.id===r.presente_id);return`<tr>
-            <td><strong>${p?.nome||'—'}</strong><br><small style="color:var(--hint)">R$ ${p?parseFloat(p.preco).toFixed(2).replace('.',','):''}</small></td>
-            <td>${r.nome_convidado}</td>
-            <td style="font-size:12px;color:var(--muted)">${r.mensagem||'—'}</td>
-            <td><span class="status-pill status-${r.status}">${r.status}</span></td>
-            <td style="font-size:11px;color:var(--hint)">${new Date(r.criado_em).toLocaleDateString('pt-BR')}</td>
-          </tr>`}).join('')||'<tr><td colspan="5" style="text-align:center;padding:20px;color:var(--hint)">Nenhuma reserva ainda</td></tr>'}
+          <thead><tr><th>Nome / Login</th><th>Confirmados</th><th>Não vão</th><th>Qtd</th><th>Mensagem</th><th>Data</th></tr></thead>
+          <tbody>
+          ${confLista.map(c => `<tr>
+            <td>
+              <strong>${c.nome}</strong>
+              ${c.login_convidado && c.login_convidado !== c.nome ? `<br><small style="color:var(--hint);font-size:11px;">login: ${c.login_convidado}</small>` : ''}
+            </td>
+            <td style="color:var(--olive-mid);font-size:13px;">${c.membros_confirmados?.length ? c.membros_confirmados.join(', ') : c.comparecendo ? '✅ Sim' : '—'}</td>
+            <td style="color:var(--hint);font-size:12px;">${c.membros_nao_vao?.length ? c.membros_nao_vao.join(', ') : '—'}</td>
+            <td style="font-size:13px;font-weight:600;">${c.qtd_pessoas || 1}</td>
+            <td style="font-size:12px;color:var(--muted);max-width:180px;">${c.mensagem ? `"${c.mensagem}"` : '—'}</td>
+            <td style="font-size:11px;color:var(--hint);">${fmtDate(c.criado_em)}</td>
+          </tr>`).join('') || '<tr><td colspan="6" class="admin-empty">Nenhuma confirmação ainda</td></tr>'}
           </tbody>
         </table>
       </div>
     </div>
 
+    <!-- ░░ FALTA CONFIRMAR ░░ -->
+    <p class="admin-section-title">⏳ Acessaram mas não confirmaram</p>
     <div class="admin-table-wrap">
-      <div class="admin-table-title">🔑 Acessos Recentes</div>
+      <div class="admin-table-title">
+        <span class="admin-table-title-text">Visitantes sem confirmação</span>
+        <span class="admin-table-title-badge">${faltamConfirmar.length} login${faltamConfirmar.length !== 1 ? 's' : ''}</span>
+      </div>
+      <div style="padding:16px 24px;">
+        ${faltamConfirmar.length ? `
+          <div class="falta-list">
+            ${faltamConfirmar.map(login => {
+              const ultimoAcesso = acessosLista.filter(a => a.login_usado.toLowerCase().trim() === login).sort((a,b) => new Date(b.criado_em)-new Date(a.criado_em))[0];
+              return `<div class="falta-item">
+                <span class="falta-nome">${login}</span>
+                <span style="font-size:11px;color:var(--hint);">último acesso: ${ultimoAcesso ? fmtDate(ultimoAcesso.criado_em) : '—'}</span>
+                <span class="falta-badge">pendente</span>
+              </div>`;
+            }).join('')}
+          </div>
+          <p style="font-size:12px;color:var(--hint);margin-top:16px;line-height:1.6;">💡 Estes logins abriram o site mas ainda não confirmaram presença. Vale dar uma cutucada!</p>
+        ` : '<div class="admin-empty">🎉 Todo mundo que acessou confirmou presença!</div>'}
+      </div>
+    </div>
+
+    <!-- ░░ CLIQUES HAVAN ░░ -->
+    <p class="admin-section-title">🏪 Cliques na Lista Havan</p>
+    <div class="admin-table-wrap">
+      <div class="admin-table-title">
+        <span class="admin-table-title-text">Quem clicou no link da Havan</span>
+        <span class="admin-table-title-badge">${havanLista.length} clique${havanLista.length !== 1 ? 's' : ''} · ${havanUnicos} únicos</span>
+      </div>
+      ${havanLista.length ? `
+        <div style="overflow-x:auto;">
+          <table class="admin-table">
+            <thead><tr><th>Convidado</th><th>Data</th><th>Hora</th></tr></thead>
+            <tbody>
+            ${havanLista.map(h => `<tr>
+              <td><strong>${h.nome_convidado || h.login_convidado}</strong></td>
+              <td style="font-size:12px;color:var(--muted);">${fmtDate(h.criado_em)}</td>
+              <td style="font-size:12px;color:var(--hint);">${new Date(h.criado_em).toLocaleTimeString('pt-BR', {hour:'2-digit',minute:'2-digit'})}</td>
+            </tr>`).join('')}
+            </tbody>
+          </table>
+        </div>
+      ` : '<div class="admin-empty">Nenhum clique registrado ainda</div>'}
+    </div>
+
+    <!-- ░░ RESERVAS DETALHADAS ░░ -->
+    <p class="admin-section-title">🔖 Histórico de Reservas</p>
+    <div class="admin-table-wrap">
+      <div class="admin-table-title">
+        <span class="admin-table-title-text">Todas as reservas</span>
+        <span class="admin-table-title-badge">${resLista.filter(r=>r.status==='ativa').length} ativas</span>
+      </div>
       <div style="overflow-x:auto;">
         <table class="admin-table">
-          <thead><tr><th>Login usado</th><th>Data/Hora</th></tr></thead>
-          <tbody>${(acessos||[]).map(a=>`<tr>
-            <td>${a.login_usado}</td>
-            <td style="font-size:12px;color:var(--hint)">${new Date(a.criado_em).toLocaleString('pt-BR')}</td>
-          </tr>`).join('')||'<tr><td colspan="2" style="text-align:center;padding:20px;color:var(--hint)">Nenhum acesso registrado</td></tr>'}
+          <thead><tr><th>Presente</th><th>Valor</th><th>Reservado por</th><th>Mensagem</th><th>Status</th><th>Data</th></tr></thead>
+          <tbody>
+          ${resLista.map(r => {
+            const p = presLista.find(x => x.id === r.presente_id);
+            return `<tr>
+              <td><strong>${p?.nome || '—'}</strong></td>
+              <td style="font-family:'Playfair Display',serif;font-size:14px;">${p ? fmtBRL(p.preco) : '—'}</td>
+              <td>${r.nome_convidado}<br><small style="color:var(--hint);font-size:11px;">login: ${r.login_convidado}</small></td>
+              <td style="font-size:12px;color:var(--muted);max-width:160px;">${r.mensagem ? `"${r.mensagem}"` : '—'}</td>
+              <td><span class="status-pill status-${r.status}">${r.status}</span></td>
+              <td style="font-size:11px;color:var(--hint);">${fmtDateTime(r.criado_em)}</td>
+            </tr>`;
+          }).join('') || '<tr><td colspan="6" class="admin-empty">Nenhuma reserva ainda</td></tr>'}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ░░ ACESSOS ░░ -->
+    <p class="admin-section-title">🔑 Acessos Recentes</p>
+    <div class="admin-table-wrap">
+      <div class="admin-table-title">
+        <span class="admin-table-title-text">Últimos 50 acessos</span>
+        <span class="admin-table-title-badge">${new Set(acessosLista.map(a=>a.login_usado)).size} logins únicos</span>
+      </div>
+      <div style="overflow-x:auto;">
+        <table class="admin-table">
+          <thead><tr><th>Login usado</th><th>Data</th><th>Hora</th></tr></thead>
+          <tbody>
+          ${acessosLista.map(a => `<tr>
+            <td><strong>${a.login_usado}</strong></td>
+            <td style="font-size:12px;color:var(--muted);">${fmtDate(a.criado_em)}</td>
+            <td style="font-size:12px;color:var(--hint);">${new Date(a.criado_em).toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'})}</td>
+          </tr>`).join('') || '<tr><td colspan="3" class="admin-empty">Sem acessos registrados</td></tr>'}
           </tbody>
         </table>
       </div>
@@ -1592,34 +1742,17 @@ function iniciarFAQ(){
 // SAIR
 // ══════════════════════════════════════
 function sairSessao(){
-  // Modal bonito no lugar do confirm() nativo
   const overlay = document.createElement('div');
   overlay.id = 'modal-sair';
   overlay.style.cssText = 'position:fixed;inset:0;background:rgba(47,47,47,.7);backdrop-filter:blur(14px);z-index:20000;display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;transition:opacity .3s;';
   overlay.innerHTML = `
-    <div style="
-      background:var(--white);border-radius:24px;
-      padding:40px 36px 32px;max-width:360px;width:100%;
-      text-align:center;
-      transform:translateY(16px) scale(.96);transition:transform .4s cubic-bezier(.34,1.56,.64,1);
-      box-shadow:0 40px 80px rgba(0,0,0,.3);
-    " id="modal-sair-box">
+    <div style="background:var(--white);border-radius:24px;padding:40px 36px 32px;max-width:360px;width:100%;text-align:center;transform:translateY(16px) scale(.96);transition:transform .4s cubic-bezier(.34,1.56,.64,1);box-shadow:0 40px 80px rgba(0,0,0,.3);" id="modal-sair-box">
       <div style="font-size:40px;margin-bottom:16px;">👋</div>
       <h3 style="font-family:'Playfair Display',serif;font-size:26px;font-style:italic;color:var(--black);margin-bottom:10px;">Até logo!</h3>
       <p style="font-size:14px;color:var(--muted);line-height:1.7;margin-bottom:28px;">Tem certeza que deseja sair?<br>Precisará fazer login novamente.</p>
       <div style="display:flex;gap:10px;">
-        <button onclick="confirmarSaida()" style="
-          flex:1;padding:14px;border-radius:12px;border:none;cursor:pointer;
-          background:var(--olive-darkest);color:white;font-family:'DM Sans',sans-serif;
-          font-size:13px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;
-          transition:background .2s,transform .2s;
-        " onmouseover="this.style.background='#3D4A2E'" onmouseout="this.style.background='var(--olive-darkest)'">Sair</button>
-        <button onclick="document.getElementById('modal-sair').remove()" style="
-          flex:1;padding:14px;border-radius:12px;border:.5px solid rgba(47,47,47,.15);cursor:pointer;
-          background:transparent;color:var(--muted);font-family:'DM Sans',sans-serif;
-          font-size:13px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;
-          transition:background .2s;
-        " onmouseover="this.style.background='rgba(47,47,47,.06)'" onmouseout="this.style.background='transparent'">Ficar</button>
+        <button onclick="confirmarSaida()" style="flex:1;padding:14px;border-radius:12px;border:none;cursor:pointer;background:var(--olive-darkest);color:white;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;" onmouseover="this.style.background='#3D4A2E'" onmouseout="this.style.background='var(--olive-darkest)'">Sair</button>
+        <button onclick="document.getElementById('modal-sair').remove()" style="flex:1;padding:14px;border-radius:12px;border:.5px solid rgba(47,47,47,.15);cursor:pointer;background:transparent;color:var(--muted);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;" onmouseover="this.style.background='rgba(47,47,47,.06)'" onmouseout="this.style.background='transparent'">Ficar</button>
       </div>
     </div>
   `;
@@ -1650,37 +1783,22 @@ function renderCadastrarForm(presente){
   el.innerHTML = `
     <div style="max-width:700px;">
       <h2 style="font-family:'Playfair Display',serif;font-size:32px;font-style:italic;margin-bottom:6px;">${editandoId?'Editar Presente':'Novo Presente'}</h2>
-      <p style="font-size:13px;color:var(--muted);margin-bottom:32px;">Preencha os dados do presente. Os convidados verão exatamente como você cadastrar.</p>
-
-      <!-- Preview ao vivo -->
+      <p style="font-size:13px;color:var(--muted);margin-bottom:32px;">Preencha os dados do presente.</p>
       <div style="background:var(--white);border-radius:20px;border:.5px solid rgba(47,47,47,.1);overflow:hidden;margin-bottom:32px;max-width:320px;">
         <div id="prev-img" style="aspect-ratio:4/3;background:linear-gradient(135deg,var(--olive-pale),var(--olive-light));display:flex;align-items:center;justify-content:center;font-size:56px;">${v.imagem_url?`<img src="${v.imagem_url}" style="width:100%;height:100%;object-fit:cover;display:block;">`:'🎁'}</div>
         <div style="padding:16px;">
           <div style="font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--olive-mid);margin-bottom:4px;" id="prev-cat">${v.categoria||'categoria'}</div>
           <div style="font-family:'Playfair Display',serif;font-size:20px;font-style:italic;color:var(--black);margin-bottom:4px;" id="prev-nome">${v.nome||'Nome do presente'}</div>
           <div style="font-size:13px;color:var(--muted);margin-bottom:12px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;" id="prev-desc">${v.descricao||'Descrição aparece aqui...'}</div>
-          <div style="font-family:'Playfair Display',serif;font-size:22px;color:var(--black);" id="prev-preco">${v.preco?'R$ '+parseFloat(v.preco).toFixed(2).replace('.',','):'R$ 0,00'}</div>
+          <div style="font-family:'Playfair Display',serif;font-size:22px;color:var(--black);" id="prev-preco">${v.preco?fmtBRL(v.preco):'R$ 0,00'}</div>
         </div>
       </div>
-
-      <!-- Formulário -->
       <div style="display:flex;flex-direction:column;gap:18px;">
-
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
-          <div>
-            <label class="pm-reserva-label">Nome do presente *</label>
-            <input class="pm-reserva-input" id="cad-nome" placeholder="Ex: Batedeira Planetária" value="${v.nome||''}"
-              oninput="document.getElementById('prev-nome').textContent=this.value||'Nome do presente'">
-          </div>
-          <div>
-            <label class="pm-reserva-label">Preço (R$) *</label>
-            <input class="pm-reserva-input" id="cad-preco" type="number" step="0.01" placeholder="299.90" value="${v.preco||''}"
-              oninput="document.getElementById('prev-preco').textContent=this.value?'R$ '+parseFloat(this.value).toFixed(2).replace('.',','):'R$ 0,00'">
-          </div>
+          <div><label class="pm-reserva-label">Nome do presente *</label><input class="pm-reserva-input" id="cad-nome" placeholder="Ex: Batedeira Planetária" value="${v.nome||''}" oninput="document.getElementById('prev-nome').textContent=this.value||'Nome do presente'"></div>
+          <div><label class="pm-reserva-label">Preço (R$) *</label><input class="pm-reserva-input" id="cad-preco" type="number" step="0.01" placeholder="299.90" value="${v.preco||''}" oninput="document.getElementById('prev-preco').textContent=this.value?'R$ '+parseFloat(this.value).toFixed(2).replace('.',','):'R$ 0,00'"></div>
         </div>
-
-        <div>
-          <label class="pm-reserva-label">Categoria</label>
+        <div><label class="pm-reserva-label">Categoria</label>
           <select class="pm-reserva-input" id="cad-cat" onchange="document.getElementById('prev-cat').textContent=this.value||'categoria'">
             <option value="">Selecione...</option>
             <option value="eletrodomestico" ${v.categoria==='eletrodomestico'?'selected':''}>Eletrodoméstico</option>
@@ -1691,72 +1809,36 @@ function renderCadastrarForm(presente){
             <option value="decoracao" ${v.categoria==='decoracao'?'selected':''}>Decoração</option>
           </select>
         </div>
-
-        <div>
-          <label class="pm-reserva-label">Descrição</label>
-          <textarea class="pm-reserva-input" id="cad-desc" rows="3" placeholder="Descreva o presente, marca, modelo, cor..."
-            oninput="document.getElementById('prev-desc').textContent=this.value||'Descrição aparece aqui...'"
-            style="resize:none;line-height:1.6">${v.descricao||''}</textarea>
-        </div>
-
+        <div><label class="pm-reserva-label">Descrição</label><textarea class="pm-reserva-input" id="cad-desc" rows="3" placeholder="Descreva o presente, marca, modelo..." oninput="document.getElementById('prev-desc').textContent=this.value||'Descrição aparece aqui...'" style="resize:none;line-height:1.6">${v.descricao||''}</textarea></div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
-          <div>
-            <label class="pm-reserva-label">Onde encontrar</label>
-            <input class="pm-reserva-input" id="cad-onde" placeholder="Tomio Imóveis — Parceiros" value="${v.onde_encontrar||'Tomio Imóveis — Parceiros'}">
-          </div>
-          <div>
-            <label class="pm-reserva-label">Endereço da loja</label>
-            <input class="pm-reserva-input" id="cad-end" placeholder="Bairro Progresso, Blumenau/SC" value="${v.endereco_loja||'Bairro Progresso, Blumenau/SC'}">
-          </div>
+          <div><label class="pm-reserva-label">Onde encontrar</label><input class="pm-reserva-input" id="cad-onde" placeholder="Tomio Imóveis — Parceiros" value="${v.onde_encontrar||'Tomio Imóveis — Parceiros'}"></div>
+          <div><label class="pm-reserva-label">Endereço da loja</label><input class="pm-reserva-input" id="cad-end" placeholder="Bairro Progresso, Blumenau/SC" value="${v.endereco_loja||'Bairro Progresso, Blumenau/SC'}"></div>
         </div>
-
-        <div>
-          <label class="pm-reserva-label">Comparação com a Havan</label>
-          <input class="pm-reserva-input" id="cad-havan" placeholder="Na Havan custa R$ X. Aqui economizamos R$ Y!" value="${v.comparacao_havan||''}">
-        </div>
-
-        <div>
-          <label class="pm-reserva-label">Prioridade</label>
+        <div><label class="pm-reserva-label">Comparação com a Havan</label><input class="pm-reserva-input" id="cad-havan" placeholder="Na Havan custa R$ X. Aqui economizamos R$ Y!" value="${v.comparacao_havan||''}"></div>
+        <div><label class="pm-reserva-label">Prioridade</label>
           <select class="pm-reserva-input" id="cad-prio">
             <option value="0" ${(!v.prioridade||v.prioridade==0)?'selected':''}>Normal</option>
             <option value="1" ${v.prioridade==1?'selected':''}>🔶 Média</option>
             <option value="2" ${v.prioridade==2?'selected':''}>⚡ Alta (destaque)</option>
           </select>
         </div>
-
         <div>
           <label class="pm-reserva-label">Foto do presente</label>
-          <div style="border:.5px dashed rgba(47,47,47,.25);border-radius:14px;padding:24px;text-align:center;cursor:pointer;transition:border-color .2s;background:var(--white);"
-            onclick="document.getElementById('cad-file').click()"
-            ondragover="event.preventDefault();this.style.borderColor='var(--olive-mid)'"
-            ondragleave="this.style.borderColor=''"
-            ondrop="handleDrop(event)">
+          <div style="border:.5px dashed rgba(47,47,47,.25);border-radius:14px;padding:24px;text-align:center;cursor:pointer;background:var(--white);" onclick="document.getElementById('cad-file').click()" ondragover="event.preventDefault()" ondrop="handleDrop(event)">
             <input type="file" id="cad-file" accept="image/*" style="display:none" onchange="handleFileSelect(event)">
-            <div id="upload-preview">
-              ${v.imagem_url?`<img src="${v.imagem_url}" style="max-height:120px;border-radius:8px;margin-bottom:8px;"><br><span style="font-size:12px;color:var(--muted)">Clique para trocar</span>`:`<div style="font-size:32px;margin-bottom:8px;">📷</div><div style="font-size:13px;color:var(--muted);">Clique ou arraste uma foto aqui</div><div style="font-size:11px;color:var(--hint);margin-top:4px;">JPG, PNG — máx. 5MB</div>`}
-            </div>
+            <div id="upload-preview">${v.imagem_url?`<img src="${v.imagem_url}" style="max-height:120px;border-radius:8px;margin-bottom:8px;"><br><span style="font-size:12px;color:var(--muted)">Clique para trocar</span>`:`<div style="font-size:32px;margin-bottom:8px;">📷</div><div style="font-size:13px;color:var(--muted);">Clique ou arraste uma foto aqui</div>`}</div>
           </div>
-          <div style="margin-top:10px;">
-            <label class="pm-reserva-label">Ou cole uma URL de imagem</label>
-            <input class="pm-reserva-input" id="cad-img-url" placeholder="https://..." value="${v.imagem_url||''}"
-              oninput="previewImageUrl(this.value)">
-          </div>
+          <div style="margin-top:10px;"><label class="pm-reserva-label">Ou cole uma URL de imagem</label><input class="pm-reserva-input" id="cad-img-url" placeholder="https://..." value="${v.imagem_url||''}" oninput="previewImageUrl(this.value)"></div>
         </div>
-
         <div style="display:flex;gap:12px;padding-top:8px;flex-wrap:wrap;">
-          <button class="pm-btn pm-btn-primary" style="flex:2;min-width:160px;padding:18px;" onclick="salvarPresente()">
-            ${editandoId?'💾 Salvar alterações':'✅ Cadastrar presente'}
-          </button>
+          <button class="pm-btn pm-btn-primary" style="flex:2;min-width:160px;padding:18px;" onclick="salvarPresente()">${editandoId?'💾 Salvar alterações':'✅ Cadastrar presente'}</button>
           ${editandoId?`<button class="pm-btn pm-btn-cancel" style="flex:1;" onclick="excluirPresente(${editandoId})">🗑️ Excluir</button>`:''}
-          <button class="pm-btn pm-btn-secondary" style="flex:1;" onclick="renderCadastrarForm()">Limpar form</button>
+          <button class="pm-btn pm-btn-secondary" style="flex:1;" onclick="renderCadastrarForm()">Limpar</button>
         </div>
-
-        <!-- Lista rápida para editar -->
         <div id="lista-rapida" style="margin-top:32px;border-top:.5px solid rgba(47,47,47,.1);padding-top:24px;">
           <h3 style="font-family:'Playfair Display',serif;font-size:22px;font-style:italic;margin-bottom:16px;">Presentes cadastrados</h3>
           <div id="lista-rapida-content"><div class="loading-state" style="padding:20px 0;">Carregando...</div></div>
         </div>
-
       </div>
     </div>
   `;
@@ -1770,12 +1852,9 @@ async function carregarListaRapida(){
   if(!data||!data.length){ el.innerHTML='<p style="color:var(--hint);font-size:13px;">Nenhum presente cadastrado ainda.</p>'; return; }
   el.innerHTML = data.map(p=>`
     <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:.5px solid rgba(47,47,47,.06);gap:12px;">
-      <div style="flex:1;">
-        <strong style="font-size:14px;">${p.nome}</strong>
-        <span style="font-size:12px;color:var(--muted);margin-left:8px;">R$ ${parseFloat(p.preco).toFixed(2).replace('.',',')}</span>
-      </div>
+      <div style="flex:1;"><strong style="font-size:14px;">${p.nome}</strong><span style="font-size:12px;color:var(--muted);margin-left:8px;">${fmtBRL(p.preco)}</span></div>
       <span class="status-pill status-${p.status}" style="flex-shrink:0;">${p.status}</span>
-      <button onclick="editarPresente(${p.id})" style="padding:6px 14px;border-radius:999px;border:.5px solid var(--olive-light);background:none;cursor:pointer;font-size:12px;color:var(--olive-mid);font-family:'DM Sans',sans-serif;flex-shrink:0;transition:all .2s;">Editar</button>
+      <button onclick="editarPresente(${p.id})" style="padding:6px 14px;border-radius:999px;border:.5px solid var(--olive-light);background:none;cursor:pointer;font-size:12px;color:var(--olive-mid);font-family:'DM Sans',sans-serif;flex-shrink:0;">Editar</button>
     </div>
   `).join('');
 }
@@ -1783,22 +1862,11 @@ async function carregarListaRapida(){
 async function editarPresente(id){
   const {data} = await sb.from('casamento_listapresentes').select('*').eq('id',id).single();
   if(data) renderCadastrarForm(data);
-  document.getElementById('ltab-cadastrar').scrollTo(0,0);
   window.scrollTo(0,0);
 }
 
-function handleFileSelect(event){
-  const file = event.target.files[0];
-  if(!file) return;
-  processarImagem(file);
-}
-
-function handleDrop(event){
-  event.preventDefault();
-  const file = event.dataTransfer.files[0];
-  if(file && file.type.startsWith('image/')) processarImagem(file);
-}
-
+function handleFileSelect(event){ const file = event.target.files[0]; if(!file) return; processarImagem(file); }
+function handleDrop(event){ event.preventDefault(); const file = event.dataTransfer.files[0]; if(file && file.type.startsWith('image/')) processarImagem(file); }
 function processarImagem(file){
   if(file.size > 5*1024*1024){ alert('Imagem muito grande! Máximo 5MB.'); return; }
   const reader = new FileReader();
@@ -1810,7 +1878,6 @@ function processarImagem(file){
   };
   reader.readAsDataURL(file);
 }
-
 function previewImageUrl(url){
   if(!url) return;
   document.getElementById('prev-img').innerHTML = `<img src="${url}" style="width:100%;height:100%;object-fit:cover;display:block;" onerror="this.parentElement.innerHTML='🎁'">`;
@@ -1827,36 +1894,20 @@ async function salvarPresente(){
   const havan  = document.getElementById('cad-havan').value.trim();
   const prio   = parseInt(document.getElementById('cad-prio').value);
   const imgUrl = uploadedImageBase64 || document.getElementById('cad-img-url').value.trim() || null;
-
   if(!nome){ alert('Nome é obrigatório!'); document.getElementById('cad-nome').focus(); return; }
   if(!preco){ alert('Preço é obrigatório!'); document.getElementById('cad-preco').focus(); return; }
-
   const btn = document.querySelector('#ltab-cadastrar .pm-btn-primary');
   btn.textContent = 'Salvando...'; btn.disabled = true;
-
-  const payload = {
-    nome, preco: parseFloat(preco), categoria: cat||null, descricao: desc||null,
-    onde_encontrar: onde||null, endereco_loja: end||null, comparacao_havan: havan||null,
-    prioridade: prio, imagem_url: imgUrl, ativo: true
-  };
-
+  const payload = { nome, preco: parseFloat(preco), categoria: cat||null, descricao: desc||null, onde_encontrar: onde||null, endereco_loja: end||null, comparacao_havan: havan||null, prioridade: prio, imagem_url: imgUrl, ativo: true };
   let error;
-  if(editandoId){
-    ({error} = await sb.from('casamento_listapresentes').update(payload).eq('id', editandoId));
-  } else {
-    ({error} = await sb.from('casamento_listapresentes').insert({...payload, status:'disponivel'}));
-  }
-
+  if(editandoId){ ({error} = await sb.from('casamento_listapresentes').update(payload).eq('id', editandoId)); }
+  else { ({error} = await sb.from('casamento_listapresentes').insert({...payload, status:'disponivel'})); }
   if(!error){
     btn.textContent = editandoId ? '✅ Atualizado!' : '✅ Cadastrado!';
     btn.style.background = '#5C6E42';
-    todosPresentes = []; // força recarregar lista
+    todosPresentes = [];
     setTimeout(()=>{ renderCadastrarForm(); }, 1200);
-  } else {
-    btn.textContent = 'Erro — tente novamente';
-    btn.disabled = false;
-    console.error(error);
-  }
+  } else { btn.textContent = 'Erro — tente novamente'; btn.disabled = false; console.error(error); }
 }
 
 async function excluirPresente(id){
