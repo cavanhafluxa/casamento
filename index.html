@@ -884,8 +884,13 @@ function checkAdmin(login){ return (login||'').toLowerCase().trim() === 'eliezer
 (function(){
   if(SESSION_LOGIN){
     IS_ADMIN = checkAdmin(SESSION_LOGIN);
-    document.getElementById('login-screen').remove();
-    iniciarConvite();
+    // Remove login screen
+    const ls = document.getElementById('login-screen');
+    if(ls) ls.remove();
+    // Remove invite screen instantly (F5 restore — skip opening animation)
+    const inv = document.getElementById('invite-screen');
+    if(inv) inv.remove();
+    iniciarConvite(true);
   } else {
     setTimeout(() => {
       const inp = document.getElementById('login-input');
@@ -934,9 +939,9 @@ async function fazerLogin(){
 // ══════════════════════════════════════
 // INICIAR CONVITE
 // ══════════════════════════════════════
-function iniciarConvite(){
+function iniciarConvite(skipInvite){
   iniciarLeaves();
-  iniciarParticles();
+  if(!skipInvite) iniciarParticles();
   iniciarHeroScroll();
   iniciarPolaroids();
   iniciarCountdown();
@@ -944,6 +949,10 @@ function iniciarConvite(){
   iniciarObservers();
   iniciarRSVP();
   carregarImagens();
+  // On F5 restore: hero already visible, trigger collage immediately
+  if(skipInvite){
+    setTimeout(()=>{ popCollage(); updateHero(); updatePolaroids(); }, 100);
+  }
 }
 
 // ══════════════════════════════════════
@@ -1543,10 +1552,12 @@ function copiarPix(chave,card){
 // ══════════════════════════════════════
 function abrirConvite(){
   const btn=document.getElementById('invite-open-btn'),txt=document.getElementById('inv-btn-text');
+  if(!btn) return;
   btn.style.background='#3D4A2E';btn.style.transform='scale(.96)';txt.textContent='Abrindo...';
   burstConfetti(btn);
   setTimeout(()=>{
-    document.getElementById('invite-screen').classList.add('opening');
+    const inv=document.getElementById('invite-screen');
+    if(inv) inv.classList.add('opening');
     setTimeout(()=>{
       const el=document.getElementById('invite-screen');if(el)el.remove();
       updateHero();updatePolaroids();
@@ -1907,14 +1918,14 @@ async function salvarPresente(){
     btn.textContent = editandoId ? '✅ Atualizado!' : '✅ Cadastrado!';
     btn.style.background = '#5C6E42';
     todosPresentes = [];
-    setTimeout(()=>{ renderCadastrarForm(); }, 1200);
+    setTimeout(()=>{ renderCadastrarForm(); carregarListaRapida(); }, 1200);
   } else { btn.textContent = 'Erro — tente novamente'; btn.disabled = false; console.error(error); }
 }
 
 async function excluirPresente(id){
   if(!confirm('Excluir este presente? Esta ação não pode ser desfeita.')) return;
   const {error} = await sb.from('casamento_listapresentes').update({ativo:false}).eq('id',id);
-  if(!error){ todosPresentes=[]; renderCadastrarForm(); }
+  if(!error){ todosPresentes=[]; renderCadastrarForm(); carregarListaRapida(); }
 }
 
 function carregarImagens(){
