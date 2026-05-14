@@ -940,6 +940,9 @@ async function fazerLogin(){
 // INICIAR CONVITE
 // ══════════════════════════════════════
 function iniciarConvite(skipInvite){
+  // F5: garante topo antes de qualquer cálculo de layout
+  if(skipInvite) window.scrollTo(0,0);
+
   iniciarLeaves();
   if(!skipInvite) iniciarParticles();
   iniciarHeroScroll();
@@ -949,9 +952,23 @@ function iniciarConvite(skipInvite){
   iniciarObservers();
   iniciarRSVP();
   carregarImagens();
-  // On F5 restore: hero already visible, trigger collage immediately
+
   if(skipInvite){
-    setTimeout(()=>{ popCollage(); updateHero(); updatePolaroids(); }, 100);
+    // Aguarda o navegador terminar o layout antes de recalcular o hero
+    requestAnimationFrame(()=>{
+      requestAnimationFrame(()=>{
+        window.scrollTo(0,0);
+        updateHero();
+        updatePolaroids();
+        // Reaplica animações do hero que dependiam do invite screen ser fechado
+        const ho = document.getElementById('hero-overlay');
+        const hn = document.getElementById('hero-nav-inside');
+        if(ho){ ho.style.opacity='1'; }
+        if(hn){ hn.style.opacity='1'; }
+        const sh = document.getElementById('scroll-hint');
+        if(sh){ sh.style.opacity='1'; }
+      });
+    });
   }
 }
 
@@ -1634,7 +1651,18 @@ function updateHero(){
   if(p<0.5&&collageTriggered){collageTriggered=false;cPhotos.forEach(cp=>cp.classList.remove('popped'));mainNav.classList.remove('visible');}
 }
 
+function resetHeroSize(){
+  // Força hero para tamanho inicial (scroll=0) antes de qualquer cálculo
+  const start = getStartSize();
+  heroPhoto.style.width  = start.w + 'px';
+  heroPhoto.style.height = start.h + 'px';
+  heroPhoto.style.borderRadius = '24px';
+  if(heroOverlay)  heroOverlay.style.opacity  = '1';
+  if(heroNavInside) heroNavInside.style.opacity = '1';
+}
+
 function iniciarHeroScroll(){
+  resetHeroSize();
   window.addEventListener('scroll',updateHero,{passive:true});
   window.addEventListener('resize',updateHero,{passive:true});
   updateHero();
@@ -1680,6 +1708,9 @@ function iniciarPolaroids(){
   document.getElementById('polaroid-modal').addEventListener('click',e=>{if(e.target===document.getElementById('polaroid-modal'))document.getElementById('polaroid-modal').classList.remove('open');});
   document.addEventListener('keydown',e=>{if(e.key==='Escape'){document.getElementById('polaroid-modal').classList.remove('open');fecharProdutoModal(null,true);}});
   window.addEventListener('scroll',updatePolaroids,{passive:true});
+  window.addEventListener('resize',()=>{
+    scrollSpace.style.height=window.innerHeight*(polaroidsData.length*STEPS+1)+'px';
+  },{passive:true});
 }
 
 function updatePolaroids(){
