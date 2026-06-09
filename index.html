@@ -879,6 +879,10 @@ let heroPhoto, heroOverlay, heroNavInside, scrollHint, mainNav;
 let cPhotos = [];
 let collageTriggered = false;
 
+// Refs dos polaroids — também antes do boot para evitar TDZ
+let loveSection, loveTitle, scrollSpace, polaroidsStage;
+let polEls = [];
+
 const EMOJIS = {eletrodomestico:'🍳',cozinha:'🥘',quarto:'🛏️',banheiro:'🚿',sala:'🛋️',default:'🎁'};
 function getEmoji(cat){ return EMOJIS[cat]||EMOJIS.default; }
 function fmtBRL(v){ return 'R$ '+parseFloat(v).toFixed(2).replace('.',','); }
@@ -1700,8 +1704,14 @@ const polaroidsData=[
   {emoji:'🎉',caption:'comemorando cada momento',stage:'CAP. IV',tilt:'rotate(7deg) translate(150px,40px)'},
   {emoji:'💍',caption:'ela disse sim!! (obviamente)',stage:'CAP. V',tilt:'rotate(-2deg) translate(8px,-42px)'},
 ];
-const loveSection=document.getElementById('love-story'),loveTitle=document.getElementById('love-title'),scrollSpace=document.getElementById('love-scroll-space'),polaroidsStage=document.getElementById('polaroids-stage');
-const STEPS=0.7;let polEls=[];
+const STEPS=0.7;
+
+function inicializarRefsPolaroids(){
+  loveSection   = document.getElementById('love-story');
+  loveTitle     = document.getElementById('love-title');
+  scrollSpace   = document.getElementById('love-scroll-space');
+  polaroidsStage= document.getElementById('polaroids-stage');
+}
 
 function loadImg(el,baseName){
   const exts=['png','PNG','jpeg','jpg','JPG','JPEG'];let i=0;
@@ -1710,6 +1720,7 @@ function loadImg(el,baseName){
 }
 
 function iniciarPolaroids(){
+  inicializarRefsPolaroids();
   scrollSpace.style.height=window.innerHeight*(polaroidsData.length*STEPS+1)+'px';
   polEls=polaroidsData.map((p,i)=>{
     const el=document.createElement('div');el.className='polaroid';
