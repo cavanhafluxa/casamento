@@ -364,7 +364,7 @@ footer::before{content:'';position:absolute;top:-40%;left:50%;width:120%;height:
 /* ══════════════════════════════════════ LISTA DE PRESENTES PAGE ══════════════════════════════════════ */
 #page-lista{display:none;min-height:100vh;background:var(--cream);}
 #page-lista.ativo{display:block;}
-.lista-nav{position:sticky;top:0;z-index:200;background:rgba(245,242,237,.9);backdrop-filter:blur(24px);border-bottom:.5px solid rgba(47,47,47,.1);padding:0 32px;height:60px;display:flex;align-items:center;justify-content:space-between;gap:16px;}
+.lista-nav{position:sticky;top:0;z-index:200;background:rgba(245,242,237,.95);backdrop-filter:blur(24px);border-bottom:.5px solid rgba(47,47,47,.1);padding:0 32px;height:60px;display:flex;align-items:center;justify-content:space-between;gap:16px;}
 .lista-nav-logo{font-family:'Cormorant Garamond',serif;font-size:20px;font-style:italic;color:var(--black);text-decoration:none;letter-spacing:.06em;cursor:pointer;}
 .lista-back{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted);cursor:pointer;background:none;border:none;font-family:'DM Sans',sans-serif;transition:color .2s;}
 .lista-back:hover{color:var(--black);}
@@ -379,14 +379,26 @@ footer::before{content:'';position:absolute;top:-40%;left:50%;width:120%;height:
 .lista-tab-bar-wrap{
   display:flex;justify-content:center;
   position:sticky;
-  top:60px; /* cola abaixo da lista-nav */
+  top:60px;
   z-index:150;
   background:var(--cream);
   padding:12px 16px 10px;
   overflow-x:auto;
   scrollbar-width:none;-ms-overflow-style:none;
-  /* sombra suave para separar do conteúdo abaixo */
   box-shadow:0 6px 16px -4px rgba(47,47,47,.08);
+}
+/* Mobile: fixed abaixo da lista-nav para garantir que não desce */
+@media(max-width:768px){
+  .lista-tab-bar-wrap{
+    position:fixed;
+    top:60px;
+    left:0;right:0;
+    z-index:199;
+    padding:8px 12px;
+    justify-content:flex-start;
+  }
+  /* Compensar o espaço que a tab bar ocupa em fixed */
+  .lista-content{padding-top:56px;}
 }
 .lista-tab-bar-wrap::-webkit-scrollbar{display:none;}
 .lista-tab-bar{
@@ -620,9 +632,10 @@ footer::before{content:'';position:absolute;top:-40%;left:50%;width:120%;height:
   #footer-photo{padding:0 16px 56px}.footer-img-wrap{width:100%;max-width:100%;aspect-ratio:3/2;border-radius:18px}
   footer{padding:48px 16px calc(48px + var(--safe-bot))}.footer-logo{font-size:30px}
   .lista-nav{padding:0 16px}.lista-content{padding:0 16px}
-  /* Tab buttons menores no mobile para caber na tela */
-  .lista-tab-btn{padding:7px 10px;font-size:10.5px;letter-spacing:.01em;}
-  .lista-tab-bar{gap:2px;}
+  /* Tab bar mobile — cabe na tela */
+  .lista-tab-bar-wrap{padding:10px 12px 8px;justify-content:flex-start;}
+  .lista-tab-bar{gap:2px;max-width:calc(100vw - 24px);}
+  .lista-tab-btn{padding:7px 10px;font-size:10px;letter-spacing:0;}
   .havan-card{padding:28px 20px;flex-direction:column}.pm-info-grid{grid-template-columns:1fr}
   .presentes-grid{grid-template-columns:1fr 1fr;gap:12px}
   .admin-grid{grid-template-columns:1fr 1fr;}
@@ -934,8 +947,8 @@ footer::before{content:'';position:absolute;top:-40%;left:50%;width:120%;height:
   .havan-carrossel-wrap{margin-left:-20px;margin-right:-20px;margin-bottom:-28px;}
 }
 .havan-carrossel-label{
-  font-size:9px;letter-spacing:.22em;text-transform:uppercase;
-  color:rgba(255,255,255,.35);font-weight:500;margin-bottom:10px;
+  font-size:9px;letter-spacing:.2em;text-transform:uppercase;
+  color:rgba(255,255,255,.55);font-weight:600;margin-bottom:10px;
   padding:0 16px;
 }
 /* Track infinito — animation move o conteúdo */
