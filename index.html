@@ -379,14 +379,14 @@ footer::before{content:'';position:absolute;top:-40%;left:50%;width:120%;height:
 .lista-tab-bar-wrap{
   display:flex;justify-content:center;
   position:sticky;
-  top:60px; /* altura da lista-nav */
+  top:60px; /* cola abaixo da lista-nav */
   z-index:150;
   background:var(--cream);
   padding:12px 16px 10px;
-  margin:0;
   overflow-x:auto;
   scrollbar-width:none;-ms-overflow-style:none;
-  box-shadow:0 4px 12px rgba(245,242,237,.9);
+  /* sombra suave para separar do conteúdo abaixo */
+  box-shadow:0 6px 16px -4px rgba(47,47,47,.08);
 }
 .lista-tab-bar-wrap::-webkit-scrollbar{display:none;}
 .lista-tab-bar{
@@ -1314,16 +1314,16 @@ footer::before{content:'';position:absolute;top:-40%;left:50%;width:120%;height:
     <h1 class="lista-banner-title">Lista de Presentes</h1>
     <p class="lista-banner-sub">cada presente é um pedacinho do nosso lar</p>
   </div>
-  <div class="lista-content">
-    <div class="lista-tab-bar-wrap">
+  <div class="lista-tab-bar-wrap">
     <div class="lista-tab-bar">
       <button class="lista-tab-btn active" onclick="switchListaTab('havan',this)">🏪 Lista Havan</button>
       <button class="lista-tab-btn" onclick="switchListaTab('tomio',this)">🏠 Nossa Casa</button>
       <button class="lista-tab-btn" id="btn-admin-tab" style="display:none" onclick="switchListaTab('admin',this)">⚙️ Admin</button>
       <button class="lista-tab-btn" id="btn-cadastrar-tab" style="display:none" onclick="switchListaTab('cadastrar',this)">➕ Cadastrar Presente</button>
     </div>
-    </div><!-- /tab-bar-wrapper -->
+  </div>
 
+  <div class="lista-content">
     <!-- HAVAN -->
     <div class="lista-tab-panel active" id="ltab-havan">
       <div class="havan-card">
@@ -1339,7 +1339,7 @@ footer::before{content:'';position:absolute;top:-40%;left:50%;width:120%;height:
       </div>
       <!-- Carrossel infinito -->
       <div class="havan-carrossel-wrap">
-        <div class="havan-carrossel-label">itens da nossa lista</div>
+        <div class="havan-carrossel-label">alguns itens da nossa lista na Havan ✨</div>
         <div class="havan-carrossel" id="havan-carrossel"></div>
       </div>
     </div>
