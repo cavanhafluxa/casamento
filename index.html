@@ -2336,7 +2336,7 @@ function iniciarPolaroids(){
     polaroidsStage.appendChild(el);return el;
   });
   document.getElementById('polaroid-modal').addEventListener('click',e=>{if(e.target===document.getElementById('polaroid-modal'))document.getElementById('polaroid-modal').classList.remove('open');});
-  document.addEventListener('keydown',e=>{if(e.key==='Escape'){document.getElementById('polaroid-modal').classList.remove('open');fecharProdutoModal(null,true);fecharRacharModal(null,true);fecharLightbox(null,true);}});
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'){document.getElementById('polaroid-modal').classList.remove('open');fecharProdutoModal(null,true);fecharRacharModal(null,true);fecharLightbox(null,true); fecharModalUpload(null,true);}});
   window.addEventListener('scroll',updatePolaroids,{passive:true});
   window.addEventListener('resize',()=>{
     scrollSpace.style.height=window.innerHeight*(polaroidsData.length*STEPS+1)+'px';
@@ -2935,28 +2935,12 @@ async function renderGaleriaAberta(){
   if(!body) return;
 
   body.innerHTML = `
-    <!-- Upload -->
-    <div class="galeria-upload-area" id="galeria-drop"
-      ondragover="event.preventDefault();this.classList.add('drag-over')"
-      ondragleave="this.classList.remove('drag-over')"
-      ondrop="galeriaHandleDrop(event)">
-      <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;justify-content:space-between;">
-        <div>
-          <button class="galeria-upload-btn" onclick="document.getElementById('galeria-file-input').click()">
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2v9M4 7l4-5 4 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 13h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-            Compartilhar foto ou vídeo
-          </button>
-          <p style="font-size:11px;color:var(--hint);margin-top:6px;">Fotos e vídeos curtos · máx. 30MB · até 2 vídeos por pessoa</p>
-        </div>
-        <button id="galeria-send-btn" class="galeria-upload-btn" style="display:none;background:var(--olive-mid);" onclick="galeriaEnviar()">
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 8l10 0M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          Publicar
-        </button>
-      </div>
-      <div class="galeria-preview-grid" id="galeria-preview-grid" style="display:none;margin-top:14px;"></div>
-      <input type="file" id="galeria-file-input" accept="image/*,video/*" multiple style="display:none" onchange="galeriaHandleFiles(event.target.files)">
-      <input id="galeria-caption-input" class="pm-reserva-input" placeholder="Adicione uma legenda... (opcional)" style="display:none;margin-top:12px;">
-      <div class="galeria-upload-progress" id="galeria-progress"></div>
+    <!-- Botão de ação — único elemento visível -->
+    <div style="display:flex;justify-content:center;margin-bottom:32px;">
+      <button class="galeria-upload-btn" onclick="abrirModalUpload()" style="font-size:14px;padding:14px 28px;box-shadow:0 6px 20px rgba(42,53,32,.22);">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2v9M4 7l4-5 4 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 13h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        Compartilhar foto ou vídeo
+      </button>
     </div>
 
     <!-- Grid -->
@@ -3140,6 +3124,7 @@ async function galeriaEnviar(){
     const drop = document.getElementById('galeria-drop');
     if(drop){
       const orig = drop.innerHTML;
+      fecharModalUpload(null, true);
       drop.innerHTML = `<div style="padding:20px;"><div style="font-size:48px;margin-bottom:10px;">🎉</div><div style="font-family:'Playfair Display',serif;font-size:22px;font-style:italic;color:var(--olive-dark);">Publicado! Obrigado por compartilhar!</div></div>`;
       setTimeout(()=>{ drop.innerHTML = orig; renderGaleriaPreview(); }, 2200);
     }
@@ -3148,6 +3133,23 @@ async function galeriaEnviar(){
 }
 
 // ── Lightbox ──────────────────────────────────────────────────────────────
+
+function abrirModalUpload(){
+  galeriaPreviewFiles = [];
+  renderGaleriaPreview();
+  const el = document.getElementById('galeria-caption-input');
+  if(el){ el.style.display='none'; el.value=''; }
+  document.getElementById('modal-upload-galeria').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function fecharModalUpload(e, force){
+  if(force || (e && e.target === document.getElementById('modal-upload-galeria'))){
+    document.getElementById('modal-upload-galeria').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+}
+
 function abrirLightbox(idx){
   lightboxAtual = idx;
   renderLightbox(idx);
@@ -3276,5 +3278,45 @@ function carregarImagens(){
   });
 }
 </script>
+
+<!-- MODAL UPLOAD GALERIA -->
+<div class="rachar-modal-overlay" id="modal-upload-galeria" onclick="fecharModalUpload(event)">
+  <div class="rachar-modal-box" style="max-width:540px;">
+    <div class="rachar-handle"></div>
+    <div style="text-align:center;margin-bottom:22px;">
+      <div style="font-size:36px;margin-bottom:10px;">📸</div>
+      <h3 style="font-family:'Playfair Display',serif;font-size:22px;font-style:italic;color:var(--black);margin-bottom:6px;">Compartilhe o momento</h3>
+      <p style="font-size:13px;color:var(--muted);line-height:1.6;">Fotos e vídeos curtos · máx. 30MB cada · até 2 vídeos por pessoa</p>
+    </div>
+
+    <!-- Drop zone compacta -->
+    <div id="galeria-drop" style="border:1.5px dashed rgba(92,110,66,.3);border-radius:16px;padding:20px;text-align:center;background:rgba(221,230,207,.1);margin-bottom:16px;transition:all .2s;"
+      ondragover="event.preventDefault();this.style.background='rgba(221,230,207,.3)'"
+      ondragleave="this.style.background='rgba(221,230,207,.1)'"
+      ondrop="galeriaHandleDrop(event)">
+      <div class="galeria-preview-grid" id="galeria-preview-grid" style="display:none;margin-bottom:12px;"></div>
+      <div id="galeria-drop-hint" style="display:flex;flex-direction:column;align-items:center;gap:8px;">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" style="color:var(--olive-light);"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span style="font-size:13px;color:var(--muted);">Arraste aqui ou escolha abaixo</span>
+      </div>
+    </div>
+
+    <input id="galeria-caption-input" class="pm-reserva-input" placeholder="Adicione uma legenda... (opcional)" style="display:none;margin-bottom:12px;">
+    <div class="galeria-upload-progress" id="galeria-progress"></div>
+
+    <div style="display:flex;gap:10px;margin-top:4px;">
+      <input type="file" id="galeria-file-input" accept="image/*,video/*" multiple style="display:none" onchange="galeriaHandleFiles(event.target.files)">
+      <button class="galeria-upload-btn" style="flex:1;" onclick="document.getElementById('galeria-file-input').click()">
+        <svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M8 2v9M4 7l4-5 4 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 13h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        Escolher arquivo
+      </button>
+      <button id="galeria-send-btn" class="galeria-upload-btn" style="flex:2;display:none;background:var(--olive-mid);" onclick="galeriaEnviar()">
+        <svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M2 8l10 0M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Publicar agora
+      </button>
+    </div>
+    <button onclick="fecharModalUpload(null,true)" style="width:100%;margin-top:10px;padding:12px;border-radius:12px;border:.5px solid rgba(47,47,47,.12);background:none;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--muted);">Cancelar</button>
+  </div>
+</div>
 </body>
 </html>
