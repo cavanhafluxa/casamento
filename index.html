@@ -376,19 +376,24 @@ footer::before{content:'';position:absolute;top:-40%;left:50%;width:120%;height:
 .lista-banner-sub{font-family:'Cormorant Garamond',serif;font-size:18px;font-style:italic;color:rgba(255,255,255,.55);margin-top:10px;position:relative;}
 .lista-content{max-width:1200px;margin:0 auto;padding:0 32px;overflow:visible;}
 /* Tab bar — estilo pill/Apple, sem scroll horizontal */
+.lista-tab-bar-wrap{
+  display:flex;justify-content:center;
+  margin-top:28px;margin-bottom:4px;
+  padding:0 16px;
+  overflow-x:auto;
+  scrollbar-width:none;-ms-overflow-style:none;
+}
+.lista-tab-bar-wrap::-webkit-scrollbar{display:none;}
 .lista-tab-bar{
-  display:flex;gap:6px;
-  margin-top:32px;margin-bottom:4px;
+  display:flex;gap:4px;flex-shrink:0;
   background:rgba(245,242,237,.9);
   backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
   border:.5px solid rgba(47,47,47,.1);
-  border-radius:999px;padding:5px;
-  width:fit-content;max-width:100%;
+  border-radius:999px;padding:4px;
   box-shadow:0 2px 16px rgba(47,47,47,.06),0 1px 3px rgba(47,47,47,.04);
-  overflow:visible;
 }
 .lista-tab-btn{
-  padding:9px 20px;font-size:12px;letter-spacing:.04em;
+  padding:8px 14px;font-size:11.5px;letter-spacing:.03em;
   color:var(--muted);background:none;border:none;cursor:pointer;
   font-family:'DM Sans',sans-serif;font-weight:500;
   border-radius:999px;white-space:nowrap;
@@ -907,6 +912,59 @@ footer::before{content:'';position:absolute;top:-40%;left:50%;width:120%;height:
   .galeria-grid{grid-template-columns:repeat(3,1fr);gap:2px;}
   .lightbox-box{border-radius:10px;}
 }
+
+/* ── Carrossel Havan ─────────────────────────────────────────────────── */
+/* Carrossel Havan — infinito, só fotos */
+.havan-carrossel-wrap{
+  margin-top:24px;
+  overflow:hidden; /* esconde as cópias fora do card */
+  border-radius:0 0 22px 22px; /* arredonda junto com o card */
+  margin-left:-40px;margin-right:-40px;margin-bottom:-48px; /* sangra até a borda do card */
+  padding:0;
+}
+@media(max-width:600px){
+  .havan-carrossel-wrap{margin-left:-20px;margin-right:-20px;margin-bottom:-28px;}
+}
+.havan-carrossel-label{
+  font-size:9px;letter-spacing:.22em;text-transform:uppercase;
+  color:rgba(255,255,255,.35);font-weight:500;margin-bottom:10px;
+  padding:0 16px;
+}
+/* Track infinito — animation move o conteúdo */
+@keyframes havanScroll{
+  0%  { transform: translateX(0); }
+  100%{ transform: translateX(-50%); } /* 50% porque duplicamos os itens */
+}
+.havan-carrossel{
+  display:flex;gap:8px;
+  width:max-content; /* crescer além do container */
+  animation: havanScroll 28s linear infinite;
+  padding:0 0 14px 16px;
+}
+.havan-carrossel:hover{ animation-play-state: paused; }
+.havan-car-item{
+  flex-shrink:0;
+  width:88px;height:88px;
+  border-radius:12px;overflow:hidden;
+  border:.5px solid rgba(255,255,255,.08);
+  transition:transform .25s,opacity .25s;
+  cursor:pointer;
+  text-decoration:none;display:block;
+}
+.havan-car-item:hover{
+  transform:scale(1.06);
+  opacity:.92;
+  border-color:rgba(255,255,255,.2);
+}
+.havan-car-img{
+  width:100%;height:100%;
+  background:rgba(255,255,255,.06);
+  display:flex;align-items:center;justify-content:center;
+  overflow:hidden;font-size:28px;
+}
+.havan-car-img img{
+  width:100%;height:100%;object-fit:cover;display:block;
+}
 </style>
 </head>
 <body>
@@ -1249,8 +1307,8 @@ footer::before{content:'';position:absolute;top:-40%;left:50%;width:120%;height:
     <p class="lista-banner-sub">cada presente é um pedacinho do nosso lar</p>
   </div>
   <div class="lista-content">
-    <div style="display:flex;justify-content:center;margin-top:32px;margin-bottom:4px;">
-    <div class="lista-tab-bar" style="margin-top:0;margin-bottom:0;">
+    <div class="lista-tab-bar-wrap">
+    <div class="lista-tab-bar">
       <button class="lista-tab-btn active" onclick="switchListaTab('havan',this)">🏪 Lista Havan</button>
       <button class="lista-tab-btn" onclick="switchListaTab('tomio',this)">🏠 Nossa Casa</button>
       <button class="lista-tab-btn" id="btn-admin-tab" style="display:none" onclick="switchListaTab('admin',this)">⚙️ Admin</button>
@@ -1270,6 +1328,11 @@ footer::before{content:'';position:absolute;top:-40%;left:50%;width:120%;height:
           Abrir lista na Havan
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </a>
+      </div>
+      <!-- Carrossel infinito -->
+      <div class="havan-carrossel-wrap">
+        <div class="havan-carrossel-label">itens da nossa lista</div>
+        <div class="havan-carrossel" id="havan-carrossel"></div>
       </div>
     </div>
 
@@ -1363,6 +1426,22 @@ let collageTriggered = false;
 let loveSection, loveTitle, scrollSpace, polaroidsStage;
 let polEls = [];
 
+
+// Itens do carrossel Havan — imagens na raiz: havan-1.webp até havan-12.webp
+const HAVAN_ITENS = [
+  { nome:'Jogo de Panelas', emoji:'🥘', arquivo:'havan-1' },
+  { nome:'Batedeira Planetária', emoji:'🍳', arquivo:'havan-2' },
+  { nome:'Liquidificador', emoji:'🥤', arquivo:'havan-3' },
+  { nome:'Jogo de Cama Queen', emoji:'🛏️', arquivo:'havan-4' },
+  { nome:'Jogo de Toalhas', emoji:'🚿', arquivo:'havan-5' },
+  { nome:'Aspirador de Pó', emoji:'🧹', arquivo:'havan-6' },
+  { nome:'Micro-ondas', emoji:'📦', arquivo:'havan-7' },
+  { nome:'Ferro de Passar', emoji:'👕', arquivo:'havan-8' },
+  { nome:'Cafeteira', emoji:'☕', arquivo:'havan-9' },
+  { nome:'Air Fryer', emoji:'🍟', arquivo:'havan-10' },
+  { nome:'Conjunto de Facas', emoji:'🔪', arquivo:'havan-11' },
+  { nome:'Escorredor de Louça', emoji:'🍽️', arquivo:'havan-12' },
+];
 // Dados estáticos — declarados aqui para evitar TDZ no boot
 const DATA_CASAMENTO = new Date('2026-11-21T18:00:00Z'); // 15h Brasília (UTC-3)
 const polaroidsData = [
@@ -1538,6 +1617,8 @@ function irParaLista(){
     document.getElementById('btn-admin-tab').style.display = 'block';
     document.getElementById('btn-cadastrar-tab').style.display = 'block';
   }
+  // Renderiza carrossel na aba Havan (que é a padrão)
+  renderCarrosselHavan();
 }
 
 function voltarConvite(){
@@ -1551,6 +1632,7 @@ function switchListaTab(id, btn){
   document.querySelectorAll('.lista-tab-btn').forEach(b=>b.classList.remove('active'));
   document.getElementById('ltab-'+id).classList.add('active');
   btn.classList.add('active');
+  if(id==='havan') renderCarrosselHavan();
   if(id==='tomio' && todosPresentes.length===0) carregarPresentes();
   if(id==='admin') carregarAdmin();
   if(id==='cadastrar') renderCadastrarForm();
@@ -1559,6 +1641,45 @@ function switchListaTab(id, btn){
 // ══════════════════════════════════════
 // TRACKING HAVAN
 // ══════════════════════════════════════
+
+// ══════════════════════════════════════
+// CARROSSEL HAVAN
+// ══════════════════════════════════════
+// Tenta extensões em ordem até achar a imagem
+function tryNextExt(img, base, idx){
+  const exts = ['jpg','jpeg','png','gif'];
+  if(idx >= exts.length){
+    img.style.display='none';
+    const fb = img.nextElementSibling;
+    if(fb) fb.style.display='flex';
+    return;
+  }
+  img.onerror = () => tryNextExt(img, base, idx+1);
+  img.src = base + '.' + exts[idx];
+}
+
+function renderCarrosselHavan(){
+  const el = document.getElementById('havan-carrossel');
+  if(!el || el.children.length > 0) return; // já renderizado
+
+  // Gera um item (só foto, sem nome)
+  function itemHTML(item){
+    return `<a href="https://lista.havan.com.br/Convidado/ItensListaPresente/939133"
+         target="_blank" class="havan-car-item" onclick="registrarCliqueHavan()">
+        <div class="havan-car-img">
+          <img src="${item.arquivo}.webp" alt="${item.nome}"
+               onerror="tryNextExt(this,'${item.arquivo}',0)">
+          <span style="display:none;font-size:28px;width:100%;height:100%;align-items:center;justify-content:center;">${item.emoji}</span>
+        </div>
+      </a>`;
+  }
+
+  // Duplica os itens para o loop infinito parecer contínuo
+  const set1 = HAVAN_ITENS.map(itemHTML).join('');
+  const set2 = HAVAN_ITENS.map(itemHTML).join('');
+  el.innerHTML = set1 + set2;
+}
+
 async function registrarCliqueHavan(){
   try {
     await sb.from('casamento_havan_clicks').insert({
