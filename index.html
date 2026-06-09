@@ -798,7 +798,7 @@ footer::before{content:'';position:absolute;top:-40%;left:50%;width:120%;height:
   <div class="lista-content">
     <div class="lista-tab-bar">
       <button class="lista-tab-btn active" onclick="switchListaTab('havan',this)">🏪 Lista Havan</button>
-      <button class="lista-tab-btn" onclick="switchListaTab('tomio',this)">🏠 Nossa Casa (Tomio)</button>
+      <button class="lista-tab-btn" onclick="switchListaTab('tomio',this)">🏠 Nossa Casa</button>
       <button class="lista-tab-btn" id="btn-admin-tab" style="display:none" onclick="switchListaTab('admin',this)">⚙️ Admin</button>
       <button class="lista-tab-btn" id="btn-cadastrar-tab" style="display:none" onclick="switchListaTab('cadastrar',this)">➕ Cadastrar Presente</button>
     </div>
@@ -887,7 +887,12 @@ function fmtDateTime(d){ return d ? new Date(d).toLocaleString('pt-BR') : '—';
 
 function checkAdmin(login){ return (login||'').toLowerCase().trim() === 'eliezer e alexia 0218'; }
 (function boot() {
-  inicializarRefs(); // CRÍTICO: inicializa refs ANTES de qualquer uso
+  // CRÍTICO: scroll ao topo IMEDIATAMENTE antes de qualquer render
+  // Evita que o hero-scroll-space calcule a partir de uma posição errada
+  if (history.scrollRestoration) history.scrollRestoration = 'manual';
+  window.scrollTo(0, 0);
+
+  inicializarRefs();
 
   if (SESSION_LOGIN) {
     IS_ADMIN = checkAdmin(SESSION_LOGIN);
@@ -1838,92 +1843,368 @@ let editandoId = null;
 
 function renderCadastrarForm(presente){
   editandoId = presente ? presente.id : null;
+  uploadedImageBase64 = null;
+  cadStep = 1;
+  cadDraft = presente ? {...presente} : {};
   const el = document.getElementById('cadastrar-content');
-  const v = presente || {};
+  if(!el) return;
+
+  if(editandoId){
+    // Edição: mostra form completo direto (sem steps)
+    renderEditForm(presente, el);
+  } else {
+    renderStep(el);
+  }
+  carregarListaRapida();
+}
+
+// Wizard de cadastro em 4 etapas
+let cadStep = 1;
+let cadDraft = {};
+const CAD_STEPS = [
+  { id:1, icon:'🎁', titulo:'O que é o presente?',     sub:'Nome e categoria' },
+  { id:2, icon:'🏷️', titulo:'Quanto custa?',            sub:'Preço e prioridade' },
+  { id:3, icon:'🏪', titulo:'Onde encontrar?',          sub:'Loja e endereço' },
+  { id:4, icon:'📷', titulo:'Foto do presente',         sub:'Imagem e detalhes finais' },
+];
+
+function renderStep(el){
+  const step = cadStep;
+  const total = CAD_STEPS.length;
+  const info  = CAD_STEPS[step-1];
+  const v     = cadDraft;
+
+  const progressW = Math.round((step/total)*100);
+
   el.innerHTML = `
-    <div style="max-width:700px;">
-      <h2 style="font-family:'Playfair Display',serif;font-size:32px;font-style:italic;margin-bottom:6px;">${editandoId?'Editar Presente':'Novo Presente'}</h2>
-      <p style="font-size:13px;color:var(--muted);margin-bottom:32px;">Preencha os dados do presente.</p>
-      <div style="background:var(--white);border-radius:20px;border:.5px solid rgba(47,47,47,.1);overflow:hidden;margin-bottom:32px;max-width:320px;">
-        <div id="prev-img" style="aspect-ratio:4/3;background:linear-gradient(135deg,var(--olive-pale),var(--olive-light));display:flex;align-items:center;justify-content:center;font-size:56px;">${v.imagem_url?`<img src="${v.imagem_url}" style="width:100%;height:100%;object-fit:cover;display:block;">`:'🎁'}</div>
-        <div style="padding:16px;">
-          <div style="font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--olive-mid);margin-bottom:4px;" id="prev-cat">${v.categoria||'categoria'}</div>
-          <div style="font-family:'Playfair Display',serif;font-size:20px;font-style:italic;color:var(--black);margin-bottom:4px;" id="prev-nome">${v.nome||'Nome do presente'}</div>
-          <div style="font-size:13px;color:var(--muted);margin-bottom:12px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;" id="prev-desc">${v.descricao||'Descrição aparece aqui...'}</div>
-          <div style="font-family:'Playfair Display',serif;font-size:22px;color:var(--black);" id="prev-preco">${v.preco?fmtBRL(v.preco):'R$ 0,00'}</div>
+    <div style="max-width:560px;">
+      <!-- Cabeçalho -->
+      <div style="margin-bottom:32px;">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;flex-wrap:wrap;">
+          ${CAD_STEPS.map((s,i)=>`
+            <div style="display:flex;align-items:center;gap:6px;">
+              <div style="width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;transition:all .3s;
+                ${i+1<step?'background:var(--olive-mid);color:white;':i+1===step?'background:var(--olive-darkest);color:white;box-shadow:0 0 0 3px rgba(92,110,66,.2);':'background:rgba(47,47,47,.08);color:var(--hint);'}
+              ">${i+1<step?'✓':i+1}</div>
+              ${i<CAD_STEPS.length-1?`<div style="width:20px;height:1px;background:${i+1<step?'var(--olive-mid)':'rgba(47,47,47,.12)'};"></div>`:''}
+            </div>
+          `).join('')}
+          <span style="font-size:11px;color:var(--hint);margin-left:4px;">${step} de ${total}</span>
         </div>
+        <div style="background:rgba(47,47,47,.06);border-radius:999px;height:3px;overflow:hidden;margin-bottom:20px;">
+          <div style="height:100%;border-radius:999px;background:linear-gradient(90deg,var(--olive-mid),var(--olive-light));width:${progressW}%;transition:width .5s cubic-bezier(.25,.46,.45,.94);"></div>
+        </div>
+        <div style="font-size:32px;margin-bottom:8px;">${info.icon}</div>
+        <h2 style="font-family:'Playfair Display',serif;font-size:28px;font-style:italic;color:var(--black);margin-bottom:4px;">${info.titulo}</h2>
+        <p style="font-size:13px;color:var(--muted);">${info.sub}</p>
       </div>
-      <div style="display:flex;flex-direction:column;gap:18px;">
+
+      <!-- Conteúdo do step -->
+      <div id="step-body" style="display:flex;flex-direction:column;gap:16px;">
+        ${renderStepBody(step, v)}
+      </div>
+
+      <!-- Navegação -->
+      <div style="display:flex;gap:10px;margin-top:28px;">
+        ${step>1?`<button onclick="cadVoltar()" class="pm-btn pm-btn-secondary" style="flex:1;padding:16px;">← Voltar</button>`:''}
+        <button onclick="cadAvancar()" id="btn-avancar" class="pm-btn pm-btn-primary" style="flex:2;padding:16px;">
+          ${step<total?'Continuar →':'✅ Cadastrar presente'}
+        </button>
+      </div>
+
+      <!-- Lista rápida -->
+      <div id="lista-rapida" style="margin-top:40px;border-top:.5px solid rgba(47,47,47,.1);padding-top:24px;">
+        <h3 style="font-family:'Playfair Display',serif;font-size:20px;font-style:italic;margin-bottom:14px;">Presentes cadastrados</h3>
+        <div id="lista-rapida-content"><div class="loading-state" style="padding:16px 0;font-size:16px;">Carregando...</div></div>
+      </div>
+    </div>
+  `;
+}
+
+function renderStepBody(step, v){
+  if(step===1) return `
+    <div>
+      <label class="pm-reserva-label">Nome do presente *</label>
+      <input class="pm-reserva-input" id="cad-nome" placeholder="Ex: Batedeira Planetária, Jogo de Panelas..." value="${v.nome||''}" style="font-size:17px;" autofocus>
+    </div>
+    <div>
+      <label class="pm-reserva-label">Categoria</label>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:4px;">
+        ${[
+          ['eletrodomestico','🍳','Eletro'],
+          ['cozinha','🥘','Cozinha'],
+          ['quarto','🛏️','Quarto'],
+          ['banheiro','🚿','Banheiro'],
+          ['sala','🛋️','Sala'],
+          ['decoracao','🪴','Decoração'],
+        ].map(([val,ico,label])=>`
+          <button type="button" onclick="cadSelecionarCat('${val}',this)" style="
+            padding:12px 8px;border-radius:14px;border:.5px solid rgba(47,47,47,.18);
+            background:${v.categoria===val?'var(--olive-dark)':'white'};
+            color:${v.categoria===val?'white':'var(--black)'};
+            cursor:pointer;font-family:'DM Sans',sans-serif;font-size:12px;
+            display:flex;flex-direction:column;align-items:center;gap:4px;
+            transition:all .2s;
+          " data-val="${val}">
+            <span style="font-size:22px;">${ico}</span>
+            <span>${label}</span>
+          </button>
+        `).join('')}
+      </div>
+      <input type="hidden" id="cad-cat" value="${v.categoria||''}">
+    </div>
+  `;
+
+  if(step===2) return `
+    <div>
+      <label class="pm-reserva-label">Preço *</label>
+      <div style="position:relative;">
+        <span style="position:absolute;left:18px;top:50%;transform:translateY(-50%);font-size:16px;color:var(--muted);font-family:'Playfair Display',serif;">R$</span>
+        <input class="pm-reserva-input" id="cad-preco" type="number" step="0.01" placeholder="0,00" value="${v.preco||''}" style="padding-left:46px;font-size:22px;font-family:'Playfair Display',serif;" autofocus>
+      </div>
+    </div>
+    <div>
+      <label class="pm-reserva-label">Prioridade</label>
+      <div style="display:flex;gap:8px;margin-top:4px;">
+        ${[['0','Normal',''],['1','Média','🔶'],['2','Alta','⚡']].map(([val,label,ico])=>`
+          <button type="button" onclick="cadSelecionarPrio('${val}',this)" style="
+            flex:1;padding:14px 8px;border-radius:14px;border:.5px solid rgba(47,47,47,.18);
+            background:${(v.prioridade||0)==val?'var(--olive-dark)':'white'};
+            color:${(v.prioridade||0)==val?'white':'var(--black)'};
+            cursor:pointer;font-family:'DM Sans',sans-serif;font-size:13px;
+            display:flex;flex-direction:column;align-items:center;gap:3px;transition:all .2s;
+          " data-val="${val}">
+            ${ico?`<span style="font-size:18px;">${ico}</span>`:'<span style="font-size:18px;">·</span>'}
+            <span>${label}</span>
+          </button>
+        `).join('')}
+      </div>
+      <input type="hidden" id="cad-prio" value="${v.prioridade||0}">
+    </div>
+  `;
+
+  if(step===3) return `
+    <div>
+      <label class="pm-reserva-label">Nome da loja *</label>
+      <input class="pm-reserva-input" id="cad-onde" placeholder="Ex: Havan, Magazine Luiza, Americanas..." value="${v.onde_encontrar||''}" autofocus>
+    </div>
+    <div>
+      <label class="pm-reserva-label">Endereço / link</label>
+      <input class="pm-reserva-input" id="cad-end" placeholder="Ex: Rua X, bairro Y — ou URL do produto" value="${v.endereco_loja||''}">
+    </div>
+    <div>
+      <label class="pm-reserva-label">Comparação de preço (opcional)</label>
+      <input class="pm-reserva-input" id="cad-havan" placeholder="Ex: Na Havan custa R$ 350, aqui R$ 280!" value="${v.comparacao_havan||''}">
+      <p style="font-size:11px;color:var(--hint);margin-top:6px;">Ajuda os convidados a saber que é um bom negócio 💡</p>
+    </div>
+  `;
+
+  if(step===4) return `
+    <div>
+      <label class="pm-reserva-label">Descrição (opcional)</label>
+      <textarea class="pm-reserva-input" id="cad-desc" rows="2" placeholder="Marca, modelo, cor preferida..." style="resize:none;line-height:1.6">${v.descricao||''}</textarea>
+    </div>
+    <div>
+      <label class="pm-reserva-label">Foto do presente</label>
+      <div style="border:.5px dashed rgba(47,47,47,.25);border-radius:14px;padding:24px;text-align:center;cursor:pointer;background:var(--white);" onclick="document.getElementById('cad-file').click()" ondragover="event.preventDefault()" ondrop="handleDrop(event)">
+        <input type="file" id="cad-file" accept="image/*" style="display:none" onchange="handleFileSelect(event)">
+        <div id="upload-preview">${v.imagem_url
+          ?`<img src="${v.imagem_url}" style="max-height:120px;border-radius:8px;margin-bottom:8px;"><br><span style="font-size:12px;color:var(--muted)">Clique para trocar</span>`
+          :`<div style="font-size:32px;margin-bottom:8px;">📷</div><div style="font-size:13px;color:var(--muted);">Clique ou arraste uma foto aqui</div>`
+        }</div>
+      </div>
+      <div style="margin-top:10px;">
+        <label class="pm-reserva-label">Ou cole uma URL de imagem</label>
+        <input class="pm-reserva-input" id="cad-img-url" placeholder="https://..." value="${v.imagem_url||''}" oninput="previewImageUrl(this.value)">
+      </div>
+    </div>
+    <div style="background:var(--olive-paler);border-radius:14px;padding:16px 20px;border:.5px solid rgba(92,110,66,.2);">
+      <p style="font-size:12px;color:var(--olive-dark);font-weight:500;margin-bottom:6px;">📋 Resumo</p>
+      <p style="font-size:13px;color:var(--black);line-height:1.7;">
+        <strong>${v.nome||'—'}</strong> · ${v.categoria||'sem categoria'}<br>
+        ${v.preco?fmtBRL(v.preco):'sem preço'} · ${['Normal','Média','Alta'][v.prioridade||0]}<br>
+        ${v.onde_encontrar||'sem loja'}
+      </p>
+    </div>
+  `;
+  return '';
+}
+
+function cadSelecionarCat(val, btn){
+  cadDraft.categoria = val;
+  document.getElementById('cad-cat').value = val;
+  btn.closest('[id="step-body"]')?.querySelectorAll('button[data-val]').forEach(b=>{
+    const sel = b.getAttribute('data-val')===val;
+    b.style.background = sel?'var(--olive-dark)':'white';
+    b.style.color = sel?'white':'var(--black)';
+  });
+}
+
+function cadSelecionarPrio(val, btn){
+  cadDraft.prioridade = parseInt(val);
+  document.getElementById('cad-prio').value = val;
+  btn.closest('[id="step-body"]')?.querySelectorAll('button[data-val]').forEach(b=>{
+    const sel = b.getAttribute('data-val')===val;
+    b.style.background = sel?'var(--olive-dark)':'white';
+    b.style.color = sel?'white':'var(--black)';
+  });
+}
+
+function cadColetar(){
+  if(cadStep===1){
+    const nome = document.getElementById('cad-nome')?.value.trim();
+    const cat  = document.getElementById('cad-cat')?.value;
+    if(!nome){ alert('Informe o nome do presente!'); document.getElementById('cad-nome')?.focus(); return false; }
+    cadDraft.nome = nome;
+    cadDraft.categoria = cat||null;
+  }
+  if(cadStep===2){
+    const preco = document.getElementById('cad-preco')?.value;
+    const prio  = document.getElementById('cad-prio')?.value;
+    if(!preco||isNaN(parseFloat(preco))){ alert('Informe o preço!'); document.getElementById('cad-preco')?.focus(); return false; }
+    cadDraft.preco = parseFloat(preco);
+    cadDraft.prioridade = parseInt(prio)||0;
+  }
+  if(cadStep===3){
+    const onde = document.getElementById('cad-onde')?.value.trim();
+    const end  = document.getElementById('cad-end')?.value.trim();
+    const havan= document.getElementById('cad-havan')?.value.trim();
+    if(!onde){ alert('Informe o nome da loja!'); document.getElementById('cad-onde')?.focus(); return false; }
+    cadDraft.onde_encontrar   = onde||null;
+    cadDraft.endereco_loja    = end||null;
+    cadDraft.comparacao_havan = havan||null;
+  }
+  if(cadStep===4){
+    const desc   = document.getElementById('cad-desc')?.value.trim();
+    const imgUrl = uploadedImageBase64 || document.getElementById('cad-img-url')?.value.trim() || null;
+    cadDraft.descricao  = desc||null;
+    cadDraft.imagem_url = imgUrl;
+  }
+  return true;
+}
+
+function cadVoltar(){
+  if(!cadColetar()) return;
+  cadStep = Math.max(1, cadStep-1);
+  const el = document.getElementById('cadastrar-content');
+  if(el) renderStep(el);
+}
+
+async function cadAvancar(){
+  if(!cadColetar()) return;
+  const el = document.getElementById('cadastrar-content');
+  if(cadStep < CAD_STEPS.length){
+    cadStep++;
+    renderStep(el);
+    // Foca no primeiro input do novo step
+    setTimeout(()=>{ el?.querySelector('input:not([type=hidden]):not([type=file]),textarea')?.focus(); }, 80);
+  } else {
+    // Último step — salva
+    const btn = document.getElementById('btn-avancar');
+    if(btn){ btn.textContent='Salvando...'; btn.disabled=true; }
+    const payload = {
+      nome: cadDraft.nome,
+      preco: cadDraft.preco,
+      categoria: cadDraft.categoria||null,
+      descricao: cadDraft.descricao||null,
+      onde_encontrar: cadDraft.onde_encontrar||null,
+      endereco_loja: cadDraft.endereco_loja||null,
+      comparacao_havan: cadDraft.comparacao_havan||null,
+      prioridade: cadDraft.prioridade||0,
+      imagem_url: cadDraft.imagem_url||null,
+      ativo: true
+    };
+    const { error } = await sb.from('casamento_listapresentes').insert({...payload, status:'disponivel'});
+    if(!error){
+      todosPresentes = [];
+      // Animação de sucesso antes de resetar
+      if(el) el.innerHTML = `
+        <div style="max-width:560px;text-align:center;padding:60px 24px;animation:fadeUp .6s ease;">
+          <div style="font-size:64px;margin-bottom:20px;animation:heartBeat 1.4s infinite;">🎁</div>
+          <h2 style="font-family:'Playfair Display',serif;font-size:30px;font-style:italic;color:var(--olive-dark);margin-bottom:10px;">Presente cadastrado!</h2>
+          <p style="font-size:15px;color:var(--muted);line-height:1.7;">${payload.nome} foi adicionado à lista 💚</p>
+          <button onclick="renderCadastrarForm()" class="pm-btn pm-btn-primary" style="margin-top:28px;padding:14px 32px;">Cadastrar outro</button>
+        </div>
+      `;
+    } else {
+      if(btn){ btn.textContent='Erro — tente novamente'; btn.disabled=false; }
+      console.error(error);
+    }
+  }
+}
+
+function renderEditForm(v, el){
+  // Edição: form clássico completo (sem steps)
+  el.innerHTML = `
+    <div style="max-width:560px;">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:6px;">
+        <button onclick="renderCadastrarForm()" style="width:32px;height:32px;border-radius:50%;border:.5px solid rgba(47,47,47,.18);background:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px;color:var(--muted);">←</button>
+        <h2 style="font-family:'Playfair Display',serif;font-size:28px;font-style:italic;color:var(--black);">Editar presente</h2>
+      </div>
+      <p style="font-size:13px;color:var(--muted);margin-bottom:28px;">Altere o que quiser e salve.</p>
+      <div style="display:flex;flex-direction:column;gap:16px;">
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
-          <div><label class="pm-reserva-label">Nome do presente *</label><input class="pm-reserva-input" id="cad-nome" placeholder="Ex: Batedeira Planetária" value="${v.nome||''}" oninput="document.getElementById('prev-nome').textContent=this.value||'Nome do presente'"></div>
-          <div><label class="pm-reserva-label">Preço (R$) *</label><input class="pm-reserva-input" id="cad-preco" type="number" step="0.01" placeholder="299.90" value="${v.preco||''}" oninput="document.getElementById('prev-preco').textContent=this.value?'R$ '+parseFloat(this.value).toFixed(2).replace('.',','):'R$ 0,00'"></div>
+          <div><label class="pm-reserva-label">Nome *</label><input class="pm-reserva-input" id="cad-nome" value="${v.nome||''}"></div>
+          <div><label class="pm-reserva-label">Preço (R$) *</label><input class="pm-reserva-input" id="cad-preco" type="number" step="0.01" value="${v.preco||''}"></div>
         </div>
         <div><label class="pm-reserva-label">Categoria</label>
-          <select class="pm-reserva-input" id="cad-cat" onchange="document.getElementById('prev-cat').textContent=this.value||'categoria'">
+          <select class="pm-reserva-input" id="cad-cat">
             <option value="">Selecione...</option>
-            <option value="eletrodomestico" ${v.categoria==='eletrodomestico'?'selected':''}>Eletrodoméstico</option>
-            <option value="cozinha" ${v.categoria==='cozinha'?'selected':''}>Cozinha</option>
-            <option value="quarto" ${v.categoria==='quarto'?'selected':''}>Quarto</option>
-            <option value="banheiro" ${v.categoria==='banheiro'?'selected':''}>Banheiro</option>
-            <option value="sala" ${v.categoria==='sala'?'selected':''}>Sala</option>
-            <option value="decoracao" ${v.categoria==='decoracao'?'selected':''}>Decoração</option>
+            ${[['eletrodomestico','Eletrodoméstico'],['cozinha','Cozinha'],['quarto','Quarto'],['banheiro','Banheiro'],['sala','Sala'],['decoracao','Decoração']].map(([val,lbl])=>`<option value="${val}" ${v.categoria===val?'selected':''}>${lbl}</option>`).join('')}
           </select>
         </div>
-        <div><label class="pm-reserva-label">Descrição</label><textarea class="pm-reserva-input" id="cad-desc" rows="3" placeholder="Descreva o presente, marca, modelo..." oninput="document.getElementById('prev-desc').textContent=this.value||'Descrição aparece aqui...'" style="resize:none;line-height:1.6">${v.descricao||''}</textarea></div>
+        <div><label class="pm-reserva-label">Descrição</label><textarea class="pm-reserva-input" id="cad-desc" rows="2" style="resize:none">${v.descricao||''}</textarea></div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
-          <div><label class="pm-reserva-label">Onde encontrar</label><input class="pm-reserva-input" id="cad-onde" placeholder="Tomio Imóveis — Parceiros" value="${v.onde_encontrar||'Tomio Imóveis — Parceiros'}"></div>
-          <div><label class="pm-reserva-label">Endereço da loja</label><input class="pm-reserva-input" id="cad-end" placeholder="Bairro Progresso, Blumenau/SC" value="${v.endereco_loja||'Bairro Progresso, Blumenau/SC'}"></div>
+          <div><label class="pm-reserva-label">Nome da loja</label><input class="pm-reserva-input" id="cad-onde" value="${v.onde_encontrar||''}"></div>
+          <div><label class="pm-reserva-label">Endereço / link</label><input class="pm-reserva-input" id="cad-end" value="${v.endereco_loja||''}"></div>
         </div>
-        <div><label class="pm-reserva-label">Comparação com a Havan</label><input class="pm-reserva-input" id="cad-havan" placeholder="Na Havan custa R$ X. Aqui economizamos R$ Y!" value="${v.comparacao_havan||''}"></div>
+        <div><label class="pm-reserva-label">Comparação de preço</label><input class="pm-reserva-input" id="cad-havan" value="${v.comparacao_havan||''}"></div>
         <div><label class="pm-reserva-label">Prioridade</label>
           <select class="pm-reserva-input" id="cad-prio">
             <option value="0" ${(!v.prioridade||v.prioridade==0)?'selected':''}>Normal</option>
             <option value="1" ${v.prioridade==1?'selected':''}>🔶 Média</option>
-            <option value="2" ${v.prioridade==2?'selected':''}>⚡ Alta (destaque)</option>
+            <option value="2" ${v.prioridade==2?'selected':''}>⚡ Alta</option>
           </select>
         </div>
         <div>
-          <label class="pm-reserva-label">Foto do presente</label>
-          <div style="border:.5px dashed rgba(47,47,47,.25);border-radius:14px;padding:24px;text-align:center;cursor:pointer;background:var(--white);" onclick="document.getElementById('cad-file').click()" ondragover="event.preventDefault()" ondrop="handleDrop(event)">
+          <label class="pm-reserva-label">Foto</label>
+          <div style="border:.5px dashed rgba(47,47,47,.25);border-radius:14px;padding:20px;text-align:center;cursor:pointer;" onclick="document.getElementById('cad-file').click()" ondragover="event.preventDefault()" ondrop="handleDrop(event)">
             <input type="file" id="cad-file" accept="image/*" style="display:none" onchange="handleFileSelect(event)">
-            <div id="upload-preview">${v.imagem_url?`<img src="${v.imagem_url}" style="max-height:120px;border-radius:8px;margin-bottom:8px;"><br><span style="font-size:12px;color:var(--muted)">Clique para trocar</span>`:`<div style="font-size:32px;margin-bottom:8px;">📷</div><div style="font-size:13px;color:var(--muted);">Clique ou arraste uma foto aqui</div>`}</div>
+            <div id="upload-preview">${v.imagem_url?`<img src="${v.imagem_url}" style="max-height:100px;border-radius:8px;">`:'<span style="font-size:28px;">📷</span>'}</div>
           </div>
-          <div style="margin-top:10px;"><label class="pm-reserva-label">Ou cole uma URL de imagem</label><input class="pm-reserva-input" id="cad-img-url" placeholder="https://..." value="${v.imagem_url||''}" oninput="previewImageUrl(this.value)"></div>
+          <input class="pm-reserva-input" id="cad-img-url" placeholder="Ou cole URL da imagem" value="${v.imagem_url||''}" style="margin-top:8px;" oninput="previewImageUrl(this.value)">
+          <input type="hidden" id="prev-img">
         </div>
-        <div style="display:flex;gap:12px;padding-top:8px;flex-wrap:wrap;">
-          <button class="pm-btn pm-btn-primary" style="flex:2;min-width:160px;padding:18px;" onclick="salvarPresente()">${editandoId?'💾 Salvar alterações':'✅ Cadastrar presente'}</button>
-          ${editandoId?`<button class="pm-btn pm-btn-cancel" style="flex:1;" onclick="excluirPresente(${editandoId})">🗑️ Excluir</button>`:''}
-          <button class="pm-btn pm-btn-secondary" style="flex:1;" onclick="renderCadastrarForm()">Limpar</button>
+        <div style="display:flex;gap:10px;padding-top:4px;">
+          <button class="pm-btn pm-btn-primary" style="flex:2;padding:16px;" onclick="salvarPresente()">💾 Salvar alterações</button>
+          <button class="pm-btn pm-btn-cancel" style="flex:1;" onclick="excluirPresente(${editandoId})">🗑️ Excluir</button>
         </div>
-        <div id="lista-rapida" style="margin-top:32px;border-top:.5px solid rgba(47,47,47,.1);padding-top:24px;">
-          <h3 style="font-family:'Playfair Display',serif;font-size:22px;font-style:italic;margin-bottom:16px;">Presentes cadastrados</h3>
-          <div id="lista-rapida-content"><div class="loading-state" style="padding:20px 0;">Carregando...</div></div>
-        </div>
+      </div>
+      <div id="lista-rapida" style="margin-top:36px;border-top:.5px solid rgba(47,47,47,.1);padding-top:20px;">
+        <h3 style="font-family:'Playfair Display',serif;font-size:20px;font-style:italic;margin-bottom:12px;">Presentes cadastrados</h3>
+        <div id="lista-rapida-content"><div class="loading-state" style="padding:16px 0;font-size:16px;">Carregando...</div></div>
       </div>
     </div>
   `;
   uploadedImageBase64 = null;
-  carregarListaRapida();
 }
+
 
 async function carregarListaRapida(){
   const el = document.getElementById('lista-rapida-content');
   if(!el) return;
-  const {data} = await sb.from('casamento_listapresentes').select('id,nome,preco,status,ativo').order('id');
+  // Busca SÓ os ativos — excluídos não aparecem na lista
+  const {data} = await sb.from('casamento_listapresentes').select('id,nome,preco,status,ativo').eq('ativo',true).order('id');
   if(!data||!data.length){ el.innerHTML='<p style="color:var(--hint);font-size:13px;">Nenhum presente cadastrado ainda.</p>'; return; }
   el.innerHTML = data.map(p=>`
     <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:.5px solid rgba(47,47,47,.06);gap:12px;transition:opacity .3s,transform .3s;" id="lista-item-${p.id}">
       <div style="flex:1;">
-        <strong style="font-size:14px;${!p.ativo?'text-decoration:line-through;color:var(--hint);':''}">${p.nome}</strong>
+        <strong style="font-size:14px;">${p.nome}</strong>
         <span style="font-size:12px;color:var(--muted);margin-left:8px;">${fmtBRL(p.preco)}</span>
-        ${!p.ativo?'<span style="font-size:10px;color:var(--hint);margin-left:6px;">(excluído)</span>':''}
       </div>
       <span class="status-pill status-${p.status}" style="flex-shrink:0;">${p.status}</span>
-      ${p.ativo
-        ? `<button onclick="editarPresente(${p.id})" style="padding:6px 14px;border-radius:999px;border:.5px solid var(--olive-light);background:none;cursor:pointer;font-size:12px;color:var(--olive-mid);font-family:'DM Sans',sans-serif;flex-shrink:0;">Editar</button>
-           <button onclick="excluirPresenteLista(${p.id})" style="padding:6px 14px;border-radius:999px;border:.5px solid rgba(220,80,60,.3);background:none;cursor:pointer;font-size:12px;color:#c04030;font-family:'DM Sans',sans-serif;flex-shrink:0;">Excluir</button>`
-        : '<span style="font-size:11px;color:var(--hint);flex-shrink:0;">removido</span>'
-      }
+      <button onclick="editarPresente(${p.id})" style="padding:6px 14px;border-radius:999px;border:.5px solid var(--olive-light);background:none;cursor:pointer;font-size:12px;color:var(--olive-mid);font-family:'DM Sans',sans-serif;flex-shrink:0;">Editar</button>
+      <button onclick="excluirPresenteLista(${p.id})" style="padding:6px 14px;border-radius:999px;border:.5px solid rgba(220,80,60,.3);background:none;cursor:pointer;font-size:12px;color:#c04030;font-family:'DM Sans',sans-serif;flex-shrink:0;">Excluir</button>
     </div>
   `).join('');
 }
@@ -1957,15 +2238,21 @@ function processarImagem(file){
   const reader = new FileReader();
   reader.onload = (e) => {
     uploadedImageBase64 = e.target.result;
-    document.getElementById('upload-preview').innerHTML = `<img src="${uploadedImageBase64}" style="max-height:120px;border-radius:8px;margin-bottom:8px;"><br><span style="font-size:12px;color:var(--muted)">Clique para trocar</span>`;
-    document.getElementById('prev-img').innerHTML = `<img src="${uploadedImageBase64}" style="width:100%;height:100%;object-fit:cover;display:block;">`;
-    document.getElementById('cad-img-url').value = '';
+    const prev = document.getElementById('upload-preview');
+    if(prev) prev.innerHTML = `<img src="${uploadedImageBase64}" style="max-height:120px;border-radius:8px;margin-bottom:8px;"><br><span style="font-size:12px;color:var(--muted)">Clique para trocar</span>`;
+    const prevImg = document.getElementById('prev-img');
+    if(prevImg && prevImg.tagName !== 'INPUT') prevImg.innerHTML = `<img src="${uploadedImageBase64}" style="width:100%;height:100%;object-fit:cover;display:block;">`;
+    const urlInput = document.getElementById('cad-img-url');
+    if(urlInput) urlInput.value = '';
   };
   reader.readAsDataURL(file);
 }
 function previewImageUrl(url){
   if(!url) return;
-  document.getElementById('prev-img').innerHTML = `<img src="${url}" style="width:100%;height:100%;object-fit:cover;display:block;" onerror="this.parentElement.innerHTML='🎁'">`;
+  const prev = document.getElementById('prev-img');
+  if(prev && prev.tagName !== 'INPUT'){
+    prev.innerHTML = `<img src="${url}" style="width:100%;height:100%;object-fit:cover;display:block;" onerror="this.parentElement.innerHTML='🎁'">`;
+  }
   uploadedImageBase64 = null;
 }
 
