@@ -704,10 +704,10 @@ footer::before{content:'';position:absolute;top:-40%;left:50%;width:120%;height:
 
 /* Upload area */
 .galeria-upload-area{
-  border:1.5px dashed rgba(92,110,66,.35);border-radius:24px;
-  padding:40px 24px;text-align:center;
-  background:rgba(221,230,207,.15);
-  cursor:pointer;transition:all .3s ease;margin-bottom:36px;
+  border:1.5px dashed rgba(92,110,66,.35);border-radius:18px;
+  padding:20px 22px;
+  background:rgba(221,230,207,.12);
+  transition:all .3s ease;margin-bottom:28px;
   position:relative;overflow:hidden;
 }
 .galeria-upload-area:hover,.galeria-upload-area.drag-over{
@@ -775,7 +775,9 @@ footer::before{content:'';position:absolute;top:-40%;left:50%;width:120%;height:
 /* Modal lightbox */
 .lightbox-overlay{
   position:fixed;inset:0;z-index:800;
-  background:rgba(0,0,0,.95);
+  background:rgba(30,28,24,.6);
+  backdrop-filter:blur(20px) saturate(120%);
+  -webkit-backdrop-filter:blur(20px) saturate(120%);
   display:flex;align-items:center;justify-content:center;
   opacity:0;pointer-events:none;transition:opacity .3s;
   padding:20px;
@@ -1131,6 +1133,7 @@ footer::before{content:'';position:absolute;top:-40%;left:50%;width:120%;height:
           <span id="lb-heart">🤍</span>
         </button>
         <span style="font-size:13px;color:rgba(255,255,255,.6);" id="lb-like-count-inline"></span>
+        <button id="lb-delete-btn" onclick="excluirMidiaGaleria()" style="display:none;background:rgba(220,80,60,.15);color:#ed4956;border:none;border-radius:999px;padding:7px 12px;font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:500;transition:background .2s;" onmouseover="this.style.background='rgba(220,80,60,.28)'" onmouseout="this.style.background='rgba(220,80,60,.15)'">🗑️</button>
         <button class="lb-btn-wa" id="lb-wa-btn">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
           Compartilhar
@@ -2937,22 +2940,22 @@ async function renderGaleriaAberta(){
       ondragover="event.preventDefault();this.classList.add('drag-over')"
       ondragleave="this.classList.remove('drag-over')"
       ondrop="galeriaHandleDrop(event)">
-      <span class="galeria-upload-icon">📷</span>
-      <div class="galeria-upload-title">Compartilhe o momento</div>
-      <div class="galeria-upload-sub">Fotos e vídeos curtos (máx. 30MB cada)<br>Até 2 vídeos por pessoa</div>
-      <div class="galeria-preview-grid" id="galeria-preview-grid" style="display:none;"></div>
-      <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
-        <button class="galeria-upload-btn" onclick="document.getElementById('galeria-file-input').click()">
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2v9M4 7l4-5 4 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 13h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-          Escolher arquivo
-        </button>
+      <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;justify-content:space-between;">
+        <div>
+          <button class="galeria-upload-btn" onclick="document.getElementById('galeria-file-input').click()">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2v9M4 7l4-5 4 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 13h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            Compartilhar foto ou vídeo
+          </button>
+          <p style="font-size:11px;color:var(--hint);margin-top:6px;">Fotos e vídeos curtos · máx. 30MB · até 2 vídeos por pessoa</p>
+        </div>
         <button id="galeria-send-btn" class="galeria-upload-btn" style="display:none;background:var(--olive-mid);" onclick="galeriaEnviar()">
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 8l10 0M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
           Publicar
         </button>
       </div>
+      <div class="galeria-preview-grid" id="galeria-preview-grid" style="display:none;margin-top:14px;"></div>
       <input type="file" id="galeria-file-input" accept="image/*,video/*" multiple style="display:none" onchange="galeriaHandleFiles(event.target.files)">
-      <input id="galeria-caption-input" class="pm-reserva-input" placeholder="Adicione uma legenda... (opcional)" style="display:none;margin-top:16px;max-width:480px;">
+      <input id="galeria-caption-input" class="pm-reserva-input" placeholder="Adicione uma legenda... (opcional)" style="display:none;margin-top:12px;">
       <div class="galeria-upload-progress" id="galeria-progress"></div>
     </div>
 
@@ -3160,7 +3163,10 @@ async function renderLightbox(idx){
   const inicial = (item.nome_convidado||'?')[0].toUpperCase();
   document.getElementById('lb-avatar').textContent = inicial;
   document.getElementById('lb-username').textContent = item.nome_convidado;
-  document.getElementById('lb-date').textContent = new Date(item.criado_em).toLocaleDateString('pt-BR',{day:'2-digit',month:'long',year:'numeric'});
+  const d = new Date(item.criado_em);
+  const dataFmt = d.toLocaleDateString('pt-BR',{day:'2-digit',month:'long',year:'numeric'});
+  const horaFmt = d.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
+  document.getElementById('lb-date').textContent = `${dataFmt} às ${horaFmt}`;
 
   // Mídia
   const media = document.getElementById('lb-media');
@@ -3191,11 +3197,20 @@ async function renderLightbox(idx){
   // Caption
   document.getElementById('lb-caption-user').textContent = item.nome_convidado;
   document.getElementById('lb-caption-text').textContent = item.caption || '';
-  document.getElementById('lb-caption-date').textContent = new Date(item.criado_em).toLocaleDateString('pt-BR',{weekday:'long',day:'2-digit',month:'long'});
+  document.getElementById('lb-caption-date').textContent = ''; // data já aparece no header
 
   // Botão WhatsApp
   const txt = encodeURIComponent(`Olha essa foto/vídeo do casamento da Alexia e do Eliezer! 📸💚`);
   document.getElementById('lb-wa-btn').onclick = () => window.open(`https://wa.me/?text=${txt}%20${encodeURIComponent(item.arquivo_url)}`, '_blank');
+
+  // Botão excluir — só para quem enviou ou admin
+  const deleteBtn = document.getElementById('lb-delete-btn');
+  if(deleteBtn){
+    const podeDeletar = item.login_convidado === SESSION_LOGIN || checkAdmin(SESSION_LOGIN);
+    deleteBtn.style.display = podeDeletar ? 'inline-flex' : 'none';
+    deleteBtn.dataset.id = item.id;
+    deleteBtn.dataset.path = item.arquivo_url;
+  }
 }
 
 async function toggleLike(){
@@ -3227,6 +3242,22 @@ async function toggleLike(){
   document.getElementById('lb-likes-count').textContent = count === 0 ? 'Seja o primeiro a curtir!' : `${count} curtida${count!==1?'s':''}`;
   document.getElementById('lb-like-count-inline').textContent = count > 0 ? count : '';
   renderGaleriaGrid();
+}
+
+async function excluirMidiaGaleria(){
+  const btn = document.getElementById('lb-delete-btn');
+  const midiaId = parseInt(btn.dataset.id);
+  const ok = await dlgConfirm('🗑️','Excluir esta foto?','Ela será removida da galeria permanentemente.','Excluir','Cancelar',true);
+  if(!ok) return;
+
+  const { error } = await sb.from('casamento_galeria').update({ativo:false}).eq('id',midiaId);
+  if(!error){
+    fecharLightbox(null,true);
+    galeriaItems = galeriaItems.filter(x=>x.id!==midiaId);
+    renderGaleriaGrid();
+  } else {
+    await dlgAlert('❌','Erro','Não foi possível excluir. Tente novamente.');
+  }
 }
 
 function fecharLightbox(e, force){
