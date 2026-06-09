@@ -874,6 +874,11 @@ let todosPresentes = [];
 let filtroAtivo = 'todos';
 let presenteSelecionado = null;
 
+// Refs do hero — declaradas aqui (antes do boot) para evitar TDZ
+let heroPhoto, heroOverlay, heroNavInside, scrollHint, mainNav;
+let cPhotos = [];
+let collageTriggered = false;
+
 const EMOJIS = {eletrodomestico:'🍳',cozinha:'🥘',quarto:'🛏️',banheiro:'🚿',sala:'🛋️',default:'🎁'};
 function getEmoji(cat){ return EMOJIS[cat]||EMOJIS.default; }
 function fmtBRL(v){ return 'R$ '+parseFloat(v).toFixed(2).replace('.',','); }
@@ -1603,10 +1608,9 @@ function iniciarParticles(){
 // ══════════════════════════════════════
 // HERO SCROLL
 // ══════════════════════════════════════
-let heroPhoto, heroOverlay, heroNavInside, scrollHint, mainNav;
-let cPhotos = [];
-let collageTriggered = false;
-
+// ══════════════════════════════════════
+// HERO SCROLL — funções
+// ══════════════════════════════════════
 function inicializarRefs() {
   heroPhoto     = document.getElementById('hero-photo');
   heroOverlay   = document.getElementById('hero-overlay');
