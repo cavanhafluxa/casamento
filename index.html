@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="theme-color" content="#F5F2ED">
 <title>Alexia & Eliezer — 21.11.2026</title>
@@ -881,20 +881,20 @@ function fmtDate(d){ return d ? new Date(d).toLocaleDateString('pt-BR') : '—';
 function fmtDateTime(d){ return d ? new Date(d).toLocaleString('pt-BR') : '—'; }
 
 function checkAdmin(login){ return (login||'').toLowerCase().trim() === 'eliezer e alexia 0218'; }
-(function(){
-  if(SESSION_LOGIN){
+(function boot() {
+  inicializarRefs(); // CRÍTICO: inicializa refs ANTES de qualquer uso
+
+  if (SESSION_LOGIN) {
     IS_ADMIN = checkAdmin(SESSION_LOGIN);
-    // Remove login screen
     const ls = document.getElementById('login-screen');
-    if(ls) ls.remove();
-    // Remove invite screen instantly (F5 restore — skip opening animation)
+    if (ls) ls.remove();
     const inv = document.getElementById('invite-screen');
-    if(inv) inv.remove();
+    if (inv) inv.remove();
     iniciarConvite(true);
   } else {
     setTimeout(() => {
       const inp = document.getElementById('login-input');
-      if(inp) inp.focus();
+      if (inp) inp.focus();
     }, 900);
   }
 })();
@@ -939,37 +939,16 @@ async function fazerLogin(){
 // ══════════════════════════════════════
 // INICIAR CONVITE
 // ══════════════════════════════════════
-function iniciarConvite(skipInvite){
-  // F5: garante topo antes de qualquer cálculo de layout
-  if(skipInvite) window.scrollTo(0,0);
-
+function iniciarConvite(skipInvite) {
   iniciarLeaves();
-  if(!skipInvite) iniciarParticles();
-  iniciarHeroScroll();
+  if (!skipInvite) iniciarParticles();
+  iniciarHeroScroll(skipInvite);
   iniciarPolaroids();
   iniciarCountdown();
   iniciarFAQ();
   iniciarObservers();
   iniciarRSVP();
   carregarImagens();
-
-  if(skipInvite){
-    // Aguarda o navegador terminar o layout antes de recalcular o hero
-    requestAnimationFrame(()=>{
-      requestAnimationFrame(()=>{
-        window.scrollTo(0,0);
-        updateHero();
-        updatePolaroids();
-        // Reaplica animações do hero que dependiam do invite screen ser fechado
-        const ho = document.getElementById('hero-overlay');
-        const hn = document.getElementById('hero-nav-inside');
-        if(ho){ ho.style.opacity='1'; }
-        if(hn){ hn.style.opacity='1'; }
-        const sh = document.getElementById('scroll-hint');
-        if(sh){ sh.style.opacity='1'; }
-      });
-    });
-  }
 }
 
 // ══════════════════════════════════════
@@ -1624,9 +1603,23 @@ function iniciarParticles(){
 // ══════════════════════════════════════
 // HERO SCROLL
 // ══════════════════════════════════════
-const heroPhoto=document.getElementById('hero-photo'),heroOverlay=document.getElementById('hero-overlay'),heroNavInside=document.getElementById('hero-nav-inside'),scrollHint=document.getElementById('scroll-hint'),mainNav=document.getElementById('main-nav');
-const cPhotos=[document.getElementById('cp-a'),document.getElementById('cp-b'),document.getElementById('cp-c'),document.getElementById('cp-d')];
-let collageTriggered=false;
+let heroPhoto, heroOverlay, heroNavInside, scrollHint, mainNav;
+let cPhotos = [];
+let collageTriggered = false;
+
+function inicializarRefs() {
+  heroPhoto     = document.getElementById('hero-photo');
+  heroOverlay   = document.getElementById('hero-overlay');
+  heroNavInside = document.getElementById('hero-nav-inside');
+  scrollHint    = document.getElementById('scroll-hint');
+  mainNav       = document.getElementById('main-nav');
+  cPhotos = [
+    document.getElementById('cp-a'),
+    document.getElementById('cp-b'),
+    document.getElementById('cp-c'),
+    document.getElementById('cp-d')
+  ];
+}
 
 function getTargetSize(){const vw=window.innerWidth,vh=window.innerHeight;if(vw<=600)return{w:vw*.5,h:vh*.36};const w=Math.min(vw*.54,640);return{w,h:w/(16/9)};}
 function getStartSize(){return{w:window.innerWidth*.88,h:window.innerHeight*.80};}
@@ -1634,10 +1627,15 @@ function lerp(a,b,t){return a+(b-a)*t;}
 function clamp01(x){return Math.max(0,Math.min(1,x));}
 function easeInOut(t){return t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2;}
 
-function popCollage(){cPhotos.forEach((cp,i)=>{setTimeout(()=>cp.classList.add('popped'),i*180);});setTimeout(()=>mainNav.classList.add('visible'),cPhotos.length*180+250);collageTriggered=true;}
+function popCollage(){
+  cPhotos.forEach((cp,i)=>{ if(cp) setTimeout(()=>cp.classList.add('popped'),i*180); });
+  setTimeout(()=>{ if(mainNav) mainNav.classList.add('visible'); },cPhotos.length*180+250);
+  collageTriggered=true;
+}
 
 function updateHero(){
-  const spaceEl=document.getElementById('hero-scroll-space');if(!spaceEl)return;
+  const spaceEl=document.getElementById('hero-scroll-space');
+  if(!spaceEl||!heroPhoto) return;
   const spaceTop=spaceEl.offsetTop,spaceH=spaceEl.offsetHeight,scrolled=window.scrollY-spaceTop,total=spaceH-window.innerHeight;
   const p=clamp01(scrolled/Math.max(total,1)),shrinkP=easeInOut(p);
   const start=getStartSize(),target=getTargetSize();
@@ -1645,27 +1643,42 @@ function updateHero(){
   heroPhoto.style.height=lerp(start.h,target.h,shrinkP)+'px';
   heroPhoto.style.borderRadius=lerp(24,18,shrinkP)+'px';
   const nameFade=clamp01(p/0.55);
-  heroOverlay.style.opacity=1-nameFade;heroNavInside.style.opacity=1-nameFade;
-  scrollHint.style.opacity=Math.max(0,1-nameFade*3);
-  if(p>=0.95&&!collageTriggered)popCollage();
-  if(p<0.5&&collageTriggered){collageTriggered=false;cPhotos.forEach(cp=>cp.classList.remove('popped'));mainNav.classList.remove('visible');}
+  if(heroOverlay) heroOverlay.style.opacity=String(1-nameFade);
+  if(heroNavInside) heroNavInside.style.opacity=String(1-nameFade);
+  if(scrollHint) scrollHint.style.opacity=String(Math.max(0,1-nameFade*3));
+  if(p>=0.95&&!collageTriggered) popCollage();
+  if(p<0.5&&collageTriggered){
+    collageTriggered=false;
+    cPhotos.forEach(cp=>{ if(cp) cp.classList.remove('popped'); });
+    if(mainNav) mainNav.classList.remove('visible');
+  }
 }
 
-function resetHeroSize(){
-  // Força hero para tamanho inicial (scroll=0) antes de qualquer cálculo
-  const start = getStartSize();
-  heroPhoto.style.width  = start.w + 'px';
-  heroPhoto.style.height = start.h + 'px';
-  heroPhoto.style.borderRadius = '24px';
-  if(heroOverlay)  heroOverlay.style.opacity  = '1';
-  if(heroNavInside) heroNavInside.style.opacity = '1';
-}
+function iniciarHeroScroll(skipInvite){
+  if(heroPhoto){
+    const start=getStartSize();
+    heroPhoto.style.width=start.w+'px';
+    heroPhoto.style.height=start.h+'px';
+    heroPhoto.style.borderRadius='24px';
+  }
+  if(heroOverlay) heroOverlay.style.opacity='1';
+  if(heroNavInside) heroNavInside.style.opacity='1';
+  if(scrollHint) scrollHint.style.opacity='';
 
-function iniciarHeroScroll(){
-  resetHeroSize();
   window.addEventListener('scroll',updateHero,{passive:true});
-  window.addEventListener('resize',updateHero,{passive:true});
-  updateHero();
+  window.addEventListener('resize',()=>{ inicializarRefs(); updateHero(); },{passive:true});
+
+  if(skipInvite){
+    window.scrollTo(0,0);
+    requestAnimationFrame(()=>{
+      requestAnimationFrame(()=>{
+        window.scrollTo(0,0);
+        updateHero();
+      });
+    });
+  } else {
+    updateHero();
+  }
 }
 
 // ══════════════════════════════════════
@@ -1891,15 +1904,40 @@ function renderCadastrarForm(presente){
 
 async function carregarListaRapida(){
   const el = document.getElementById('lista-rapida-content');
+  if(!el) return;
   const {data} = await sb.from('casamento_listapresentes').select('id,nome,preco,status,ativo').order('id');
   if(!data||!data.length){ el.innerHTML='<p style="color:var(--hint);font-size:13px;">Nenhum presente cadastrado ainda.</p>'; return; }
   el.innerHTML = data.map(p=>`
-    <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:.5px solid rgba(47,47,47,.06);gap:12px;">
-      <div style="flex:1;"><strong style="font-size:14px;">${p.nome}</strong><span style="font-size:12px;color:var(--muted);margin-left:8px;">${fmtBRL(p.preco)}</span></div>
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:.5px solid rgba(47,47,47,.06);gap:12px;transition:opacity .3s,transform .3s;" id="lista-item-${p.id}">
+      <div style="flex:1;">
+        <strong style="font-size:14px;${!p.ativo?'text-decoration:line-through;color:var(--hint);':''}">${p.nome}</strong>
+        <span style="font-size:12px;color:var(--muted);margin-left:8px;">${fmtBRL(p.preco)}</span>
+        ${!p.ativo?'<span style="font-size:10px;color:var(--hint);margin-left:6px;">(excluído)</span>':''}
+      </div>
       <span class="status-pill status-${p.status}" style="flex-shrink:0;">${p.status}</span>
-      <button onclick="editarPresente(${p.id})" style="padding:6px 14px;border-radius:999px;border:.5px solid var(--olive-light);background:none;cursor:pointer;font-size:12px;color:var(--olive-mid);font-family:'DM Sans',sans-serif;flex-shrink:0;">Editar</button>
+      ${p.ativo
+        ? `<button onclick="editarPresente(${p.id})" style="padding:6px 14px;border-radius:999px;border:.5px solid var(--olive-light);background:none;cursor:pointer;font-size:12px;color:var(--olive-mid);font-family:'DM Sans',sans-serif;flex-shrink:0;">Editar</button>
+           <button onclick="excluirPresenteLista(${p.id})" style="padding:6px 14px;border-radius:999px;border:.5px solid rgba(220,80,60,.3);background:none;cursor:pointer;font-size:12px;color:#c04030;font-family:'DM Sans',sans-serif;flex-shrink:0;">Excluir</button>`
+        : '<span style="font-size:11px;color:var(--hint);flex-shrink:0;">removido</span>'
+      }
     </div>
   `).join('');
+}
+
+async function excluirPresenteLista(id){
+  if(!confirm('Excluir este presente?')) return;
+  const {error} = await sb.from('casamento_listapresentes').update({ativo:false}).eq('id',id);
+  if(!error){
+    const row = document.getElementById('lista-item-'+id);
+    if(row){
+      row.style.opacity='0';
+      row.style.transform='translateX(-12px)';
+      setTimeout(()=>row.remove(), 320);
+    }
+    todosPresentes = [];
+  } else {
+    alert('Erro ao excluir. Tente novamente.');
+  }
 }
 
 async function editarPresente(id){
@@ -1949,7 +1987,7 @@ async function salvarPresente(){
     btn.textContent = editandoId ? '✅ Atualizado!' : '✅ Cadastrado!';
     btn.style.background = '#5C6E42';
     todosPresentes = [];
-    setTimeout(()=>{ renderCadastrarForm(); carregarListaRapida(); }, 1200);
+    setTimeout(()=>{ renderCadastrarForm(); }, 1200);
   } else { btn.textContent = 'Erro — tente novamente'; btn.disabled = false; console.error(error); }
 }
 
