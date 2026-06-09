@@ -1326,6 +1326,7 @@ let loveSection, loveTitle, scrollSpace, polaroidsStage;
 let polEls = [];
 
 // Dados estáticos — declarados aqui para evitar TDZ no boot
+const DATA_CASAMENTO = new Date(Date.now() - 1000); // SIMULAÇÃO: galeria já liberada
 const polaroidsData = [
   {emoji:'🌿',caption:'o dia em que tudo começou',stage:'CAP. I',tilt:'rotate(-6deg) translate(-180px,30px)'},
   {emoji:'✈️',caption:'nossa primeira viagem juntos',stage:'CAP. II',tilt:'rotate(4deg) translate(70px,-25px)'},
@@ -2896,7 +2897,6 @@ async function excluirPresente(id){
 // ══════════════════════════════════════
 // GALERIA COMPARTILHADA
 // ══════════════════════════════════════
-const DATA_CASAMENTO = new Date(Date.now() - 1000); // SIMULAÇÃO: galeria já liberada
 let galeriaIniciada   = false;
 let galeriaItems      = [];
 let lightboxAtual     = null;
