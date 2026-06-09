@@ -2893,7 +2893,7 @@ async function excluirPresente(id){
 // ══════════════════════════════════════
 // GALERIA COMPARTILHADA
 // ══════════════════════════════════════
-const DATA_CASAMENTO = new Date('2026-11-21T10:00:00');
+const DATA_CASAMENTO = new Date(Date.now() - 1000); // SIMULAÇÃO: galeria já liberada
 let galeriaIniciada   = false;
 let galeriaItems      = [];
 let lightboxAtual     = null;
