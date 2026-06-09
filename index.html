@@ -883,6 +883,22 @@ let collageTriggered = false;
 let loveSection, loveTitle, scrollSpace, polaroidsStage;
 let polEls = [];
 
+// Dados estáticos — declarados aqui para evitar TDZ no boot
+const polaroidsData = [
+  {emoji:'🌿',caption:'o dia em que tudo começou',stage:'CAP. I',tilt:'rotate(-6deg) translate(-180px,30px)'},
+  {emoji:'✈️',caption:'nossa primeira viagem juntos',stage:'CAP. II',tilt:'rotate(4deg) translate(70px,-25px)'},
+  {emoji:'🌄',caption:'viagem que não esqueceremos.',stage:'CAP. III',tilt:'rotate(-3deg) translate(-65px,52px)'},
+  {emoji:'🎉',caption:'comemorando cada momento',stage:'CAP. IV',tilt:'rotate(7deg) translate(150px,40px)'},
+  {emoji:'💍',caption:'ela disse sim!! (obviamente)',stage:'CAP. V',tilt:'rotate(-2deg) translate(8px,-42px)'},
+];
+const STEPS = 0.7;
+const CAD_STEPS = [
+  { id:1, icon:'🎁', titulo:'O que é o presente?',     sub:'Nome e categoria' },
+  { id:2, icon:'🏷️', titulo:'Quanto custa?',            sub:'Preço e prioridade' },
+  { id:3, icon:'🏪', titulo:'Onde encontrar?',          sub:'Loja e endereço' },
+  { id:4, icon:'📷', titulo:'Foto do presente',         sub:'Imagem e detalhes finais' },
+];
+
 const EMOJIS = {eletrodomestico:'🍳',cozinha:'🥘',quarto:'🛏️',banheiro:'🚿',sala:'🛋️',default:'🎁'};
 function getEmoji(cat){ return EMOJIS[cat]||EMOJIS.default; }
 function fmtBRL(v){ return 'R$ '+parseFloat(v).toFixed(2).replace('.',','); }
@@ -1697,14 +1713,7 @@ function iniciarHeroScroll(skipInvite){
 // ══════════════════════════════════════
 // POLAROIDS
 // ══════════════════════════════════════
-const polaroidsData=[
-  {emoji:'🌿',caption:'o dia em que tudo começou',stage:'CAP. I',tilt:'rotate(-6deg) translate(-180px,30px)'},
-  {emoji:'✈️',caption:'nossa primeira viagem juntos',stage:'CAP. II',tilt:'rotate(4deg) translate(70px,-25px)'},
-  {emoji:'🌄',caption:'viagem que não esqueceremos.',stage:'CAP. III',tilt:'rotate(-3deg) translate(-65px,52px)'},
-  {emoji:'🎉',caption:'comemorando cada momento',stage:'CAP. IV',tilt:'rotate(7deg) translate(150px,40px)'},
-  {emoji:'💍',caption:'ela disse sim!! (obviamente)',stage:'CAP. V',tilt:'rotate(-2deg) translate(8px,-42px)'},
-];
-const STEPS=0.7;
+// polaroidsData e STEPS movidos para o bloco global (acima do boot)
 
 function inicializarRefsPolaroids(){
   loveSection   = document.getElementById('love-story');
@@ -1872,12 +1881,7 @@ function renderCadastrarForm(presente){
 // Wizard de cadastro em 4 etapas
 let cadStep = 1;
 let cadDraft = {};
-const CAD_STEPS = [
-  { id:1, icon:'🎁', titulo:'O que é o presente?',     sub:'Nome e categoria' },
-  { id:2, icon:'🏷️', titulo:'Quanto custa?',            sub:'Preço e prioridade' },
-  { id:3, icon:'🏪', titulo:'Onde encontrar?',          sub:'Loja e endereço' },
-  { id:4, icon:'📷', titulo:'Foto do presente',         sub:'Imagem e detalhes finais' },
-];
+// CAD_STEPS movido para o bloco global (acima do boot)
 
 function renderStep(el){
   const step = cadStep;
