@@ -675,6 +675,198 @@ footer::before{content:'';position:absolute;top:-40%;left:50%;width:120%;height:
   background:rgba(47,47,47,.07);color:var(--muted);
 }
 .dialog-btn-secondary:hover{background:rgba(47,47,47,.12);color:var(--black);}
+
+/* ══════════════════════════════════════ GALERIA ══════════════════════════════════════ */
+#galeria{padding:110px 32px;background:var(--cream);position:relative;}
+.galeria-inner{max-width:1200px;margin:0 auto;}
+.galeria-eyebrow{font-size:10px;letter-spacing:.32em;text-transform:uppercase;color:var(--olive-mid);margin-bottom:10px;font-weight:500;}
+.galeria-title{font-family:'Playfair Display',serif;font-size:clamp(44px,7vw,80px);font-weight:700;color:var(--black);letter-spacing:-.02em;margin-bottom:8px;}
+.galeria-title em{font-style:italic;color:var(--olive-mid);}
+.galeria-sub{font-size:16px;color:var(--muted);line-height:1.6;max-width:520px;margin-bottom:48px;}
+
+/* Countdown até liberar galeria */
+.galeria-locked{
+  text-align:center;padding:64px 32px;
+  background:rgba(255,255,255,.6);border-radius:28px;
+  border:.5px solid rgba(47,47,47,.08);
+  backdrop-filter:blur(12px);
+  box-shadow:0 4px 32px rgba(47,47,47,.06);
+}
+.galeria-locked-icon{font-size:64px;margin-bottom:20px;display:block;animation:pulse 2.5s ease-in-out infinite;}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
+.galeria-locked-title{font-family:'Playfair Display',serif;font-size:clamp(24px,3vw,36px);font-style:italic;color:var(--black);margin-bottom:10px;}
+.galeria-locked-sub{font-size:15px;color:var(--muted);line-height:1.7;margin-bottom:36px;}
+.galeria-countdown{display:flex;align-items:flex-start;justify-content:center;gap:10px;flex-wrap:wrap;}
+.galeria-cd-unit{text-align:center;min-width:72px;padding:14px 8px;background:var(--white);border:.5px solid rgba(138,158,106,.2);border-radius:16px;}
+.galeria-cd-num{font-family:'Playfair Display',serif;font-size:clamp(32px,5vw,48px);font-weight:400;color:var(--black);line-height:1;}
+.galeria-cd-label{font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--olive-mid);margin-top:6px;font-weight:500;}
+.galeria-cd-sep{font-family:'Playfair Display',serif;font-size:28px;color:var(--olive-light);padding-top:18px;animation:dotPulse 1s ease-in-out infinite;}
+
+/* Upload area */
+.galeria-upload-area{
+  border:1.5px dashed rgba(92,110,66,.35);border-radius:24px;
+  padding:40px 24px;text-align:center;
+  background:rgba(221,230,207,.15);
+  cursor:pointer;transition:all .3s ease;margin-bottom:36px;
+  position:relative;overflow:hidden;
+}
+.galeria-upload-area:hover,.galeria-upload-area.drag-over{
+  border-color:var(--olive-mid);
+  background:rgba(221,230,207,.35);
+  transform:scale(1.01);
+}
+.galeria-upload-icon{font-size:40px;margin-bottom:12px;display:block;}
+.galeria-upload-title{font-family:'Playfair Display',serif;font-size:20px;font-style:italic;color:var(--black);margin-bottom:6px;}
+.galeria-upload-sub{font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:16px;}
+.galeria-upload-btn{
+  display:inline-flex;align-items:center;gap:8px;
+  background:var(--olive-darkest);color:white;
+  padding:12px 24px;border-radius:999px;
+  font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;
+  letter-spacing:.06em;cursor:pointer;border:none;
+  transition:background .25s,transform .2s;
+  box-shadow:0 4px 14px rgba(42,53,32,.22);
+}
+.galeria-upload-btn:hover{background:var(--olive-dark);transform:translateY(-1px);}
+.galeria-upload-progress{
+  display:none;position:absolute;bottom:0;left:0;
+  height:3px;background:linear-gradient(90deg,var(--olive-mid),var(--olive-light));
+  border-radius:999px;transition:width .3s ease;
+}
+
+/* Grade estilo Instagram */
+.galeria-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:3px;
+}
+.galeria-item{
+  aspect-ratio:1;position:relative;overflow:hidden;
+  background:var(--olive-pale);cursor:pointer;
+  transition:transform .3s ease;
+}
+.galeria-item:hover{z-index:2;transform:scale(1.02);}
+.galeria-item img,.galeria-item video{
+  width:100%;height:100%;object-fit:cover;display:block;
+  transition:transform .6s cubic-bezier(.25,.46,.45,.94);
+}
+.galeria-item:hover img,.galeria-item:hover video{transform:scale(1.05);}
+.galeria-item-overlay{
+  position:absolute;inset:0;
+  background:rgba(0,0,0,0);
+  display:flex;align-items:center;justify-content:center;
+  transition:background .3s;
+}
+.galeria-item:hover .galeria-item-overlay{background:rgba(0,0,0,.32);}
+.galeria-item-stats{
+  opacity:0;transition:opacity .3s;
+  display:flex;align-items:center;gap:16px;color:white;
+  font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;
+}
+.galeria-item:hover .galeria-item-stats{opacity:1;}
+.galeria-item-video-badge{
+  position:absolute;top:8px;right:8px;
+  background:rgba(0,0,0,.5);color:white;
+  border-radius:6px;padding:3px 7px;
+  font-size:10px;font-weight:600;letter-spacing:.04em;
+  backdrop-filter:blur(4px);
+}
+
+/* Modal lightbox */
+.lightbox-overlay{
+  position:fixed;inset:0;z-index:800;
+  background:rgba(0,0,0,.95);
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;pointer-events:none;transition:opacity .3s;
+  padding:20px;
+}
+.lightbox-overlay.open{opacity:1;pointer-events:auto;}
+.lightbox-box{
+  max-width:520px;width:100%;
+  background:#1a1a1a;border-radius:14px;overflow:hidden;
+  transform:scale(.92);transition:transform .35s cubic-bezier(.34,1.2,.64,1);
+  box-shadow:0 32px 80px rgba(0,0,0,.6);
+}
+.lightbox-overlay.open .lightbox-box{transform:scale(1);}
+
+/* Header Insta */
+.lb-header{
+  display:flex;align-items:center;gap:12px;
+  padding:12px 14px;background:#1a1a1a;
+}
+.lb-avatar{
+  width:36px;height:36px;border-radius:50%;
+  background:linear-gradient(135deg,var(--olive-mid),var(--olive-darkest));
+  display:flex;align-items:center;justify-content:center;
+  font-size:14px;color:white;font-weight:600;font-family:'DM Sans',sans-serif;
+  flex-shrink:0;
+  border:1.5px solid rgba(138,158,106,.5);
+}
+.lb-username{font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;color:white;line-height:1.2;}
+.lb-date{font-size:11px;color:rgba(255,255,255,.45);margin-top:2px;}
+.lb-close{
+  margin-left:auto;width:30px;height:30px;border-radius:50%;
+  background:rgba(255,255,255,.1);border:none;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  font-size:16px;color:rgba(255,255,255,.7);transition:background .2s;
+}
+.lb-close:hover{background:rgba(255,255,255,.2);color:white;}
+
+/* Mídia */
+.lb-media{width:100%;aspect-ratio:1;background:#111;overflow:hidden;position:relative;}
+.lb-media img,.lb-media video{width:100%;height:100%;object-fit:cover;display:block;}
+.lb-media video{object-fit:contain;background:#000;}
+
+/* Ações Insta */
+.lb-actions{padding:10px 14px 4px;background:#1a1a1a;display:flex;align-items:center;gap:14px;}
+.lb-btn-like{
+  display:flex;align-items:center;gap:4px;background:none;border:none;
+  cursor:pointer;color:rgba(255,255,255,.7);font-size:22px;
+  padding:4px;transition:transform .2s,color .2s;
+}
+.lb-btn-like:hover{transform:scale(1.18);}
+.lb-btn-like.liked{color:#ed4956;animation:heartPop .35s cubic-bezier(.34,1.56,.64,1);}
+@keyframes heartPop{0%{transform:scale(1)}50%{transform:scale(1.4)}100%{transform:scale(1)}}
+.lb-btn-wa{
+  margin-left:auto;display:flex;align-items:center;gap:6px;
+  background:rgba(37,211,102,.15);color:#25D366;
+  padding:7px 14px;border-radius:999px;border:none;cursor:pointer;
+  font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;
+  transition:background .2s;
+}
+.lb-btn-wa:hover{background:rgba(37,211,102,.25);}
+.lb-likes{padding:0 14px 6px;background:#1a1a1a;}
+.lb-likes-count{font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;color:white;}
+.lb-caption{padding:2px 14px 12px;background:#1a1a1a;}
+.lb-caption-user{font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;color:white;margin-right:6px;}
+.lb-caption-text{font-size:13px;color:rgba(255,255,255,.75);}
+.lb-caption-date{font-size:11px;color:rgba(255,255,255,.35);margin-top:4px;}
+
+/* Preview antes de enviar */
+.galeria-preview-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(80px,1fr));gap:8px;margin-bottom:16px;}
+.galeria-preview-item{aspect-ratio:1;border-radius:10px;overflow:hidden;position:relative;background:var(--olive-pale);}
+.galeria-preview-item img,.galeria-preview-item video{width:100%;height:100%;object-fit:cover;}
+.galeria-preview-remove{
+  position:absolute;top:3px;right:3px;width:18px;height:18px;
+  background:rgba(0,0,0,.6);color:white;border:none;border-radius:50%;
+  font-size:11px;cursor:pointer;display:flex;align-items:center;justify-content:center;
+}
+
+/* Loading skeleton */
+.galeria-skeleton{aspect-ratio:1;background:linear-gradient(90deg,var(--olive-pale) 25%,rgba(221,230,207,.8) 50%,var(--olive-pale) 75%);background-size:200% 100%;animation:shimmer 1.4s infinite;}
+@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+
+/* Empty state */
+.galeria-empty{
+  grid-column:1/-1;text-align:center;padding:64px 24px;
+  font-family:'Cormorant Garamond',serif;font-size:20px;font-style:italic;color:var(--hint);
+}
+
+@media(max-width:600px){
+  #galeria{padding:72px 16px;}
+  .galeria-grid{grid-template-columns:repeat(3,1fr);gap:2px;}
+  .lightbox-box{border-radius:10px;}
+}
 </style>
 </head>
 <body>
@@ -752,7 +944,9 @@ footer::before{content:'';position:absolute;top:-40%;left:50%;width:120%;height:
     <ul class="nav-links">
       <li><a href="#love-story">Nossa história</a></li>
       <li><a href="#gifts">Presentes</a></li>
+      <li><a href="#galeria">Galeria</a></li>
       <li><a href="#faq">FAQ</a></li>
+      <li><a href="#galeria">Galeria</a></li>
       <li><a href="#rsvp" class="nav-rsvp">Confirmar</a></li>
     </ul>
   </nav>
@@ -916,6 +1110,62 @@ footer::before{content:'';position:absolute;top:-40%;left:50%;width:120%;height:
         <div class="faq-sub">Não encontrou a resposta?<br><a href="#">Fale com Alexia ou Eliezer</a></div>
       </div>
       <div id="faq-list"></div>
+    </div>
+  </section>
+
+
+  <!-- LIGHTBOX -->
+  <div class="lightbox-overlay" id="lightbox" onclick="fecharLightbox(event)">
+    <div class="lightbox-box">
+      <div class="lb-header">
+        <div class="lb-avatar" id="lb-avatar"></div>
+        <div>
+          <div class="lb-username" id="lb-username"></div>
+          <div class="lb-date" id="lb-date"></div>
+        </div>
+        <button class="lb-close" onclick="fecharLightbox(null,true)">×</button>
+      </div>
+      <div class="lb-media" id="lb-media"></div>
+      <div class="lb-actions">
+        <button class="lb-btn-like" id="lb-like-btn" onclick="toggleLike()">
+          <span id="lb-heart">🤍</span>
+        </button>
+        <span style="font-size:13px;color:rgba(255,255,255,.6);" id="lb-like-count-inline"></span>
+        <button class="lb-btn-wa" id="lb-wa-btn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          Compartilhar
+        </button>
+      </div>
+      <div class="lb-likes"><span class="lb-likes-count" id="lb-likes-count"></span></div>
+      <div class="lb-caption">
+        <span class="lb-caption-user" id="lb-caption-user"></span>
+        <span class="lb-caption-text" id="lb-caption-text"></span>
+        <div class="lb-caption-date" id="lb-caption-date"></div>
+      </div>
+    </div>
+  </div>
+
+  <section id="galeria" class="fade-up">
+    <div class="galeria-inner">
+      <p class="galeria-eyebrow">memórias de vocês</p>
+      <h2 class="galeria-title">Compartilhe o <em>momento</em></h2>
+      <p class="galeria-sub">No dia 21 de novembro, registre e compartilhe os momentos mais especiais com todos os convidados.</p>
+      <div id="galeria-body">
+        <div class="galeria-locked">
+          <span class="galeria-locked-icon">📸</span>
+          <h3 class="galeria-locked-title">A galeria abre no dia do casamento</h3>
+          <p class="galeria-locked-sub">Quando o grande dia chegar, volte aqui e compartilhe as fotos e vídeos do nosso casamento com todos os convidados!</p>
+          <div class="galeria-countdown" id="galeria-cd">
+            <div class="galeria-cd-unit"><div class="galeria-cd-num" id="gcd-days">---</div><div class="galeria-cd-label">dias</div></div>
+            <div class="galeria-cd-sep">:</div>
+            <div class="galeria-cd-unit"><div class="galeria-cd-num" id="gcd-hours">--</div><div class="galeria-cd-label">horas</div></div>
+            <div class="galeria-cd-sep">:</div>
+            <div class="galeria-cd-unit"><div class="galeria-cd-num" id="gcd-mins">--</div><div class="galeria-cd-label">minutos</div></div>
+            <div class="galeria-cd-sep">:</div>
+            <div class="galeria-cd-unit"><div class="galeria-cd-num" id="gcd-secs">--</div><div class="galeria-cd-label">segundos</div></div>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -1222,6 +1472,7 @@ async function fazerLogin(){
 // ══════════════════════════════════════
 function iniciarConvite(skipInvite) {
   iniciarLeaves();
+  iniciarGaleria();
   if (!skipInvite) iniciarParticles();
   iniciarHeroScroll(skipInvite);
   iniciarPolaroids();
@@ -2081,7 +2332,7 @@ function iniciarPolaroids(){
     polaroidsStage.appendChild(el);return el;
   });
   document.getElementById('polaroid-modal').addEventListener('click',e=>{if(e.target===document.getElementById('polaroid-modal'))document.getElementById('polaroid-modal').classList.remove('open');});
-  document.addEventListener('keydown',e=>{if(e.key==='Escape'){document.getElementById('polaroid-modal').classList.remove('open');fecharProdutoModal(null,true);fecharRacharModal(null,true);}});
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'){document.getElementById('polaroid-modal').classList.remove('open');fecharProdutoModal(null,true);fecharRacharModal(null,true);fecharLightbox(null,true);}});
   window.addEventListener('scroll',updatePolaroids,{passive:true});
   window.addEventListener('resize',()=>{
     scrollSpace.style.height=window.innerHeight*(polaroidsData.length*STEPS+1)+'px';
@@ -2636,6 +2887,356 @@ async function excluirPresente(id){
   if(!okDel) return;
   const {error} = await sb.from('casamento_listapresentes').update({ativo:false}).eq('id',id);
   if(!error){ todosPresentes=[]; renderCadastrarForm(); carregarListaRapida(); }
+}
+
+
+// ══════════════════════════════════════
+// GALERIA COMPARTILHADA
+// ══════════════════════════════════════
+const DATA_CASAMENTO = new Date('2026-11-21T10:00:00');
+let galeriaIniciada   = false;
+let galeriaItems      = [];
+let lightboxAtual     = null;
+let galeriaPreviewFiles = [];
+
+function galeriaLiberada(){
+  return new Date() >= DATA_CASAMENTO;
+}
+
+function iniciarGaleria(){
+  iniciarCountdownGaleria();
+  if(galeriaLiberada()){
+    renderGaleriaAberta();
+  }
+}
+
+function iniciarCountdownGaleria(){
+  function tick(){
+    const diff = DATA_CASAMENTO - new Date();
+    if(diff <= 0){ renderGaleriaAberta(); return; }
+    const d = Math.floor(diff/86400000);
+    const h = Math.floor((diff%86400000)/3600000);
+    const m = Math.floor((diff%3600000)/60000);
+    const s = Math.floor((diff%60000)/1000);
+    const set = (id,v) => { const el=document.getElementById(id); if(el) el.textContent=String(v).padStart(id.includes('days')?3:2,'0'); };
+    set('gcd-days',d); set('gcd-hours',h); set('gcd-mins',m); set('gcd-secs',s);
+  }
+  tick();
+  setInterval(tick, 1000);
+}
+
+async function renderGaleriaAberta(){
+  if(galeriaIniciada) return;
+  galeriaIniciada = true;
+  const body = document.getElementById('galeria-body');
+  if(!body) return;
+
+  body.innerHTML = `
+    <!-- Upload -->
+    <div class="galeria-upload-area" id="galeria-drop"
+      ondragover="event.preventDefault();this.classList.add('drag-over')"
+      ondragleave="this.classList.remove('drag-over')"
+      ondrop="galeriaHandleDrop(event)">
+      <span class="galeria-upload-icon">📷</span>
+      <div class="galeria-upload-title">Compartilhe o momento</div>
+      <div class="galeria-upload-sub">Fotos e vídeos curtos (máx. 30MB cada)<br>Até 2 vídeos por pessoa</div>
+      <div class="galeria-preview-grid" id="galeria-preview-grid" style="display:none;"></div>
+      <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
+        <button class="galeria-upload-btn" onclick="document.getElementById('galeria-file-input').click()">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2v9M4 7l4-5 4 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 13h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          Escolher arquivo
+        </button>
+        <button id="galeria-send-btn" class="galeria-upload-btn" style="display:none;background:var(--olive-mid);" onclick="galeriaEnviar()">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 8l10 0M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Publicar
+        </button>
+      </div>
+      <input type="file" id="galeria-file-input" accept="image/*,video/*" multiple style="display:none" onchange="galeriaHandleFiles(event.target.files)">
+      <input id="galeria-caption-input" class="pm-reserva-input" placeholder="Adicione uma legenda... (opcional)" style="display:none;margin-top:16px;max-width:480px;">
+      <div class="galeria-upload-progress" id="galeria-progress"></div>
+    </div>
+
+    <!-- Grid -->
+    <div class="galeria-grid" id="galeria-grid">
+      <div class="galeria-skeleton"></div>
+      <div class="galeria-skeleton"></div>
+      <div class="galeria-skeleton"></div>
+      <div class="galeria-skeleton"></div>
+      <div class="galeria-skeleton"></div>
+      <div class="galeria-skeleton"></div>
+    </div>
+  `;
+
+  await carregarGaleria();
+}
+
+async function carregarGaleria(){
+  const grid = document.getElementById('galeria-grid');
+  if(!grid) return;
+
+  const { data, error } = await sb.from('casamento_galeria')
+    .select('*').eq('ativo',true).order('criado_em',{ascending:false});
+
+  if(error){ grid.innerHTML='<div class="galeria-empty">Erro ao carregar 😕</div>'; return; }
+
+  galeriaItems = data || [];
+  renderGaleriaGrid();
+}
+
+function renderGaleriaGrid(){
+  const grid = document.getElementById('galeria-grid');
+  if(!grid) return;
+  if(!galeriaItems.length){
+    grid.innerHTML = '<div class="galeria-empty">Ainda não há fotos aqui.<br>Seja o primeiro a compartilhar! 📸</div>';
+    return;
+  }
+  grid.innerHTML = galeriaItems.map((item, i) => `
+    <div class="galeria-item" onclick="abrirLightbox(${i})" style="animation:fadeUp .3s ${i*.04}s both;">
+      ${item.tipo === 'video'
+        ? `<video src="${item.arquivo_url}" muted playsinline preload="metadata"></video>
+           <div class="galeria-item-video-badge">▶ Vídeo</div>`
+        : `<img src="${item.arquivo_url}" alt="${item.nome_convidado}" loading="lazy">`
+      }
+      <div class="galeria-item-overlay">
+        <div class="galeria-item-stats">
+          <span>❤️ ${item.likes}</span>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function galeriaHandleDrop(event){
+  event.preventDefault();
+  event.currentTarget.classList.remove('drag-over');
+  galeriaHandleFiles(event.dataTransfer.files);
+}
+
+async function galeriaHandleFiles(fileList){
+  const files = Array.from(fileList);
+  const videos = files.filter(f => f.type.startsWith('video/'));
+  const fotos  = files.filter(f => f.type.startsWith('image/'));
+
+  // Limite 2 vídeos por pessoa
+  const { data: existentes } = await sb.from('casamento_galeria')
+    .select('id').eq('login_convidado', SESSION_LOGIN).eq('tipo','video');
+  const videosJaEnviados = (existentes||[]).length;
+  const videosNovos = galeriaPreviewFiles.filter(f=>f.file.type.startsWith('video/')).length;
+
+  let videosAceitos = 0;
+  const aceitos = [];
+  for(const f of files){
+    if(f.size > 30*1024*1024){ await dlgAlert('📦','Arquivo grande demais',`"${f.name}" ultrapassa 30MB. Escolha um arquivo menor.`); continue; }
+    if(f.type.startsWith('video/')){
+      if(videosJaEnviados + videosNovos + videosAceitos >= 2){
+        await dlgAlert('🎬','Limite de vídeos','Você já atingiu o limite de 2 vídeos. Pode enviar quantas fotos quiser!');
+        continue;
+      }
+      videosAceitos++;
+    }
+    aceitos.push(f);
+  }
+
+  galeriaPreviewFiles.push(...aceitos.map(f=>({file:f, id: Math.random().toString(36).slice(2)})));
+  renderGaleriaPreview();
+}
+
+function renderGaleriaPreview(){
+  const grid   = document.getElementById('galeria-preview-grid');
+  const btnEnv = document.getElementById('galeria-send-btn');
+  const caption= document.getElementById('galeria-caption-input');
+  if(!grid) return;
+
+  if(!galeriaPreviewFiles.length){
+    grid.style.display = 'none';
+    if(btnEnv) btnEnv.style.display = 'none';
+    if(caption) caption.style.display = 'none';
+    return;
+  }
+
+  grid.style.display = 'grid';
+  if(btnEnv) btnEnv.style.display = 'inline-flex';
+  if(caption) caption.style.display = 'block';
+
+  grid.innerHTML = galeriaPreviewFiles.map(({file, id}) => {
+    const url = URL.createObjectURL(file);
+    const isVideo = file.type.startsWith('video/');
+    return `
+      <div class="galeria-preview-item">
+        ${isVideo
+          ? `<video src="${url}" muted playsinline style="width:100%;height:100%;object-fit:cover;">`
+          : `<img src="${url}" alt="">`
+        }
+        <button class="galeria-preview-remove" onclick="galeriaRemoverPreview('${id}')">×</button>
+      </div>
+    `;
+  }).join('');
+}
+
+function galeriaRemoverPreview(id){
+  galeriaPreviewFiles = galeriaPreviewFiles.filter(f => f.id !== id);
+  renderGaleriaPreview();
+}
+
+async function galeriaEnviar(){
+  if(!galeriaPreviewFiles.length) return;
+  const btn = document.getElementById('galeria-send-btn');
+  const progress = document.getElementById('galeria-progress');
+  const caption  = document.getElementById('galeria-caption-input')?.value.trim() || null;
+
+  btn.textContent = 'Enviando...'; btn.disabled = true;
+  if(progress){ progress.style.display='block'; progress.style.width='0%'; }
+
+  const total = galeriaPreviewFiles.length;
+  let enviados = 0;
+  const erros = [];
+
+  for(const {file} of galeriaPreviewFiles){
+    const ext    = file.name.split('.').pop().toLowerCase();
+    const fname  = `${Date.now()}_${Math.random().toString(36).slice(2)}.${ext}`;
+    const path   = `${SESSION_LOGIN}/${fname}`;
+    const tipo   = file.type.startsWith('video/') ? 'video' : 'foto';
+
+    const { data: up, error: upErr } = await sb.storage
+      .from('casamento-galeria')
+      .upload(path, file, { contentType: file.type, upsert: false });
+
+    if(upErr){ erros.push(file.name); continue; }
+
+    const { data: pub } = sb.storage.from('casamento-galeria').getPublicUrl(path);
+    const url = pub.publicUrl;
+
+    await sb.from('casamento_galeria').insert({
+      login_convidado: SESSION_LOGIN,
+      nome_convidado:  SESSION_LOGIN,
+      arquivo_url:     url,
+      tipo,
+      caption,
+    });
+
+    enviados++;
+    if(progress) progress.style.width = Math.round(enviados/total*100)+'%';
+  }
+
+  if(erros.length){
+    await dlgAlert('⚠️','Alguns arquivos falharam',`${enviados} enviados com sucesso. Falha em: ${erros.join(', ')}`);
+  }
+
+  // Reset
+  galeriaPreviewFiles = [];
+  renderGaleriaPreview();
+  btn.textContent = 'Publicar'; btn.disabled = false;
+  if(progress){ setTimeout(()=>{ progress.style.width='0%'; progress.style.display='none'; }, 600); }
+
+  // Caption reset
+  const capEl = document.getElementById('galeria-caption-input');
+  if(capEl) capEl.value = '';
+
+  if(enviados > 0){
+    // Animação de sucesso rápida
+    const drop = document.getElementById('galeria-drop');
+    if(drop){
+      const orig = drop.innerHTML;
+      drop.innerHTML = `<div style="padding:20px;"><div style="font-size:48px;margin-bottom:10px;">🎉</div><div style="font-family:'Playfair Display',serif;font-size:22px;font-style:italic;color:var(--olive-dark);">Publicado! Obrigado por compartilhar!</div></div>`;
+      setTimeout(()=>{ drop.innerHTML = orig; renderGaleriaPreview(); }, 2200);
+    }
+    await carregarGaleria();
+  }
+}
+
+// ── Lightbox ──────────────────────────────────────────────────────────────
+function abrirLightbox(idx){
+  lightboxAtual = idx;
+  renderLightbox(idx);
+  document.getElementById('lightbox').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+async function renderLightbox(idx){
+  const item = galeriaItems[idx];
+  if(!item) return;
+
+  // Avatar inicial do nome
+  const inicial = (item.nome_convidado||'?')[0].toUpperCase();
+  document.getElementById('lb-avatar').textContent = inicial;
+  document.getElementById('lb-username').textContent = item.nome_convidado;
+  document.getElementById('lb-date').textContent = new Date(item.criado_em).toLocaleDateString('pt-BR',{day:'2-digit',month:'long',year:'numeric'});
+
+  // Mídia
+  const media = document.getElementById('lb-media');
+  if(item.tipo === 'video'){
+    media.innerHTML = `<video src="${item.arquivo_url}" controls autoplay muted loop playsinline></video>`;
+  } else {
+    media.innerHTML = `<img src="${item.arquivo_url}" alt="${item.nome_convidado}">`;
+  }
+
+  // Likes — verifica se eu já curti
+  const { data: meuLike } = await sb.from('casamento_galeria_likes')
+    .select('id').eq('midia_id', item.id).eq('login', SESSION_LOGIN).maybeSingle();
+
+  const corti = !!meuLike;
+  const heart = document.getElementById('lb-heart');
+  const likeBtn = document.getElementById('lb-like-btn');
+  heart.textContent = corti ? '❤️' : '🤍';
+  likeBtn.classList.toggle('liked', corti);
+  likeBtn.dataset.id = item.id;
+  likeBtn.dataset.liked = corti ? '1' : '0';
+
+  const likesCount = document.getElementById('lb-likes-count');
+  const likesInline = document.getElementById('lb-like-count-inline');
+  const count = item.likes || 0;
+  likesCount.textContent = count === 0 ? 'Seja o primeiro a curtir!' : `${count} curtida${count!==1?'s':''}`;
+  likesInline.textContent = count > 0 ? count : '';
+
+  // Caption
+  document.getElementById('lb-caption-user').textContent = item.nome_convidado;
+  document.getElementById('lb-caption-text').textContent = item.caption || '';
+  document.getElementById('lb-caption-date').textContent = new Date(item.criado_em).toLocaleDateString('pt-BR',{weekday:'long',day:'2-digit',month:'long'});
+
+  // Botão WhatsApp
+  const txt = encodeURIComponent(`Olha essa foto/vídeo do casamento da Alexia e do Eliezer! 📸💚`);
+  document.getElementById('lb-wa-btn').onclick = () => window.open(`https://wa.me/?text=${txt}%20${encodeURIComponent(item.arquivo_url)}`, '_blank');
+}
+
+async function toggleLike(){
+  const btn = document.getElementById('lb-like-btn');
+  const midiaId = parseInt(btn.dataset.id);
+  const jaLikei = btn.dataset.liked === '1';
+  const item = galeriaItems.find(x=>x.id===midiaId);
+  if(!item) return;
+
+  if(jaLikei){
+    await sb.from('casamento_galeria_likes').delete().eq('midia_id',midiaId).eq('login',SESSION_LOGIN);
+    await sb.from('casamento_galeria').update({likes: Math.max(0,(item.likes||1)-1)}).eq('id',midiaId);
+    item.likes = Math.max(0,(item.likes||1)-1);
+    btn.dataset.liked = '0';
+    document.getElementById('lb-heart').textContent = '🤍';
+    btn.classList.remove('liked');
+  } else {
+    await sb.from('casamento_galeria_likes').insert({midia_id:midiaId,login:SESSION_LOGIN}).catch(()=>{});
+    await sb.from('casamento_galeria').update({likes:(item.likes||0)+1}).eq('id',midiaId);
+    item.likes = (item.likes||0)+1;
+    btn.dataset.liked = '1';
+    document.getElementById('lb-heart').textContent = '❤️';
+    btn.classList.add('liked');
+    // Efeito de coração
+    burstConfetti(btn, {count:10});
+  }
+
+  const count = item.likes;
+  document.getElementById('lb-likes-count').textContent = count === 0 ? 'Seja o primeiro a curtir!' : `${count} curtida${count!==1?'s':''}`;
+  document.getElementById('lb-like-count-inline').textContent = count > 0 ? count : '';
+  renderGaleriaGrid();
+}
+
+function fecharLightbox(e, force){
+  if(force || (e && e.target === document.getElementById('lightbox'))){
+    document.getElementById('lightbox').classList.remove('open');
+    document.body.style.overflow = '';
+    // Para o vídeo se tiver tocando
+    const vid = document.querySelector('#lb-media video');
+    if(vid){ vid.pause(); vid.src=''; }
+  }
 }
 
 function carregarImagens(){
