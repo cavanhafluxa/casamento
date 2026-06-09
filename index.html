@@ -362,10 +362,19 @@ footer::before{content:'';position:absolute;top:-40%;left:50%;width:120%;height:
 .confetti{position:fixed;width:8px;height:14px;pointer-events:none;z-index:1100;opacity:0;}
 
 /* ══════════════════════════════════════ LISTA DE PRESENTES PAGE ══════════════════════════════════════ */
-#page-lista{display:none;min-height:100vh;background:var(--cream);}
-#page-lista.ativo{display:block;}
+#page-lista{display:none;background:var(--cream);}
+#page-lista.ativo{
+  display:block;
+  position:fixed;
+  inset:0;
+  overflow-y:auto;
+  overflow-x:hidden;
+  z-index:500;
+  background:var(--cream);
+  -webkit-overflow-scrolling:touch;
+}
 .lista-nav{
-  position:fixed;top:0;left:0;right:0;
+  position:sticky;top:0;
   z-index:200;
   background:rgba(245,242,237,.97);
   backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
@@ -373,8 +382,6 @@ footer::before{content:'';position:absolute;top:-40%;left:50%;width:120%;height:
   padding:0 32px;height:60px;
   display:flex;align-items:center;justify-content:space-between;gap:16px;
 }
-/* Empurra o conteúdo do page-lista abaixo da lista-nav fixa */
-#page-lista .lista-banner{margin-top:60px;}
 .lista-nav-logo{font-family:'Cormorant Garamond',serif;font-size:20px;font-style:italic;color:var(--black);text-decoration:none;letter-spacing:.06em;cursor:pointer;}
 .lista-back{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted);cursor:pointer;background:none;border:none;font-family:'DM Sans',sans-serif;transition:color .2s;}
 .lista-back:hover{color:var(--black);}
