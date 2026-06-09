@@ -735,16 +735,53 @@ footer::before{content:'';position:absolute;top:-40%;left:50%;width:120%;height:
 }
 
 /* Grade estilo Instagram */
+/* Título da galeria */
+.galeria-festa-header{
+  display:flex;align-items:center;gap:16px;
+  margin-bottom:20px;
+}
+.galeria-festa-title{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(22px,3vw,30px);font-weight:400;font-style:italic;
+  color:var(--black);white-space:nowrap;
+}
+.galeria-festa-line{
+  flex:1;height:0;
+  border-top:1.5px dashed rgba(92,110,66,.28);
+}
+.galeria-festa-count{
+  font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--olive-mid);font-weight:500;white-space:nowrap;
+}
+
+/* Grid */
 .galeria-grid{
   display:grid;
   grid-template-columns:repeat(3,1fr);
-  gap:3px;
+  gap:0;
+  border:1.5px dashed rgba(92,110,66,.25);
+  border-radius:18px;
+  overflow:hidden;
 }
 .galeria-item{
   aspect-ratio:1;position:relative;overflow:hidden;
   background:var(--olive-pale);cursor:pointer;
   transition:transform .3s ease;
+  /* Linhas tracejadas entre células */
+  border-right:1.5px dashed rgba(92,110,66,.22);
+  border-bottom:1.5px dashed rgba(92,110,66,.22);
 }
+/* Remove borda direita na última coluna */
+.galeria-item:nth-child(3n){border-right:none;}
+/* Remove borda inferior na última linha */
+.galeria-item:nth-last-child(-n+3):nth-child(3n+1),
+.galeria-item:nth-last-child(-n+3):nth-child(3n+2),
+.galeria-item:nth-last-child(-n+3):nth-child(3n){border-bottom:none;}
+/* Skeleton sem borda */
+.galeria-skeleton{border-right:1.5px dashed rgba(92,110,66,.18);border-bottom:1.5px dashed rgba(92,110,66,.18);}
+.galeria-skeleton:nth-child(3n){border-right:none;}
+.galeria-skeleton:last-child,.galeria-skeleton:nth-child(4),.galeria-skeleton:nth-child(5),.galeria-skeleton:nth-child(6){border-bottom:none;}
+
 .galeria-item:hover{z-index:2;transform:scale(1.02);}
 .galeria-item img,.galeria-item video{
   width:100%;height:100%;object-fit:cover;display:block;
@@ -762,6 +799,7 @@ footer::before{content:'';position:absolute;top:-40%;left:50%;width:120%;height:
   opacity:0;transition:opacity .3s;
   display:flex;align-items:center;gap:16px;color:white;
   font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;
+  text-shadow:0 1px 4px rgba(0,0,0,.4);
 }
 .galeria-item:hover .galeria-item-stats{opacity:1;}
 .galeria-item-video-badge{
@@ -1326,7 +1364,7 @@ let loveSection, loveTitle, scrollSpace, polaroidsStage;
 let polEls = [];
 
 // Dados estáticos — declarados aqui para evitar TDZ no boot
-const DATA_CASAMENTO = new Date(Date.now() - 1000); // SIMULAÇÃO: galeria já liberada
+const DATA_CASAMENTO = new Date('2026-11-21T18:00:00Z'); // 15h Brasília (UTC-3)
 const polaroidsData = [
   {emoji:'🌿',caption:'o dia em que tudo começou',stage:'CAP. I',tilt:'rotate(-6deg) translate(-180px,30px)'},
   {emoji:'✈️',caption:'nossa primeira viagem juntos',stage:'CAP. II',tilt:'rotate(4deg) translate(70px,-25px)'},
@@ -2943,7 +2981,12 @@ async function renderGaleriaAberta(){
       </button>
     </div>
 
-    <!-- Grid -->
+    <!-- Título + Grid -->
+    <div class="galeria-festa-header">
+      <span class="galeria-festa-title">Galeria da Festa</span>
+      <span class="galeria-festa-line"></span>
+      <span class="galeria-festa-count" id="galeria-count">carregando...</span>
+    </div>
     <div class="galeria-grid" id="galeria-grid">
       <div class="galeria-skeleton"></div>
       <div class="galeria-skeleton"></div>
@@ -2974,9 +3017,15 @@ function renderGaleriaGrid(){
   const grid = document.getElementById('galeria-grid');
   if(!grid) return;
   if(!galeriaItems.length){
+    const cntEl = document.getElementById('galeria-count');
+    if(cntEl) cntEl.textContent = '0 fotos';
     grid.innerHTML = '<div class="galeria-empty">Ainda não há fotos aqui.<br>Seja o primeiro a compartilhar! 📸</div>';
     return;
   }
+  // Atualiza contador
+  const countEl = document.getElementById('galeria-count');
+  if(countEl) countEl.textContent = galeriaItems.length === 0 ? '' : `${galeriaItems.length} foto${galeriaItems.length!==1?'s':''}`;
+
   grid.innerHTML = galeriaItems.map((item, i) => `
     <div class="galeria-item" onclick="abrirLightbox(${i})" style="animation:fadeUp .3s ${i*.04}s both;">
       ${item.tipo === 'video'
