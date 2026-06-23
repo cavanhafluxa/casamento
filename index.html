@@ -1580,6 +1580,13 @@ const dlgPrompt  = (icon, title, msg, placeholder) =>
 // ══════════════════════════════════════
 // LOGIN
 // ══════════════════════════════════════
+// Remove acentos e padroniza p/ comparar com login_norm da tabela
+function normLogin(s){
+  return (s||'')
+    .normalize('NFKD').replace(/[\u0300-\u036f]/g,'') // tira acentos
+    .toLowerCase().replace(/\s+/g,' ').trim();
+}
+
 async function fazerLogin(){
   const input = document.getElementById('login-input');
   const nome  = input.value.trim();
@@ -1589,22 +1596,53 @@ async function fazerLogin(){
 
   btn.textContent = 'Verificando...'; btn.disabled = true;
   input.style.borderColor = '';
+  erro.style.display = 'none';
 
-  const nomeNorm = nome.toLowerCase().trim();
-  IS_ADMIN = checkAdmin(nome);
+  const alvo = normLogin(nome);
 
-  let membros = null;
-  if(nomeNorm === 'eliezer e alexia 0218'){ membros = ['Eliezer','Alexia']; }
-  else if(nomeNorm === 'felipe e família' || nomeNorm === 'felipe e familia'){ membros = ['Felipe','Barbara','Maria','Maite']; }
+  // Busca o convidado na tabela (compara pela versão sem acento)
+  let convidado = null;
+  try {
+    const { data, error } = await sb
+      .from('casamento_convidados')
+      .select('login,membros,is_admin')
+      .eq('login_norm', alvo)
+      .maybeSingle();
+    if(error) throw error;
+    convidado = data;
+  } catch(e){
+    // Falha de rede/consulta — não trava o convidado real por causa de erro técnico
+    btn.textContent = 'Acessar convite'; btn.disabled = false;
+    input.style.borderColor = '#c04030';
+    erro.textContent = 'Não conseguimos verificar agora. Tente de novo em instantes 💚';
+    erro.style.display = 'block';
+    return;
+  }
 
-  sessionStorage.setItem('casamento_login', nome);
+  // Não está na lista → bloqueia
+  if(!convidado){
+    btn.textContent = 'Acessar convite'; btn.disabled = false;
+    input.style.borderColor = '#c04030';
+    erro.innerHTML = 'Não encontramos esse login na lista de convidados.<br>Confira como foi escrito no seu convite ou fale com Alexia ou Eliezer 💚';
+    erro.style.display = 'block';
+    try { await sb.from('casamento_acessos').insert({ login_usado: 'NEGADO: '+nome, nome_digitado: nome }); } catch(e){}
+    return;
+  }
+
+  // Login válido — usa o login OFICIAL da tabela (grafia correta com acento)
+  const loginOficial = convidado.login;
+  const membros = Array.isArray(convidado.membros) ? convidado.membros
+                 : (convidado.membros ? JSON.parse(convidado.membros) : null);
+  IS_ADMIN = !!convidado.is_admin || checkAdmin(loginOficial);
+
+  sessionStorage.setItem('casamento_login', loginOficial);
   if(membros) sessionStorage.setItem('casamento_membros', JSON.stringify(membros));
-  SESSION_LOGIN  = nome;
+  SESSION_LOGIN  = loginOficial;
   SESSION_MEMBROS = membros;
 
-  try { await sb.from('casamento_acessos').insert({ login_usado: nome, nome_digitado: nome }); } catch(e){}
+  try { await sb.from('casamento_acessos').insert({ login_usado: loginOficial, nome_digitado: nome }); } catch(e){}
 
-  btn.textContent = IS_ADMIN ? 'Bem-vindo de volta! 👑' : `Seja bem-vindo, ${nome}! 💚`;
+  btn.textContent = IS_ADMIN ? 'Bem-vindo de volta! 👑' : `Seja bem-vindo(a)! 💚`;
   btn.style.background = '#5C6E42';
 
   setTimeout(() => {
@@ -2496,7 +2534,8 @@ function inicializarRefsPolaroids(){
 }
 
 function loadImg(el,baseName){
-  const exts=['png','PNG','jpeg','jpg','JPG','JPEG'];let i=0;
+  // .webp tem prioridade (mais leve / carrega rápido); cai pros formatos antigos se não existir.
+  const exts=['webp','WEBP','jpeg','jpg','JPG','JPEG','png','PNG'];let i=0;
   function tryNext(){if(i>=exts.length){el.style.display='none';return;}el.src=baseName+'.'+exts[i++];el.onerror=tryNext;}
   tryNext();
 }
