@@ -953,40 +953,62 @@ footer::before{content:'';position:absolute;top:-40%;left:50%;width:120%;height:
 .cha-banner-eyebrow{font-size:10px;letter-spacing:.32em;text-transform:uppercase;color:var(--olive-light);margin-bottom:12px;font-weight:500;}
 .cha-banner-title{font-family:'Cormorant Garamond',serif;font-size:clamp(44px,8vw,80px);font-style:italic;font-weight:300;color:white;line-height:1.1;margin-bottom:8px;}
 .cha-banner-sub{font-family:'Cormorant Garamond',serif;font-size:18px;font-style:italic;color:rgba(255,255,255,.65);}
-.cha-tab-bar-wrap{padding:24px 32px 0;background:var(--cream);border-bottom:.5px solid rgba(47,47,47,.07);}
-.cha-tab-bar{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;padding-bottom:1px;}
+.cha-tab-bar-wrap{padding:28px 32px 0;background:var(--cream);}
+.cha-tab-bar{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;padding-bottom:24px;justify-content:center;flex-wrap:nowrap;}
 .cha-tab-bar::-webkit-scrollbar{display:none}
-.cha-tab-btn{flex-shrink:0;display:flex;align-items:center;gap:6px;padding:9px 18px;border-radius:999px;border:.5px solid transparent;background:none;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;color:var(--muted);cursor:pointer;letter-spacing:.04em;transition:all .25s;white-space:nowrap;}
-.cha-tab-btn:hover{background:rgba(47,47,47,.05);color:var(--black);}
+.cha-tab-btn{flex-shrink:0;display:flex;align-items:center;gap:7px;padding:10px 20px;border-radius:999px;border:.5px solid rgba(47,47,47,.12);background:none;font-family:'DM Sans',sans-serif;font-size:12.5px;font-weight:500;color:var(--muted);cursor:pointer;letter-spacing:.03em;transition:all .25s;white-space:nowrap;}
+.cha-tab-btn:hover{background:rgba(47,47,47,.05);color:var(--black);border-color:rgba(47,47,47,.2);}
 .cha-tab-btn.active{background:var(--olive-darkest);color:white;border-color:var(--olive-darkest);}
-.cha-content{padding:32px;max-width:900px;margin:0 auto;}
+.cha-tab-btn svg{opacity:.7;}
+.cha-tab-btn.active svg{opacity:1;}
+.cha-content{padding:0 32px 48px;max-width:1080px;margin:0 auto;}
 .cha-tab-panel{display:none;}
 .cha-tab-panel.active{display:block;}
-.cha-event-card{background:var(--olive-darkest);border-radius:24px;padding:40px;color:white;display:grid;grid-template-columns:1fr auto;gap:32px;align-items:start;margin-bottom:28px;position:relative;overflow:hidden;}
-.cha-event-card::before{content:'';position:absolute;top:-40%;right:-10%;width:50%;height:150%;background:radial-gradient(ellipse,rgba(138,158,106,.25) 0%,transparent 70%);pointer-events:none;}
-.cha-event-img{width:220px;height:160px;border-radius:14px;object-fit:cover;flex-shrink:0;}
-@media(max-width:640px){.cha-event-card{grid-template-columns:1fr}.cha-event-img{width:100%;height:180px;}}
-.cha-event-title{font-family:'Cormorant Garamond',serif;font-size:clamp(24px,3.5vw,38px);font-style:italic;font-weight:300;color:white;margin-bottom:10px;}
-.cha-event-desc{font-size:14px;color:rgba(255,255,255,.7);line-height:1.7;margin-bottom:20px;}
-.cha-event-badges{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px;}
-.cha-event-badge{display:flex;align-items:center;gap:6px;padding:7px 14px;background:rgba(255,255,255,.12);border-radius:999px;font-size:12px;color:rgba(255,255,255,.85);font-weight:500;border:.5px solid rgba(255,255,255,.15);}
-.cha-event-btn{display:inline-flex;align-items:center;gap:8px;padding:13px 24px;background:white;color:var(--olive-darkest);border-radius:12px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;letter-spacing:.04em;text-decoration:none;transition:transform .2s,box-shadow .2s;border:none;cursor:pointer;}
+/* Event card — 3 colunas */
+.cha-event-card{background:var(--olive-darkest);border-radius:24px;padding:40px;color:white;display:grid;grid-template-columns:1fr 260px 220px;gap:32px;align-items:start;margin-bottom:28px;position:relative;overflow:hidden;}
+.cha-event-card::before{content:'';position:absolute;top:-40%;right:-10%;width:50%;height:150%;background:radial-gradient(ellipse,rgba(138,158,106,.2) 0%,transparent 70%);pointer-events:none;}
+.cha-event-img{width:100%;height:200px;border-radius:14px;object-fit:cover;flex-shrink:0;}
+.cha-event-sidebar{display:flex;flex-direction:column;gap:16px;position:relative;z-index:1;}
+.cha-event-sidebar-item{display:flex;align-items:flex-start;gap:10px;}
+.cha-event-sidebar-icon{width:28px;height:28px;border-radius:6px;background:rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+.cha-event-sidebar-label{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.5);font-weight:500;margin-bottom:3px;}
+.cha-event-sidebar-val{font-size:13px;color:white;line-height:1.5;}
+@media(max-width:860px){.cha-event-card{grid-template-columns:1fr}.cha-event-img{height:200px;}}
+.cha-event-title{font-family:'Cormorant Garamond',serif;font-size:clamp(22px,3vw,34px);font-style:italic;font-weight:300;color:white;margin-bottom:10px;position:relative;z-index:1;}
+.cha-event-desc{font-size:13.5px;color:rgba(255,255,255,.72);line-height:1.75;margin-bottom:20px;position:relative;z-index:1;}
+.cha-event-badges{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:22px;position:relative;z-index:1;}
+.cha-event-badge{display:flex;align-items:center;gap:6px;padding:6px 13px;background:rgba(255,255,255,.1);border-radius:999px;font-size:11.5px;color:rgba(255,255,255,.82);font-weight:500;border:.5px solid rgba(255,255,255,.12);}
+.cha-event-btn{display:inline-flex;align-items:center;gap:8px;padding:13px 22px;background:white;color:var(--olive-darkest);border-radius:12px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;letter-spacing:.04em;text-decoration:none;transition:transform .2s,box-shadow .2s;border:none;cursor:pointer;position:relative;z-index:1;}
 .cha-event-btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.25);}
-.cha-info-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:14px;margin-bottom:28px;}
-.cha-info-block{background:var(--white);border-radius:16px;padding:20px;border:.5px solid rgba(47,47,47,.08);}
-.cha-info-icon{font-size:24px;margin-bottom:10px;}
-.cha-info-label{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--hint);font-weight:500;margin-bottom:4px;}
-.cha-info-val{font-size:15px;color:var(--black);font-weight:500;line-height:1.5;}
+.cha-event-details-btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:14px 20px;background:rgba(255,255,255,.12);color:white;border-radius:12px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;letter-spacing:.04em;text-decoration:none;transition:background .2s;border:.5px solid rgba(255,255,255,.2);cursor:pointer;margin-top:8px;}
+.cha-event-details-btn:hover{background:rgba(255,255,255,.2);}
+/* Hint note */
+.cha-hint{background:rgba(221,230,207,.35);border-radius:14px;padding:16px 20px;border:.5px solid rgba(92,110,66,.2);font-size:13.5px;color:var(--olive-dark);line-height:1.7;margin-bottom:24px;}
+/* Features grid */
+.cha-section-label{font-size:14px;font-weight:600;color:var(--black);margin:28px 0 16px;display:flex;align-items:center;gap:6px;}
+.cha-features-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:28px;}
+@media(max-width:640px){.cha-features-grid{grid-template-columns:1fr 1fr;}}
+.cha-feature{background:var(--white);border-radius:16px;padding:20px 18px;border:.5px solid rgba(47,47,47,.07);display:flex;align-items:flex-start;gap:14px;transition:transform .25s,box-shadow .25s;}
+.cha-feature:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(47,47,47,.08);}
+.cha-feature-icon{width:46px;height:46px;border-radius:12px;background:var(--olive-darkest);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.cha-feature-title{font-size:13px;font-weight:600;color:var(--black);margin-bottom:4px;}
+.cha-feature-desc{font-size:12px;color:var(--muted);line-height:1.55;}
+/* Bottom banner */
+.cha-bottom-banner{background:rgba(221,230,207,.35);border-radius:14px;padding:20px 24px;text-align:center;font-size:14px;color:var(--olive-dark);border:.5px solid rgba(92,110,66,.18);font-family:'Cormorant Garamond',serif;font-style:italic;font-size:17px;}
+/* Info grid detalhes */
+.cha-info-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px;margin-bottom:28px;}
+.cha-info-block{background:var(--white);border-radius:16px;padding:22px;border:.5px solid rgba(47,47,47,.08);}
+.cha-info-icon{width:36px;height:36px;border-radius:10px;background:var(--olive-pale);display:flex;align-items:center;justify-content:center;margin-bottom:12px;}
+.cha-info-label{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--hint);font-weight:500;margin-bottom:5px;}
+.cha-info-val{font-size:14px;color:var(--black);font-weight:500;line-height:1.6;}
 .cha-info-val a{color:var(--olive-mid);text-decoration:none;border-bottom:1px solid var(--olive-pale);}
-.cha-features-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px;margin-bottom:32px;}
-.cha-feature{background:var(--white);border-radius:16px;padding:20px 18px;border:.5px solid rgba(47,47,47,.08);display:flex;align-items:flex-start;gap:14px;}
-.cha-feature-icon{width:44px;height:44px;border-radius:12px;background:var(--olive-pale);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
-.cha-feature-title{font-size:13px;font-weight:600;color:var(--black);margin-bottom:3px;}
-.cha-feature-desc{font-size:12px;color:var(--muted);line-height:1.5;}
+.cha-maps-btn{display:inline-flex;align-items:center;gap:8px;padding:14px 24px;background:var(--olive-darkest);color:white;border-radius:12px;text-decoration:none;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;letter-spacing:.04em;transition:transform .2s,box-shadow .2s;}
+.cha-maps-btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(42,53,32,.28);}
+/* Recados */
 .cha-rsvp-title{font-family:'Playfair Display',serif;font-size:clamp(26px,4vw,40px);font-weight:700;color:var(--black);margin-bottom:8px;}
 .cha-rsvp-title em{font-style:italic;color:var(--olive-mid);}
 .cha-rsvp-sub{font-size:15px;color:var(--muted);margin-bottom:28px;line-height:1.6;}
-.cha-rsvp-already{background:rgba(92,110,66,.1);border:.5px solid rgba(92,110,66,.25);border-radius:16px;padding:24px;text-align:center;font-family:'Cormorant Garamond',serif;font-size:20px;font-style:italic;color:var(--olive-dark);}
+.cha-rsvp-already{background:rgba(92,110,66,.08);border:.5px solid rgba(92,110,66,.22);border-radius:20px;padding:36px 24px;text-align:center;}
 .cha-recados-list{display:flex;flex-direction:column;gap:14px;margin-bottom:24px;}
 .cha-recado-card{background:var(--white);border-radius:14px;padding:18px 20px;border:.5px solid rgba(47,47,47,.08);}
 .cha-recado-name{font-size:13px;font-weight:600;color:var(--black);margin-bottom:4px;}
@@ -1476,61 +1498,134 @@ footer::before{content:'';position:absolute;top:-40%;left:50%;width:120%;height:
     <span class="cha-nav-logo">A & E</span>
     <span class="cha-nav-user" id="cha-nav-user"></span>
   </nav>
+
   <div class="cha-banner">
     <div class="cha-banner-bg" id="cha-banner-bg"></div>
     <div class="cha-banner-overlay">
       <p class="cha-banner-eyebrow">Chá de Panela</p>
       <h1 class="cha-banner-title">Chá de Panela</h1>
       <p class="cha-banner-sub">celebrando o amor em cada detalhe</p>
-      <div style="margin-top:16px;font-size:22px;">🤍</div>
+      <svg style="margin-top:16px;opacity:.5;" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
     </div>
   </div>
+
   <div class="cha-tab-bar-wrap">
     <div class="cha-tab-bar">
-      <button class="cha-tab-btn active" onclick="switchChaTab('lista',this)">🎁 Lista de Presentes</button>
-      <button class="cha-tab-btn" onclick="switchChaTab('cha',this)">☕ Chá de Panela</button>
-      <button class="cha-tab-btn" onclick="switchChaTab('detalhes',this)">📅 Detalhes do Evento</button>
-      <button class="cha-tab-btn" onclick="switchChaTab('recados',this)">💌 Recados</button>
+      <button class="cha-tab-btn active" onclick="switchChaTab('lista',this)">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 9h6M9 13h6M9 17h4"/></svg>
+        Lista de Presentes
+      </button>
+      <button class="cha-tab-btn" onclick="switchChaTab('cha',this)">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 12h18M3 12a9 9 0 0 0 9 9M3 12a9 9 0 0 1 9-9M21 12a9 9 0 0 1-9 9m9-9a9 9 0 0 0-9-9"/><path d="M8 12a9.86 9.86 0 0 0 2 6M16 12a9.86 9.86 0 0 1-2 6M8 12a9.86 9.86 0 0 1 2-6M16 12a9.86 9.86 0 0 0-2-6"/><path d="M5 19a17.07 17.07 0 0 0 14 0" stroke-width="1.5" stroke-linecap="round"/></svg>
+        Chá de Panela
+      </button>
+      <button class="cha-tab-btn" onclick="switchChaTab('detalhes',this)">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+        Detalhes do Evento
+      </button>
+      <button class="cha-tab-btn" onclick="switchChaTab('recados',this)">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        Recados
+      </button>
     </div>
   </div>
+
   <div class="cha-content">
+
     <!-- ABA: LISTA DE PRESENTES -->
     <div class="cha-tab-panel active" id="cha-tab-lista">
-      <div class="cha-event-card" style="margin-top:24px;">
-        <div>
+      <div class="cha-event-card" style="margin-top:32px;">
+        <div style="position:relative;z-index:1;">
           <h2 class="cha-event-title">Nosso Chá de Panela</h2>
           <p class="cha-event-desc">Estamos preparando nosso lar com muito amor e cada presente faz parte desse momento tão especial.<br><br>Escolha um item da nossa lista ou venha nos celebrar nesse dia inesquecível!</p>
           <div class="cha-event-badges">
-            <span class="cha-event-badge">💚 Com amor para nosso lar</span>
-            <span class="cha-event-badge">🎁 Cada detalhe importa</span>
-            <span class="cha-event-badge">🏠 Começando nossa história</span>
+            <span class="cha-event-badge">Com amor para nosso lar</span>
+            <span class="cha-event-badge">Cada detalhe importa</span>
+            <span class="cha-event-badge">Começando nossa história</span>
           </div>
-          <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
-            <a href="https://lista.havan.com.br/Convidado/ItensListaPresente/939137?aba=sobre" target="_blank" class="cha-event-btn">
-              Ver lista na Havan
-              <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </a>
-          </div>
+          <a href="https://lista.havan.com.br/Convidado/ItensListaPresente/939137?aba=sobre" target="_blank" class="cha-event-btn">
+            Ver lista na Havan
+            <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
         </div>
-        <img class="cha-event-img" data-photo="col-b" alt="Chá de Panela" id="cha-event-img" style="object-fit:cover;">
+        <img class="cha-event-img" id="cha-event-img" alt="Chá de Panela" src="">
+        <div class="cha-event-sidebar">
+          <div class="cha-event-sidebar-item">
+            <div class="cha-event-sidebar-icon">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+            </div>
+            <div><div class="cha-event-sidebar-label">Data</div><div class="cha-event-sidebar-val">22 de agosto de 2026</div></div>
+          </div>
+          <div class="cha-event-sidebar-item">
+            <div class="cha-event-sidebar-icon">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+            </div>
+            <div><div class="cha-event-sidebar-label">Horário</div><div class="cha-event-sidebar-val">14h00</div></div>
+          </div>
+          <div class="cha-event-sidebar-item">
+            <div class="cha-event-sidebar-icon">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            </div>
+            <div><div class="cha-event-sidebar-label">Local</div><div class="cha-event-sidebar-val">Rua Santa Terezinha, 295<br><span style="font-size:11px;color:rgba(255,255,255,.55);">Progresso, Blumenau — SC</span></div></div>
+          </div>
+          <div class="cha-event-sidebar-item">
+            <div class="cha-event-sidebar-icon">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 9h6M9 13h6M9 17h4"/></svg>
+            </div>
+            <div><div class="cha-event-sidebar-label">Sugestão de Presente</div><div class="cha-event-sidebar-val">Lista de presentes online</div></div>
+          </div>
+          <button class="cha-event-details-btn" onclick="switchChaTab('detalhes', document.querySelectorAll('.cha-tab-btn')[2])">
+            Ver detalhes do evento
+            <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
       </div>
-      <div style="background:rgba(221,230,207,.35);border-radius:16px;padding:20px 24px;border:.5px solid rgba(92,110,66,.2);font-size:14px;color:var(--olive-dark);line-height:1.7;margin-bottom:28px;">
-        💡 Acesse nossa lista exclusiva na Havan. Cada item que você presentear vai compor o nosso primeiro lar juntos com muito amor.
+
+      <div class="cha-hint">
+        Acesse nossa lista exclusiva na Havan. Cada item que você presentear vai compor o nosso primeiro lar juntos com muito amor.
+      </div>
+
+      <div class="cha-section-label">
+        O que você encontra por aqui
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--olive-mid)" stroke-width="1.8"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
       </div>
       <div class="cha-features-grid">
-        <div class="cha-feature"><div class="cha-feature-icon">🎁</div><div><div class="cha-feature-title">Lista de Presentes</div><div class="cha-feature-desc">Escolha itens com praticidade e segurança.</div></div></div>
-        <div class="cha-feature"><div class="cha-feature-icon">☕</div><div><div class="cha-feature-title">Detalhes do Evento</div><div class="cha-feature-desc">Confirme presença e veja todos os detalhes.</div></div></div>
-        <div class="cha-feature"><div class="cha-feature-icon">💌</div><div><div class="cha-feature-title">Deixe seu Recado</div><div class="cha-feature-desc">Envie carinho e desejos para esse momento.</div></div></div>
-        <div class="cha-feature"><div class="cha-feature-icon">📸</div><div><div class="cha-feature-title">Galeria do Amor</div><div class="cha-feature-desc">Acompanhe fotos e momentos do nosso chá.</div></div></div>
+        <div class="cha-feature">
+          <div class="cha-feature-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 9h6M9 13h6M9 17h4"/></svg>
+          </div>
+          <div><div class="cha-feature-title">Lista de Presentes</div><div class="cha-feature-desc">Escolha itens com praticidade e segurança.</div></div>
+        </div>
+        <div class="cha-feature">
+          <div class="cha-feature-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.6"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          </div>
+          <div><div class="cha-feature-title">Detalhes do Evento</div><div class="cha-feature-desc">Confirme presença e veja todos os detalhes.</div></div>
+        </div>
+        <div class="cha-feature">
+          <div class="cha-feature-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.6"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          </div>
+          <div><div class="cha-feature-title">Deixe seu Recado</div><div class="cha-feature-desc">Envie carinho e desejos para esse momento.</div></div>
+        </div>
+        <div class="cha-feature">
+          <div class="cha-feature-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.6"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+          </div>
+          <div><div class="cha-feature-title">Galeria do Amor</div><div class="cha-feature-desc">Acompanhe fotos e momentos do nosso chá.</div></div>
+        </div>
       </div>
-      <div style="background:var(--olive-darkest);border-radius:16px;padding:16px 24px;text-align:center;font-size:14px;color:rgba(255,255,255,.8);">Obrigado por fazer parte desse momento tão especial! 💚</div>
+
+      <div class="cha-bottom-banner">
+        Obrigado por fazer parte desse momento tão especial!
+      </div>
     </div>
 
     <!-- ABA: CHÁ DE PANELA (CONFIRMAÇÃO) -->
     <div class="cha-tab-panel" id="cha-tab-cha">
-      <div style="margin-top:24px;">
+      <div style="margin-top:32px;">
         <h2 class="cha-rsvp-title">Você vai ao <em>Chá?</em></h2>
-        <p class="cha-rsvp-sub">Confirme sua presença no nosso Chá de Panela em 22 de agosto.</p>
+        <p class="cha-rsvp-sub">Confirme sua presença no nosso Chá de Panela em 22 de agosto de 2026.</p>
         <div id="cha-rsvp-body">
           <div class="loading-state">Verificando...</div>
         </div>
@@ -1539,39 +1634,56 @@ footer::before{content:'';position:absolute;top:-40%;left:50%;width:120%;height:
 
     <!-- ABA: DETALHES DO EVENTO -->
     <div class="cha-tab-panel" id="cha-tab-detalhes">
-      <div style="margin-top:24px;">
+      <div style="margin-top:32px;">
         <h2 class="cha-rsvp-title" style="margin-bottom:24px;">Detalhes do <em>Evento</em></h2>
         <div class="cha-info-grid">
-          <div class="cha-info-block"><div class="cha-info-icon">📅</div><div class="cha-info-label">Data</div><div class="cha-info-val">22 de agosto de 2026<br><span style="font-size:12px;color:var(--muted);">Sábado</span></div></div>
-          <div class="cha-info-block"><div class="cha-info-icon">🕓</div><div class="cha-info-label">Horário</div><div class="cha-info-val">A partir das 16h</div></div>
-          <div class="cha-info-block"><div class="cha-info-icon">📍</div><div class="cha-info-label">Local</div><div class="cha-info-val">Associação dos Moradores<br><span style="font-size:12px;color:var(--muted);">R. Santa Terezinha, 295<br>Progresso, Blumenau - SC<br>89026-800</span></div></div>
-          <div class="cha-info-block"><div class="cha-info-icon">🎁</div><div class="cha-info-label">Sugestão de Presente</div><div class="cha-info-val"><a href="https://lista.havan.com.br/Convidado/ItensListaPresente/939137?aba=sobre" target="_blank">Lista de presentes online</a></div></div>
+          <div class="cha-info-block">
+            <div class="cha-info-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--olive-mid)" stroke-width="1.8"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></div>
+            <div class="cha-info-label">Data</div>
+            <div class="cha-info-val">22 de agosto de 2026<br><span style="font-size:12px;color:var(--muted);">Sábado</span></div>
+          </div>
+          <div class="cha-info-block">
+            <div class="cha-info-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--olive-mid)" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div>
+            <div class="cha-info-label">Horário</div>
+            <div class="cha-info-val">A partir das 16h</div>
+          </div>
+          <div class="cha-info-block">
+            <div class="cha-info-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--olive-mid)" stroke-width="1.8"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+            <div class="cha-info-label">Local</div>
+            <div class="cha-info-val">Associação dos Moradores<br><span style="font-size:12px;color:var(--muted);">R. Santa Terezinha, 295<br>Progresso, Blumenau — SC</span></div>
+          </div>
+          <div class="cha-info-block">
+            <div class="cha-info-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--olive-mid)" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 9h6M9 13h6M9 17h4"/></svg></div>
+            <div class="cha-info-label">Sugestão de Presente</div>
+            <div class="cha-info-val"><a href="https://lista.havan.com.br/Convidado/ItensListaPresente/939137?aba=sobre" target="_blank">Lista de presentes online</a></div>
+          </div>
         </div>
-        <a href="https://www.google.com/maps/search/?api=1&query=R.+Santa+Terezinha,+295+Progresso+Blumenau+SC" target="_blank" style="display:inline-flex;align-items:center;gap:8px;padding:14px 24px;background:var(--olive-darkest);color:white;border-radius:12px;text-decoration:none;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;letter-spacing:.04em;transition:transform .2s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform=''">
-          📍 Ver no Google Maps
-          <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <a href="https://www.google.com/maps/search/?api=1&query=R.+Santa+Terezinha,+295+Progresso+Blumenau+SC" target="_blank" class="cha-maps-btn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          Ver no Google Maps
         </a>
       </div>
     </div>
 
     <!-- ABA: RECADOS -->
     <div class="cha-tab-panel" id="cha-tab-recados">
-      <div style="margin-top:24px;">
+      <div style="margin-top:32px;">
         <h2 class="cha-rsvp-title" style="margin-bottom:8px;">Deixe um <em>Recado</em></h2>
-        <p style="font-size:15px;color:var(--muted);margin-bottom:24px;">Envie carinho e desejos para o nosso chá de panela 💚</p>
+        <p style="font-size:15px;color:var(--muted);margin-bottom:24px;">Envie carinho e desejos para o nosso chá de panela</p>
         <div class="cha-recado-form" style="margin-bottom:28px;">
           <div style="display:flex;flex-direction:column;gap:12px;">
             <div>
               <label style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--olive-mid);font-weight:500;margin-bottom:6px;display:block;">Sua mensagem</label>
               <textarea id="cha-recado-msg" class="rsvp-input" rows="4" placeholder="Deixe um desejo, uma bênção, um recado de amor..." style="resize:none;line-height:1.6;"></textarea>
             </div>
-            <button onclick="enviarRecadoCha()" style="align-self:flex-end;padding:13px 24px;background:var(--olive-darkest);color:white;border:none;border-radius:12px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;letter-spacing:.06em;cursor:pointer;transition:background .25s,transform .2s;" onmouseover="this.style.background='var(--olive-dark)'" onmouseout="this.style.background='var(--olive-darkest)'" id="cha-recado-btn">Enviar Recado 💚</button>
+            <button onclick="enviarRecadoCha()" style="align-self:flex-end;padding:13px 24px;background:var(--olive-darkest);color:white;border:none;border-radius:12px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;letter-spacing:.06em;cursor:pointer;transition:background .25s,transform .2s;" onmouseover="this.style.background='var(--olive-dark)'" onmouseout="this.style.background='var(--olive-darkest)'" id="cha-recado-btn">Enviar Recado</button>
           </div>
         </div>
         <div id="cha-recados-lista"><div class="loading-state">Carregando recados...</div></div>
-        <p class="cha-recado-footer">Os recados ficam visíveis para todos os convidados 💚</p>
+        <p class="cha-recado-footer">Os recados ficam visíveis para todos os convidados</p>
       </div>
     </div>
+
   </div>
 </div>
 
@@ -1872,14 +1984,20 @@ function irParaCha(){
   const cha = document.getElementById('page-cha');
   cha.classList.add('ativo');
   window.scrollTo(0,0);
-  document.getElementById('cha-nav-user').textContent = `Olá, ${SESSION_LOGIN} 💚`;
-  // Usa foto da colagem como banner
+  document.getElementById('cha-nav-user').textContent = `Olá, ${SESSION_LOGIN}`;
+
+  // Usa foto da hero (col-b ou hero) como banner e como imagem do card
+  const heroEl = document.querySelector('[data-photo="hero"] img') ||
+                 document.querySelector('[data-photo="col-b"] img') ||
+                 document.querySelector('[data-photo="col-a"] img');
+  const imgSrc = heroEl?.src || heroEl?.getAttribute('src') || '';
+
   const bg = document.getElementById('cha-banner-bg');
-  const imgSrc = document.querySelector('[data-photo="col-b"] img')?.src || document.querySelector('[data-photo="hero"] img')?.src;
   if(bg && imgSrc) bg.style.backgroundImage = `url('${imgSrc}')`;
-  // Seta foto no card de evento
+
   const evImg = document.getElementById('cha-event-img');
   if(evImg && imgSrc) evImg.src = imgSrc;
+
   // Carrega confirmação e recados
   iniciarChaRSVP();
   carregarRecadosCha();
@@ -2791,18 +2909,7 @@ function abrirConvite(){
 // FLOATING LEAVES
 // ══════════════════════════════════════
 function iniciarLeaves(){
-  const container=document.getElementById('floating-leaves');
-  const leafEmojis=['🌿','🍃','🌱'];
-  const count=window.innerWidth<=600?6:12;
-  for(let i=0;i<count;i++){
-    const leaf=document.createElement('div');leaf.className='float-leaf';
-    leaf.textContent=leafEmojis[Math.floor(Math.random()*leafEmojis.length)];
-    leaf.style.left=(Math.random()*100)+'%';
-    leaf.style.fontSize=(16+Math.random()*20)+'px';
-    leaf.style.animationDuration=(15+Math.random()*20)+'s';
-    leaf.style.animationDelay=(Math.random()*-30)+'s';
-    container.appendChild(leaf);
-  }
+  // Partículas de folhas removidas a pedido
 }
 
 // ══════════════════════════════════════
