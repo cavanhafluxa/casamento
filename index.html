@@ -939,6 +939,65 @@ footer::before{content:'';position:absolute;top:-40%;left:50%;width:120%;height:
   .lightbox-box{border-radius:10px;}
 }
 
+/* ══════ CHÁ DE PANELA PAGE ══════ */
+#page-cha{display:none;background:var(--cream);}
+#page-cha.ativo{display:block;position:fixed;inset:0;overflow-y:auto;overflow-x:hidden;z-index:500;background:var(--cream);-webkit-overflow-scrolling:touch;}
+.cha-nav{position:sticky;top:0;z-index:200;background:rgba(245,242,237,.97);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-bottom:.5px solid rgba(47,47,47,.1);padding:0 32px;height:60px;display:flex;align-items:center;justify-content:space-between;gap:16px;}
+.cha-back{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted);cursor:pointer;background:none;border:none;font-family:'DM Sans',sans-serif;transition:color .2s;}
+.cha-back:hover{color:var(--black);}
+.cha-nav-logo{font-family:'Cormorant Garamond',serif;font-size:20px;font-style:italic;color:var(--black);letter-spacing:.06em;}
+.cha-nav-user{font-size:12px;color:var(--muted);}
+.cha-banner{background:var(--olive-darkest);padding:0;text-align:center;position:relative;overflow:hidden;min-height:260px;display:flex;align-items:center;justify-content:center;}
+.cha-banner-bg{position:absolute;inset:0;background-size:cover;background-position:center;opacity:.32;filter:saturate(.7);}
+.cha-banner-overlay{position:relative;z-index:1;padding:56px 32px 48px;}
+.cha-banner-eyebrow{font-size:10px;letter-spacing:.32em;text-transform:uppercase;color:var(--olive-light);margin-bottom:12px;font-weight:500;}
+.cha-banner-title{font-family:'Cormorant Garamond',serif;font-size:clamp(44px,8vw,80px);font-style:italic;font-weight:300;color:white;line-height:1.1;margin-bottom:8px;}
+.cha-banner-sub{font-family:'Cormorant Garamond',serif;font-size:18px;font-style:italic;color:rgba(255,255,255,.65);}
+.cha-tab-bar-wrap{padding:24px 32px 0;background:var(--cream);border-bottom:.5px solid rgba(47,47,47,.07);}
+.cha-tab-bar{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;padding-bottom:1px;}
+.cha-tab-bar::-webkit-scrollbar{display:none}
+.cha-tab-btn{flex-shrink:0;display:flex;align-items:center;gap:6px;padding:9px 18px;border-radius:999px;border:.5px solid transparent;background:none;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;color:var(--muted);cursor:pointer;letter-spacing:.04em;transition:all .25s;white-space:nowrap;}
+.cha-tab-btn:hover{background:rgba(47,47,47,.05);color:var(--black);}
+.cha-tab-btn.active{background:var(--olive-darkest);color:white;border-color:var(--olive-darkest);}
+.cha-content{padding:32px;max-width:900px;margin:0 auto;}
+.cha-tab-panel{display:none;}
+.cha-tab-panel.active{display:block;}
+.cha-event-card{background:var(--olive-darkest);border-radius:24px;padding:40px;color:white;display:grid;grid-template-columns:1fr auto;gap:32px;align-items:start;margin-bottom:28px;position:relative;overflow:hidden;}
+.cha-event-card::before{content:'';position:absolute;top:-40%;right:-10%;width:50%;height:150%;background:radial-gradient(ellipse,rgba(138,158,106,.25) 0%,transparent 70%);pointer-events:none;}
+.cha-event-img{width:220px;height:160px;border-radius:14px;object-fit:cover;flex-shrink:0;}
+@media(max-width:640px){.cha-event-card{grid-template-columns:1fr}.cha-event-img{width:100%;height:180px;}}
+.cha-event-title{font-family:'Cormorant Garamond',serif;font-size:clamp(24px,3.5vw,38px);font-style:italic;font-weight:300;color:white;margin-bottom:10px;}
+.cha-event-desc{font-size:14px;color:rgba(255,255,255,.7);line-height:1.7;margin-bottom:20px;}
+.cha-event-badges{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px;}
+.cha-event-badge{display:flex;align-items:center;gap:6px;padding:7px 14px;background:rgba(255,255,255,.12);border-radius:999px;font-size:12px;color:rgba(255,255,255,.85);font-weight:500;border:.5px solid rgba(255,255,255,.15);}
+.cha-event-btn{display:inline-flex;align-items:center;gap:8px;padding:13px 24px;background:white;color:var(--olive-darkest);border-radius:12px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;letter-spacing:.04em;text-decoration:none;transition:transform .2s,box-shadow .2s;border:none;cursor:pointer;}
+.cha-event-btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.25);}
+.cha-info-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:14px;margin-bottom:28px;}
+.cha-info-block{background:var(--white);border-radius:16px;padding:20px;border:.5px solid rgba(47,47,47,.08);}
+.cha-info-icon{font-size:24px;margin-bottom:10px;}
+.cha-info-label{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--hint);font-weight:500;margin-bottom:4px;}
+.cha-info-val{font-size:15px;color:var(--black);font-weight:500;line-height:1.5;}
+.cha-info-val a{color:var(--olive-mid);text-decoration:none;border-bottom:1px solid var(--olive-pale);}
+.cha-features-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px;margin-bottom:32px;}
+.cha-feature{background:var(--white);border-radius:16px;padding:20px 18px;border:.5px solid rgba(47,47,47,.08);display:flex;align-items:flex-start;gap:14px;}
+.cha-feature-icon{width:44px;height:44px;border-radius:12px;background:var(--olive-pale);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
+.cha-feature-title{font-size:13px;font-weight:600;color:var(--black);margin-bottom:3px;}
+.cha-feature-desc{font-size:12px;color:var(--muted);line-height:1.5;}
+.cha-rsvp-title{font-family:'Playfair Display',serif;font-size:clamp(26px,4vw,40px);font-weight:700;color:var(--black);margin-bottom:8px;}
+.cha-rsvp-title em{font-style:italic;color:var(--olive-mid);}
+.cha-rsvp-sub{font-size:15px;color:var(--muted);margin-bottom:28px;line-height:1.6;}
+.cha-rsvp-already{background:rgba(92,110,66,.1);border:.5px solid rgba(92,110,66,.25);border-radius:16px;padding:24px;text-align:center;font-family:'Cormorant Garamond',serif;font-size:20px;font-style:italic;color:var(--olive-dark);}
+.cha-recados-list{display:flex;flex-direction:column;gap:14px;margin-bottom:24px;}
+.cha-recado-card{background:var(--white);border-radius:14px;padding:18px 20px;border:.5px solid rgba(47,47,47,.08);}
+.cha-recado-name{font-size:13px;font-weight:600;color:var(--black);margin-bottom:4px;}
+.cha-recado-msg{font-size:14px;color:var(--muted);line-height:1.6;font-family:'Cormorant Garamond',serif;font-style:italic;}
+.cha-recado-date{font-size:11px;color:var(--hint);margin-top:6px;}
+.cha-recado-form{background:var(--white);border-radius:16px;padding:24px;border:.5px solid rgba(47,47,47,.08);}
+.cha-recado-footer{font-size:11px;color:var(--hint);text-align:center;margin-top:24px;font-style:italic;}
+.rsvp-already-box{background:rgba(92,110,66,.08);border:.5px solid rgba(92,110,66,.2);border-radius:20px;padding:36px 24px;text-align:center;}
+.rsvp-already-icon{font-size:48px;margin-bottom:14px;display:inline-block;}
+.rsvp-already-title{font-family:'Playfair Display',serif;font-size:26px;font-style:italic;color:var(--olive-dark);margin-bottom:8px;}
+.rsvp-already-sub{font-size:14px;color:var(--muted);line-height:1.7;}
 /* ── Carrossel Havan ─────────────────────────────────────────────────── */
 /* Carrossel Havan — infinito, só fotos */
 .havan-carrossel-wrap{
@@ -1179,13 +1238,20 @@ footer::before{content:'';position:absolute;top:-40%;left:50%;width:120%;height:
       <p class="gifts-eyebrow">celebre conosco</p>
       <h2 class="gifts-title">Lista de <em>presentes</em></h2>
       <p class="gifts-sub">Sua presença já é o maior presente. Mas se quiser nos presentear, separamos algumas ideias com muito amor.</p>
-      <div class="gifts-grid">
+      <div class="gifts-grid" style="grid-template-columns:repeat(auto-fill,minmax(220px,1fr));">
         <div class="gift-card" onclick="irParaLista()" style="cursor:pointer;" title="Ver lista de presentes">
           <div class="gift-card-accent"></div>
           <div class="gift-icon">🏠</div>
           <p class="gift-name">Nossa casa</p>
           <p class="gift-desc">Itens para o nosso primeiro lar juntos — lista especial com desconto exclusivo via Tomio Imóveis + lista oficial na Havan.</p>
           <span class="gift-tag">Ver lista completa →</span>
+        </div>
+        <div class="gift-card" onclick="irParaCha()" style="cursor:pointer;" title="Chá de Panela">
+          <div class="gift-card-accent"></div>
+          <div class="gift-icon">🍵</div>
+          <p class="gift-name">Chá de Panela</p>
+          <p class="gift-desc">22 de agosto, a partir das 16h. Confirme presença e veja a lista especial do nosso chá de panela.</p>
+          <span class="gift-tag">Ver detalhes →</span>
         </div>
         <div class="gift-card" onclick="copiarPix('00020126830014BR.GOV.BCB.PIX0123eliezerh.c007@gmail.com0234Agradecemos abençoar nossas vidas!5204000053039865406100.005802BR5924Eliezer Henrique Cavanha6009SAO PAULO62140510oX8I4C3nyf63046C11', this)" title="Copiar Pix — Lua de mel">
           <div class="gift-card-accent"></div>
@@ -1398,6 +1464,116 @@ footer::before{content:'';position:absolute;top:-40%;left:50%;width:120%;height:
   </div>
 </div>
 
+
+
+<!-- ══════════════════════════════════════ CHÁ DE PANELA ══════════════════════════════════════ -->
+<div id="page-cha">
+  <nav class="cha-nav">
+    <button class="cha-back" onclick="voltarDoCha()">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Voltar ao convite
+    </button>
+    <span class="cha-nav-logo">A & E</span>
+    <span class="cha-nav-user" id="cha-nav-user"></span>
+  </nav>
+  <div class="cha-banner">
+    <div class="cha-banner-bg" id="cha-banner-bg"></div>
+    <div class="cha-banner-overlay">
+      <p class="cha-banner-eyebrow">Chá de Panela</p>
+      <h1 class="cha-banner-title">Chá de Panela</h1>
+      <p class="cha-banner-sub">celebrando o amor em cada detalhe</p>
+      <div style="margin-top:16px;font-size:22px;">🤍</div>
+    </div>
+  </div>
+  <div class="cha-tab-bar-wrap">
+    <div class="cha-tab-bar">
+      <button class="cha-tab-btn active" onclick="switchChaTab('lista',this)">🎁 Lista de Presentes</button>
+      <button class="cha-tab-btn" onclick="switchChaTab('cha',this)">☕ Chá de Panela</button>
+      <button class="cha-tab-btn" onclick="switchChaTab('detalhes',this)">📅 Detalhes do Evento</button>
+      <button class="cha-tab-btn" onclick="switchChaTab('recados',this)">💌 Recados</button>
+    </div>
+  </div>
+  <div class="cha-content">
+    <!-- ABA: LISTA DE PRESENTES -->
+    <div class="cha-tab-panel active" id="cha-tab-lista">
+      <div class="cha-event-card" style="margin-top:24px;">
+        <div>
+          <h2 class="cha-event-title">Nosso Chá de Panela</h2>
+          <p class="cha-event-desc">Estamos preparando nosso lar com muito amor e cada presente faz parte desse momento tão especial.<br><br>Escolha um item da nossa lista ou venha nos celebrar nesse dia inesquecível!</p>
+          <div class="cha-event-badges">
+            <span class="cha-event-badge">💚 Com amor para nosso lar</span>
+            <span class="cha-event-badge">🎁 Cada detalhe importa</span>
+            <span class="cha-event-badge">🏠 Começando nossa história</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+            <a href="https://lista.havan.com.br/Convidado/ItensListaPresente/939137?aba=sobre" target="_blank" class="cha-event-btn">
+              Ver lista na Havan
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+          </div>
+        </div>
+        <img class="cha-event-img" data-photo="col-b" alt="Chá de Panela" id="cha-event-img" style="object-fit:cover;">
+      </div>
+      <div style="background:rgba(221,230,207,.35);border-radius:16px;padding:20px 24px;border:.5px solid rgba(92,110,66,.2);font-size:14px;color:var(--olive-dark);line-height:1.7;margin-bottom:28px;">
+        💡 Acesse nossa lista exclusiva na Havan. Cada item que você presentear vai compor o nosso primeiro lar juntos com muito amor.
+      </div>
+      <div class="cha-features-grid">
+        <div class="cha-feature"><div class="cha-feature-icon">🎁</div><div><div class="cha-feature-title">Lista de Presentes</div><div class="cha-feature-desc">Escolha itens com praticidade e segurança.</div></div></div>
+        <div class="cha-feature"><div class="cha-feature-icon">☕</div><div><div class="cha-feature-title">Detalhes do Evento</div><div class="cha-feature-desc">Confirme presença e veja todos os detalhes.</div></div></div>
+        <div class="cha-feature"><div class="cha-feature-icon">💌</div><div><div class="cha-feature-title">Deixe seu Recado</div><div class="cha-feature-desc">Envie carinho e desejos para esse momento.</div></div></div>
+        <div class="cha-feature"><div class="cha-feature-icon">📸</div><div><div class="cha-feature-title">Galeria do Amor</div><div class="cha-feature-desc">Acompanhe fotos e momentos do nosso chá.</div></div></div>
+      </div>
+      <div style="background:var(--olive-darkest);border-radius:16px;padding:16px 24px;text-align:center;font-size:14px;color:rgba(255,255,255,.8);">Obrigado por fazer parte desse momento tão especial! 💚</div>
+    </div>
+
+    <!-- ABA: CHÁ DE PANELA (CONFIRMAÇÃO) -->
+    <div class="cha-tab-panel" id="cha-tab-cha">
+      <div style="margin-top:24px;">
+        <h2 class="cha-rsvp-title">Você vai ao <em>Chá?</em></h2>
+        <p class="cha-rsvp-sub">Confirme sua presença no nosso Chá de Panela em 22 de agosto.</p>
+        <div id="cha-rsvp-body">
+          <div class="loading-state">Verificando...</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ABA: DETALHES DO EVENTO -->
+    <div class="cha-tab-panel" id="cha-tab-detalhes">
+      <div style="margin-top:24px;">
+        <h2 class="cha-rsvp-title" style="margin-bottom:24px;">Detalhes do <em>Evento</em></h2>
+        <div class="cha-info-grid">
+          <div class="cha-info-block"><div class="cha-info-icon">📅</div><div class="cha-info-label">Data</div><div class="cha-info-val">22 de agosto de 2026<br><span style="font-size:12px;color:var(--muted);">Sábado</span></div></div>
+          <div class="cha-info-block"><div class="cha-info-icon">🕓</div><div class="cha-info-label">Horário</div><div class="cha-info-val">A partir das 16h</div></div>
+          <div class="cha-info-block"><div class="cha-info-icon">📍</div><div class="cha-info-label">Local</div><div class="cha-info-val">Associação dos Moradores<br><span style="font-size:12px;color:var(--muted);">R. Santa Terezinha, 295<br>Progresso, Blumenau - SC<br>89026-800</span></div></div>
+          <div class="cha-info-block"><div class="cha-info-icon">🎁</div><div class="cha-info-label">Sugestão de Presente</div><div class="cha-info-val"><a href="https://lista.havan.com.br/Convidado/ItensListaPresente/939137?aba=sobre" target="_blank">Lista de presentes online</a></div></div>
+        </div>
+        <a href="https://www.google.com/maps/search/?api=1&query=R.+Santa+Terezinha,+295+Progresso+Blumenau+SC" target="_blank" style="display:inline-flex;align-items:center;gap:8px;padding:14px 24px;background:var(--olive-darkest);color:white;border-radius:12px;text-decoration:none;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;letter-spacing:.04em;transition:transform .2s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform=''">
+          📍 Ver no Google Maps
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      </div>
+    </div>
+
+    <!-- ABA: RECADOS -->
+    <div class="cha-tab-panel" id="cha-tab-recados">
+      <div style="margin-top:24px;">
+        <h2 class="cha-rsvp-title" style="margin-bottom:8px;">Deixe um <em>Recado</em></h2>
+        <p style="font-size:15px;color:var(--muted);margin-bottom:24px;">Envie carinho e desejos para o nosso chá de panela 💚</p>
+        <div class="cha-recado-form" style="margin-bottom:28px;">
+          <div style="display:flex;flex-direction:column;gap:12px;">
+            <div>
+              <label style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--olive-mid);font-weight:500;margin-bottom:6px;display:block;">Sua mensagem</label>
+              <textarea id="cha-recado-msg" class="rsvp-input" rows="4" placeholder="Deixe um desejo, uma bênção, um recado de amor..." style="resize:none;line-height:1.6;"></textarea>
+            </div>
+            <button onclick="enviarRecadoCha()" style="align-self:flex-end;padding:13px 24px;background:var(--olive-darkest);color:white;border:none;border-radius:12px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;letter-spacing:.06em;cursor:pointer;transition:background .25s,transform .2s;" onmouseover="this.style.background='var(--olive-dark)'" onmouseout="this.style.background='var(--olive-darkest)'" id="cha-recado-btn">Enviar Recado 💚</button>
+          </div>
+        </div>
+        <div id="cha-recados-lista"><div class="loading-state">Carregando recados...</div></div>
+        <p class="cha-recado-footer">Os recados ficam visíveis para todos os convidados 💚</p>
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- DIALOG CUSTOMIZADO (alert/confirm/prompt) -->
 <div class="dialog-overlay" id="custom-dialog">
@@ -1691,6 +1867,163 @@ function voltarConvite(){
   window.scrollTo(0,0);
 }
 
+function irParaCha(){
+  document.getElementById('page-convite').style.display = 'none';
+  const cha = document.getElementById('page-cha');
+  cha.classList.add('ativo');
+  window.scrollTo(0,0);
+  document.getElementById('cha-nav-user').textContent = `Olá, ${SESSION_LOGIN} 💚`;
+  // Usa foto da colagem como banner
+  const bg = document.getElementById('cha-banner-bg');
+  const imgSrc = document.querySelector('[data-photo="col-b"] img')?.src || document.querySelector('[data-photo="hero"] img')?.src;
+  if(bg && imgSrc) bg.style.backgroundImage = `url('${imgSrc}')`;
+  // Seta foto no card de evento
+  const evImg = document.getElementById('cha-event-img');
+  if(evImg && imgSrc) evImg.src = imgSrc;
+  // Carrega confirmação e recados
+  iniciarChaRSVP();
+  carregarRecadosCha();
+}
+
+function voltarDoCha(){
+  document.getElementById('page-cha').classList.remove('ativo');
+  document.getElementById('page-convite').style.display = '';
+  window.scrollTo(0,0);
+}
+
+function switchChaTab(id, btn){
+  document.querySelectorAll('.cha-tab-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.cha-tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('cha-tab-'+id).classList.add('active');
+  btn.classList.add('active');
+}
+
+// ══════════════════════════════════════
+// CHÁ — CONFIRMAÇÃO
+// ══════════════════════════════════════
+async function iniciarChaRSVP(){
+  const el = document.getElementById('cha-rsvp-body');
+  if(!el) return;
+  // Verifica se já confirmou
+  const { data: jaConfirmou } = await sb.from('casamento_cha_confirmados').select('id,nome,qtd_pessoas,membros_confirmados').eq('login_convidado', SESSION_LOGIN).maybeSingle();
+  if(jaConfirmou){
+    const nomes = jaConfirmou.membros_confirmados?.length ? jaConfirmou.membros_confirmados.join(', ') : jaConfirmou.nome;
+    el.innerHTML = `
+      <div class="cha-rsvp-already">
+        <div style="font-size:48px;margin-bottom:14px;">🎉</div>
+        <div style="font-family:'Playfair Display',serif;font-size:22px;font-style:italic;color:var(--olive-dark);margin-bottom:8px;">Presença confirmada!</div>
+        <div style="font-size:14px;color:var(--muted);line-height:1.7;">
+          <strong>${nomes}</strong> ${jaConfirmou.qtd_pessoas > 1 ? 'estão confirmados' : 'está confirmado'} para o Chá de Panela!<br>Até 22 de agosto 💚
+        </div>
+      </div>`;
+    return;
+  }
+  // Mostra form
+  if(SESSION_MEMBROS && SESSION_MEMBROS.length > 1){
+    el.innerHTML = `
+      <div style="background:var(--white);border-radius:20px;padding:28px;border:.5px solid rgba(47,47,47,.08);">
+        <div><label class="rsvp-label" style="margin-bottom:14px;display:block;">Quem vai ao chá?
+          <span style="color:var(--hint);font-size:10px;text-transform:none;font-weight:400;margin-left:6px;">desmarque quem não puder ir</span></label>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            ${SESSION_MEMBROS.map(m=>`
+              <label class="membro-item selecionado" style="user-select:none;cursor:pointer;">
+                <input type="checkbox" value="${m}" checked class="cha-cb" onchange="toggleMembroCha(this)">
+                <div class="membro-check">✓</div>
+                <div style="flex:1;"><div class="membro-nome">${m}</div></div>
+                <div style="font-size:11px;color:var(--olive-mid);font-weight:500;letter-spacing:.04em;" id="cha-badge-${m.replace(/\s/g,'_')}">✓ vai</div>
+              </label>`).join('')}
+          </div>
+        </div>
+        <div style="margin-top:16px;">
+          <label class="rsvp-label" style="margin-bottom:8px;display:block;">Mensagem (opcional)</label>
+          <textarea id="cha-conf-msg" class="rsvp-input" rows="2" placeholder="Algum recado?" style="resize:none;line-height:1.6;margin-bottom:12px;"></textarea>
+          <button onclick="enviarChaRSVP()" class="rsvp-submit" id="cha-submit-btn">Confirmar presença no Chá 💚</button>
+        </div>
+      </div>`;
+  } else {
+    const nomeFixo = SESSION_MEMBROS ? SESSION_MEMBROS[0] : SESSION_LOGIN;
+    el.innerHTML = `
+      <div style="background:var(--white);border-radius:20px;padding:28px;border:.5px solid rgba(47,47,47,.08);">
+        <label class="membro-item selecionado" style="user-select:none;cursor:pointer;margin-bottom:16px;display:flex;">
+          <input type="checkbox" id="cha-cb-individual" value="${nomeFixo}" checked onchange="toggleMembroChaIndividual(this)">
+          <div class="membro-check">✓</div>
+          <div style="flex:1;"><div class="membro-nome">${nomeFixo}</div>
+          <div style="font-size:12px;color:var(--muted);margin-top:2px;">Estarei presente em 22 · 08 · 2026</div></div>
+          <div style="font-size:11px;color:var(--olive-mid);font-weight:500;" id="cha-badge-individual">✓ confirmado</div>
+        </label>
+        <textarea id="cha-conf-msg" class="rsvp-input" rows="2" placeholder="Mensagem opcional..." style="resize:none;line-height:1.6;margin-bottom:12px;"></textarea>
+        <button onclick="enviarChaRSVP()" class="rsvp-submit" id="cha-submit-btn">Confirmar presença no Chá 💚</button>
+      </div>`;
+  }
+}
+
+function toggleMembroCha(checkbox){
+  const item = checkbox.closest('.membro-item');
+  const check = item.querySelector('.membro-check');
+  const nome = checkbox.value.replace(/\s/g,'_');
+  const badge = document.getElementById('cha-badge-'+nome);
+  if(checkbox.checked){ item.classList.add('selecionado'); check.textContent='✓'; if(badge){badge.textContent='✓ vai';badge.style.color='var(--olive-mid)';} }
+  else { item.classList.remove('selecionado'); check.textContent=''; if(badge){badge.textContent='✗ não vai';badge.style.color='var(--hint)';} }
+}
+
+function toggleMembroChaIndividual(checkbox){
+  const item = checkbox.closest('.membro-item');
+  const check = item.querySelector('.membro-check');
+  const badge = document.getElementById('cha-badge-individual');
+  if(checkbox.checked){ item.classList.add('selecionado'); check.textContent='✓'; if(badge){badge.textContent='✓ confirmado';badge.style.color='var(--olive-mid)';} }
+  else { item.classList.remove('selecionado'); check.textContent=''; if(badge){badge.textContent='✗ não vou';badge.style.color='var(--hint)';} }
+}
+
+async function enviarChaRSVP(){
+  const btn = document.getElementById('cha-submit-btn');
+  const msg = (document.getElementById('cha-conf-msg')?.value||'').trim();
+  let payload = {};
+  if(SESSION_MEMBROS && SESSION_MEMBROS.length > 1){
+    const conf=[], nao=[];
+    SESSION_MEMBROS.forEach(m=>{ const cb=document.querySelector(`.cha-cb[value="${m}"]`); (cb&&cb.checked?conf:nao).push(m); });
+    if(!conf.length){ await dlgAlert('👥','Ninguém selecionado','Marque pelo menos uma pessoa.'); return; }
+    payload={nome:SESSION_LOGIN,login_convidado:SESSION_LOGIN,comparecendo:true,qtd_pessoas:conf.length,mensagem:msg||null,membros_confirmados:conf,membros_nao_vao:nao};
+  } else {
+    const nomeFixo = SESSION_MEMBROS?SESSION_MEMBROS[0]:SESSION_LOGIN;
+    const vai = document.getElementById('cha-cb-individual')?.checked ?? true;
+    payload={nome:nomeFixo,login_convidado:SESSION_LOGIN,comparecendo:vai,qtd_pessoas:vai?1:0,mensagem:msg||null,membros_confirmados:vai?[nomeFixo]:[],membros_nao_vao:vai?[]:[nomeFixo]};
+  }
+  btn.textContent='Enviando...'; btn.disabled=true;
+  const {error} = await sb.from('casamento_cha_confirmados').insert(payload);
+  if(!error){
+    burstConfetti(btn,{count:40});
+    const el=document.getElementById('cha-rsvp-body');
+    const nomes=payload.membros_confirmados.join(', ')||payload.nome;
+    setTimeout(()=>{ el.innerHTML=`<div class="cha-rsvp-already"><div style="font-size:48px;margin-bottom:14px;">🎉</div><div style="font-family:'Playfair Display',serif;font-size:22px;font-style:italic;color:var(--olive-dark);margin-bottom:8px;">Presença confirmada!</div><div style="font-size:14px;color:var(--muted)"><strong>${nomes}</strong> ${payload.qtd_pessoas>1?'estão confirmados':'está confirmado'}!<br>Até 22 de agosto 💚</div></div>`; },200);
+  } else { btn.textContent='Erro — tente novamente'; btn.disabled=false; }
+}
+
+// ══════════════════════════════════════
+// CHÁ — RECADOS
+// ══════════════════════════════════════
+async function carregarRecadosCha(){
+  const el = document.getElementById('cha-recados-lista');
+  if(!el) return;
+  const { data } = await sb.from('casamento_cha_confirmados').select('nome,mensagem,criado_em,login_convidado').not('mensagem','is',null).order('criado_em',{ascending:false});
+  const comMsg = (data||[]).filter(c=>c.mensagem);
+  if(!comMsg.length){ el.innerHTML='<div class="admin-empty" style="font-style:italic;color:var(--hint);text-align:center;padding:40px;">Seja o primeiro a deixar um recado 💚</div>'; return; }
+  el.innerHTML=`<div class="cha-recados-lista">${comMsg.map(c=>`<div class="cha-recado-card"><div class="cha-recado-name">${c.nome||c.login_convidado}</div><div class="cha-recado-msg">"${c.mensagem}"</div><div class="cha-recado-date">${fmtDate(c.criado_em)}</div></div>`).join('')}</div>`;
+}
+
+async function enviarRecadoCha(){
+  const msg = document.getElementById('cha-recado-msg')?.value.trim();
+  if(!msg){ await dlgAlert('✍️','Mensagem em branco','Escreva um recado para enviar 💚'); return; }
+  const btn = document.getElementById('cha-recado-btn');
+  btn.textContent='Enviando...'; btn.disabled=true;
+  // Verifica se já tem registro no chá (para atualizar mensagem) ou insere novo
+  const {data:exist} = await sb.from('casamento_cha_confirmados').select('id').eq('login_convidado',SESSION_LOGIN).maybeSingle();
+  let error;
+  if(exist){ ({error}=await sb.from('casamento_cha_confirmados').update({mensagem:msg}).eq('id',exist.id)); }
+  else { ({error}=await sb.from('casamento_cha_confirmados').insert({nome:SESSION_LOGIN,login_convidado:SESSION_LOGIN,comparecendo:true,qtd_pessoas:1,mensagem:msg,membros_confirmados:[SESSION_LOGIN],membros_nao_vao:[]})); }
+  if(!error){ burstConfetti(btn,{count:20}); document.getElementById('cha-recado-msg').value=''; btn.textContent='Recado enviado 💚'; btn.style.background='var(--olive-mid)'; carregarRecadosCha(); }
+  else { btn.textContent='Erro — tente novamente'; btn.disabled=false; }
+}
+
 function switchListaTab(id, btn){
   document.querySelectorAll('.lista-tab-panel').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.lista-tab-btn').forEach(b=>b.classList.remove('active'));
@@ -1756,7 +2089,25 @@ async function registrarCliqueHavan(){
 // ══════════════════════════════════════
 // RSVP
 // ══════════════════════════════════════
-function iniciarRSVP(){
+async function iniciarRSVP(){
+  // Verifica se já confirmou presença
+  const { data: jaConfirmou } = await sb
+    .from('casamento_listaconfirmados')
+    .select('id,nome,qtd_pessoas,membros_confirmados,criado_em')
+    .eq('login_convidado', SESSION_LOGIN)
+    .maybeSingle();
+
+  if(jaConfirmou){
+    const nomes = jaConfirmou.membros_confirmados?.length
+      ? jaConfirmou.membros_confirmados.join(', ')
+      : jaConfirmou.nome;
+    document.getElementById('rsvp-form').style.display = 'none';
+    document.getElementById('rsvp-success').classList.add('show');
+    document.getElementById('rsvp-success-text').innerHTML =
+      `<strong>${nomes}</strong> ${(jaConfirmou.qtd_pessoas||1)>1?'estão confirmados':'está confirmado'}! 💚<br>Mal podemos esperar para celebrar juntos!<br>Até 21 de novembro de 2026 💚`;
+    return;
+  }
+
   const field = document.getElementById('rsvp-membros-field');
   if(SESSION_MEMBROS && SESSION_MEMBROS.length > 1){
     field.innerHTML = `
@@ -2087,16 +2438,21 @@ async function carregarAdmin(){
     { data: reservas },
     { data: confirmados },
     { data: acessos },
-    havan_result
+    havan_result,
+    { data: cha_confirmados }
   ] = await Promise.all([
     sb.from('casamento_listapresentes').select('*').order('id'),
     sb.from('casamento_reservas').select('*').order('criado_em', { ascending: false }),
     sb.from('casamento_listaconfirmados').select('*').order('criado_em', { ascending: false }),
     sb.from('casamento_acessos').select('*').order('criado_em', { ascending: false }).limit(50),
-    sb.from('casamento_havan_clicks').select('*').order('criado_em', { ascending: false })
+    sb.from('casamento_havan_clicks').select('*').order('criado_em', { ascending: false }),
+    sb.from('casamento_cha_confirmados').select('*').order('criado_em', { ascending: false })
   ]);
 
   const havan_clicks = havan_result?.data || [];
+  const chaLista = cha_confirmados || [];
+  const chaSim = chaLista.filter(c=>c.comparecendo);
+  const chaPessoas = chaSim.reduce((a,c)=>a+(c.qtd_pessoas||1),0);
 
   const presLista      = presentes || [];
   const resLista       = reservas || [];
@@ -2161,8 +2517,8 @@ async function carregarAdmin(){
       <div class="admin-stat">
         <div class="admin-stat-val">${totalPessoas}</div>
         <div class="admin-stat-label">Pessoas confirmadas</div>
-        <div class="progress-bar-wrap" style="margin-top:8px;"><div class="progress-bar" style="width:${Math.min(totalPessoas/150*100,100)}%"></div></div>
-        <div class="admin-stat-sub">Meta estimada: 150</div>
+        <div class="progress-bar-wrap" style="margin-top:8px;"><div class="progress-bar" style="width:${Math.min(totalPessoas/89*100,100)}%"></div></div>
+        <div class="admin-stat-sub">Meta estimada: 89</div>
       </div>
       <div class="admin-stat">
         <div class="admin-stat-val">${confirmSim.length}</div>
@@ -2179,6 +2535,11 @@ async function carregarAdmin(){
         <div class="admin-stat-val" style="color:#8a6d2e;">R$ ${totalValorReservado.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g,'.')}</div>
         <div class="admin-stat-label">Valor já reservado</div>
         <div class="admin-stat-sub">Presentes Tomio</div>
+      </div>
+      <div class="admin-stat">
+        <div class="admin-stat-val" style="color:var(--olive-mid);">${chaPessoas}</div>
+        <div class="admin-stat-label">Confirmados no Chá</div>
+        <div class="admin-stat-sub">${chaSim.length} confirmações · 22/08</div>
       </div>
       <div class="admin-stat">
         <div class="admin-stat-val">${havanLista.length}</div>
@@ -2246,6 +2607,30 @@ async function carregarAdmin(){
             <td style="font-size:12px;color:var(--muted);max-width:180px;">${c.mensagem ? `"${c.mensagem}"` : '—'}</td>
             <td style="font-size:11px;color:var(--hint);">${fmtDate(c.criado_em)}</td>
           </tr>`).join('') || '<tr><td colspan="6" class="admin-empty">Nenhuma confirmação ainda</td></tr>'}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ░░ CHÁ DE PANELA ░░ -->
+    <p class="admin-section-title">🍵 Confirmações — Chá de Panela (22/08)</p>
+    <div class="admin-table-wrap">
+      <div class="admin-table-title">
+        <span class="admin-table-title-text">Quem vai ao chá</span>
+        <span class="admin-table-title-badge">${chaPessoas} pessoas · ${chaSim.length} confirmações</span>
+      </div>
+      <div style="overflow-x:auto;">
+        <table class="admin-table">
+          <thead><tr><th>Nome / Login</th><th>Confirmados</th><th>Não vão</th><th>Qtd</th><th>Mensagem</th><th>Data</th></tr></thead>
+          <tbody>
+          ${chaLista.length ? chaLista.map(c=>`<tr>
+            <td><strong>${c.nome}</strong>${c.login_convidado&&c.login_convidado!==c.nome?`<br><small style="color:var(--hint);font-size:11px;">login: ${c.login_convidado}</small>`:''}</td>
+            <td style="color:var(--olive-mid);font-size:13px;">${c.membros_confirmados?.length?c.membros_confirmados.join(', '):c.comparecendo?'✅ Sim':'—'}</td>
+            <td style="color:var(--hint);font-size:12px;">${c.membros_nao_vao?.length?c.membros_nao_vao.join(', '):'—'}</td>
+            <td style="font-size:13px;font-weight:600;">${c.qtd_pessoas||1}</td>
+            <td style="font-size:12px;color:var(--muted);max-width:180px;">${c.mensagem?`"${c.mensagem}"` :'—'}</td>
+            <td style="font-size:11px;color:var(--hint);">${fmtDate(c.criado_em)}</td>
+          </tr>`).join('') : '<tr><td colspan="6" class="admin-empty">Nenhuma confirmação para o chá ainda</td></tr>'}
           </tbody>
         </table>
       </div>
