@@ -1560,7 +1560,7 @@ footer::before{content:'';position:absolute;top:-40%;left:50%;width:120%;height:
             <div class="cha-event-sidebar-icon">
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
             </div>
-            <div><div class="cha-event-sidebar-label">Horário</div><div class="cha-event-sidebar-val">14h00</div></div>
+            <div><div class="cha-event-sidebar-label">Horário</div><div class="cha-event-sidebar-val">A partir das 16h</div></div>
           </div>
           <div class="cha-event-sidebar-item">
             <div class="cha-event-sidebar-icon">
@@ -1986,17 +1986,37 @@ function irParaCha(){
   window.scrollTo(0,0);
   document.getElementById('cha-nav-user').textContent = `Olá, ${SESSION_LOGIN}`;
 
-  // Usa foto da hero (col-b ou hero) como banner e como imagem do card
-  const heroEl = document.querySelector('[data-photo="hero"] img') ||
-                 document.querySelector('[data-photo="col-b"] img') ||
-                 document.querySelector('[data-photo="col-a"] img');
-  const imgSrc = heroEl?.src || heroEl?.getAttribute('src') || '';
-
+  // Usa foto da hero diretamente via loadImg (mesma função usada pelo site)
   const bg = document.getElementById('cha-banner-bg');
-  if(bg && imgSrc) bg.style.backgroundImage = `url('${imgSrc}')`;
-
   const evImg = document.getElementById('cha-event-img');
-  if(evImg && imgSrc) evImg.src = imgSrc;
+
+  // Tenta pegar src já carregado pelo site; se não tiver, carrega direto
+  const heroLoaded = document.querySelector('img[data-photo="hero"]');
+  const colBLoaded = document.querySelector('img[data-photo="col-b"]');
+  const imgSrc = (heroLoaded?.complete && heroLoaded?.naturalWidth > 0 ? heroLoaded.src : '')
+              || (colBLoaded?.complete && colBLoaded?.naturalWidth > 0 ? colBLoaded.src : '')
+              || '';
+
+  if(bg){
+    if(imgSrc){
+      bg.style.backgroundImage = `url('${imgSrc}')`;
+    } else {
+      // Carrega via loadImg em elemento temporário
+      const tmp = document.createElement('img');
+      tmp.style.display = 'none';
+      document.body.appendChild(tmp);
+      loadImg(tmp, 'hero');
+      tmp.onload = () => { bg.style.backgroundImage = `url('${tmp.src}')`; };
+    }
+  }
+
+  if(evImg){
+    if(imgSrc){
+      evImg.src = imgSrc;
+    } else {
+      loadImg(evImg, 'hero');
+    }
+  }
 
   // Carrega confirmação e recados
   iniciarChaRSVP();
